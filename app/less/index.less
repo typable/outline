@@ -1,0 +1,148 @@
+.toolbar {
+	position: fixed;
+	left: calc(50% - 360px);
+	bottom: 30px;
+	display: flex;
+
+	.bucket {
+		width: 56px;
+		height: 56px;
+		border-radius: 9999px;
+		background: #CCC;
+		margin: 8px;
+		transition: transform 0.2s;
+		box-shadow: 0 0px 8px 2px rgba(0, 0, 0, 0.05);
+		cursor: pointer;
+		transform: scale(0.9);
+
+		&:hover {
+			transition: transform 0.2s;
+			transform: scale(1);
+		}
+
+		&.focused {
+			transform: scale(1.1);
+		}
+	}
+}
+
+.actions {
+	position: fixed;
+	top: 30px;
+	left: 30px;
+	display: flex;
+}
+
+.action {
+	position: relative;
+	width: 46px;
+	height: 46px;
+	border: none;
+	border-radius: 9999px;
+	background: transparent;
+	cursor: pointer;
+	outline: none;
+	position: fixed;
+	margin-right: 8px;
+
+	&:hover {
+		background: #ECECEC;
+	}
+
+	&::after {
+		bottom: -60%;
+	}
+}
+
+/* Tooltip */
+.tooltip {
+	position: relative;
+	display: flex;
+	justify-content: center;
+
+	&:hover {
+
+		&::before {
+			opacity: 1;
+			transition-delay: 0.6s;
+		}
+
+		&::after {
+			opacity: 1;
+			transition-delay: 0.6s;
+		}
+	}
+
+	/*
+	&::before {
+		display: flex;
+		opacity: 0;
+		content: '';
+		position: absolute;
+		width: 0;
+		height: 0;
+		top: auto;
+		bottom: ~'calc(-110% + 26px)';
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-top: none;
+		border-bottom: 6px solid #404040;
+		z-index: 99;
+		pointer-events: none;
+	}
+	*/
+
+	&::after {
+		display: flex;
+		opacity: 0;
+		content: attr(data-title);
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		background: #212121;
+		color: white;
+		min-height: 24px;
+		padding: 0 10px;
+		border-radius: 4px;
+		font-size: 12px;
+		top: auto;
+		bottom: -90%;
+		white-space: nowrap;
+		z-index: 9999;
+		pointer-events: none;
+	}
+
+	&.up {
+
+		&::before {
+			top: ~'calc(-90% + 26px)';
+			bottom: auto;
+			border-left: 6px solid transparent;
+			border-right: 6px solid transparent;
+			border-top: 6px solid #212121;
+			border-bottom: none;
+		}
+
+		&::after {
+			top: -60%;
+			bottom: auto;
+		}
+	}
+
+	&.down {
+
+		&::before {
+			top: auto;
+			bottom: ~'calc(-90% + 26px)';
+			border-left: 6px solid transparent;
+			border-right: 6px solid transparent;
+			border-top: none;
+			border-bottom: 6px solid #212121;
+		}
+
+		&::after {
+			top: auto;
+			bottom: -60%;
+		}
+	}
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="Prototype Studio | typable">
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+		<meta name="robots" content="index,follow">
+		<title>Outline</title>
+		<!-- <link href="/favicon.png" rel="shortcut icon" type="image/png"> -->
+		<!-- Bootstrap Grid v4.3.1 -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap-grid.css" rel="stylesheet">
+		<!-- Google Fonts: Roboto, Overpass Mono, DM Serif Text -->
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Overpass+Mono:300,400,600,700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=DM+Serif+Text:400,400i" rel="stylesheet">
+		<!-- Google Material Icons -->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!-- Style -->
+		<link href="css/style.css" rel="stylesheet">
+		<!-- jQuery v3.4.1 -->
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+		<!-- Script -->
+		<script src="js/socket.io.js"></script>
+		<script src="js/index.js"></script>
+		<script data-ad-client="ca-pub-4673810801110629" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	</head>
+	<body>
+	  <canvas id="canvas"></canvas>
+	  <div id="overlay">
+		  <div class="dialog login">
+			  <form id="login">
+				  <input type="text" name="name">
+				  <ul class="avatar-list">
+					  <li class="avatar">
+						  <img>
+					  </li>
+					  <li class="avatar">
+						  <img>
+					  </li>
+					  <li class="avatar">
+						  <img>
+					  </li>
+					  <li class="avatar">
+						  <img>
+					  </li>
+				  </ul>
+				  <button type="submit">Connect</button>
+			  </form>
+		  </div>
+		  <div class="toolbar">
+			  <div class="actions">
+				  <button id="color" class="action tooltip" data-title="Color">
+					  <i class="ico">color_lens</i>
+				  </button>
+				  <button id="brush" class="action tooltip" data-title="Brush">
+					  <i class="ico">brush</i>
+				  </button>
+				  <button id="background" class="action tooltip" data-title="Background">
+					  <i class="ico">format_paint</i>
+				  </button>
+				  <button id="scaling" class="action tooltip" data-title="Scaling">
+					  <i class="ico">bubble_chart</i>
+				  </button>
+				  <button id="clear" class="action tooltip" data-title="Clear">
+					  <i class="ico">delete</i>
+				  </button>
+				  <button id="screenshot" class="action tooltip" data-title="Screenshot">
+					  <i class="ico">fullscreen</i>
+				  </button>
+				  <!--
+				  <button id="info" class="action tooltip" data-title="Info">
+					  <i class="ico">info</i>
+				  </button>
+				  <button id="mode" class="action tooltip" data-title="Dark Mode">
+					  <i class="ico">brightness_2</i>
+				  </button>
+				  <button id="leave" class="action tooltip" data-title="Leave">
+					  <i class="ico">arrow_forward</i>
+				  </button>
+			  -->
+			</div>
+			  <!-- <button id="connect">Connect</button> -->
+			  <!-- BUCKETS -->
+		  </div>
+	  </div>
+	</body>
+</html>

@@ -1,0 +1,165 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #424242;
+}
+html {
+  width: 100vw;
+  heigth: 100vh;
+  overflow: hidden;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+/* Base Unit */
+/* Breakpoint */
+/* Ico */
+.ico {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  user-select: none;
+  pointer-events: none;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+/* Pages */
+.toolbar {
+  position: fixed;
+  left: calc(50% - 360px);
+  bottom: 30px;
+  display: flex;
+}
+.toolbar .bucket {
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  background: #CCC;
+  margin: 8px;
+  transition: transform 0.2s;
+  box-shadow: 0 0px 8px 2px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transform: scale(0.9);
+}
+.toolbar .bucket:hover {
+  transition: transform 0.2s;
+  transform: scale(1);
+}
+.toolbar .bucket.focused {
+  transform: scale(1.1);
+}
+.actions {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  display: flex;
+}
+.action {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  position: fixed;
+  margin-right: 8px;
+}
+.action:hover {
+  background: #ECECEC;
+}
+.action::after {
+  bottom: -60%;
+}
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  /*
+	&::before {
+		display: flex;
+		opacity: 0;
+		content: '';
+		position: absolute;
+		width: 0;
+		height: 0;
+		top: auto;
+		bottom: ~'calc(-110% + 26px)';
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-top: none;
+		border-bottom: 6px solid #404040;
+		z-index: 99;
+		pointer-events: none;
+	}
+	*/
+}
+.tooltip:hover::before {
+  opacity: 1;
+  transition-delay: 0.6s;
+}
+.tooltip:hover::after {
+  opacity: 1;
+  transition-delay: 0.6s;
+}
+.tooltip::after {
+  display: flex;
+  opacity: 0;
+  content: attr(data-title);
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background: #212121;
+  color: white;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  top: auto;
+  bottom: -90%;
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+}
+.tooltip.up::before {
+  top: calc(-90% + 26px);
+  bottom: auto;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #212121;
+  border-bottom: none;
+}
+.tooltip.up::after {
+  top: -60%;
+  bottom: auto;
+}
+.tooltip.down::before {
+  top: auto;
+  bottom: calc(-90% + 26px);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: none;
+  border-bottom: 6px solid #212121;
+}
+.tooltip.down::after {
+  top: auto;
+  bottom: -60%;
+}

@@ -1,0 +1,73 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	color: #424242;
+}
+
+html {
+	width: 100vw;
+	heigth: 100vh;
+	overflow: hidden;
+	touch-action: manipulation;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+}
+
+/* Base Unit */
+@unit-1: 4px;
+@unit-2: 8px;
+@unit-3: 16px;
+@unit-4: 24px;
+@unit-5: 32px;
+@unit-6: 40px;
+@unit-7: 48px;
+@unit-8: 56px;
+@unit-9: 64px;
+
+/* Breakpoint */
+@screen-xs: 0px;
+@screen-sm: 576px;
+@screen-md: 768px;
+@screen-lg: 992px;
+@screen-xl: 1200px;
+
+@screen-xs-min: @screen-xs;
+@screen-sm-min: @screen-sm;
+@screen-md-min: @screen-md;
+@screen-lg-min: @screen-lg;
+@screen-xl-min: @screen-xl;
+
+@screen-xs-max: (@screen-sm - 1px);
+@screen-sm-max: (@screen-md - 1px);
+@screen-md-max: (@screen-lg - 1px);
+@screen-lg-max: (@screen-xl - 1px);
+
+/* Ico */
+.ico {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+	user-select: none;
+	pointer-events: none;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
