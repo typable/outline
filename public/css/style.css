@@ -4176,6 +4176,7 @@ input {
   box-shadow: 0 0px 8px 2px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transform: scale(0.9);
+  user-select: none;
 }
 .toolbar .bucket:hover {
   transition: transform 0.2s;
