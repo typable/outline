@@ -1,16 +1,12 @@
 {
-  "name": "outline",
+  "name": "Outline",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Draw with friends together",
+  "main": "index.js",
   "scripts": {
-    "start": "electron ."
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "electron": "^7.1.2"
-  },
+  "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
