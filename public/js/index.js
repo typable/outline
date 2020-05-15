@@ -15,18 +15,23 @@ let env = {
 		{ name: 'Purple', code: 'purple' },
 		{ name: 'Bisque', code: 'bisque' }
 	],
-	socket: null
+	socket: null,
+	cursor: { x: 0, y: 0 }
 };
 
 let canvas;
+let overlay
 let g;
+let o;
 
 window.addEventListener('load', function(event) {
 
 	canvas = document.querySelector('.canvas');
 	canvas.draggable = true;
+	overlay = document.querySelector('.overlay');
 
 	g = canvas.getContext('2d');
+	o = overlay.getContext('2d');
 
 	env.bucket.forEach(function(item) {
 		let template = document.createElement('template');
@@ -61,13 +66,13 @@ window.addEventListener('load', function(event) {
 		env.last = null;
 	});
 	document.addEventListener('wheel', function(event) {
-
 		if(event.deltaY < 0) {
 			env.radius += env.radius < 30 ? 0.5 : 0;
 		}
 		else {
 			env.radius -= env.radius > 0.5 ? 0.5 : 0;
 		}
+		update();
 	});
 	document.addEventListener('keydown', function(event) {
 
@@ -87,6 +92,10 @@ window.addEventListener('load', function(event) {
 					}
 				});
 		}
+	});
+	document.addEventListener('mousemove', function(event) {
+		env.cursor = event.target === canvas ? { x: event.layerX, y: event.layerY } : null;
+		update();
 	});
 
 	window.addEventListener('resize', resize);
@@ -126,6 +135,8 @@ window.addEventListener('load', function(event) {
 function resize() {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	overlay.width = window.innerWidth;
+	overlay.height = window.innerHeight;
 }
 
 function connect() {
@@ -180,5 +191,18 @@ function draw(pos, last, radius, color) {
 		g.arc(pos.x, pos.y, 2 * radius, 0, 2 * Math.PI);
 		g.fill();
 		g.fillStyle = 'black';
+	}
+}
+
+function update() {
+	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
+	if(env.cursor) {
+		o.fillStyle = env.color;
+		o.beginPath();
+		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
+		o.stroke();
+		o.beginPath();
+		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
+		o.fill();
 	}
 }
