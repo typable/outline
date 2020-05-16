@@ -4,19 +4,21 @@ let env = {
 	color: 'black',
 	radius: 3,
 	bucket: [
-		{ name: 'Black', code: 'black', active: true },
-		{ name: 'White', code: 'white' },
-		{ name: 'Red', code: 'red' },
-		{ name: 'Blue', code: 'blue' },
-		{ name: 'Green', code: 'green' },
-		{ name: 'Yellow', code: 'yellow' },
-		{ name: 'Brown', code: 'brown' },
-		{ name: 'Grey', code: 'grey' },
-		{ name: 'Purple', code: 'purple' },
-		{ name: 'Bisque', code: 'bisque' }
+		{ name: 'Black', code: '#000000', active: true },
+		{ name: 'White', code: '#FFFFFF' },
+		{ name: 'Red', code: '#FF0000' },
+		{ name: 'Blue', code: '#0000FF' },
+		{ name: 'Green', code: '#00FF00' },
+		{ name: 'Yellow', code: '#FFFF00' },
+		{ name: 'Brown', code: '#A52A2A' },
+		{ name: 'Grey', code: '#808080' },
+		{ name: 'Purple', code: '#800080' },
+		{ name: 'Bisque', code: '#FFE4C4' }
 	],
 	socket: null,
-	cursor: { x: 0, y: 0 }
+	cursor: { x: 0, y: 0 },
+	client: {},
+	uuid: window.location.search.substr(6)
 };
 
 let canvas;
@@ -25,6 +27,8 @@ let g;
 let o;
 
 window.addEventListener('load', function(event) {
+
+	console.log(env.uuid);
 
 	canvas = document.querySelector('.canvas');
 	canvas.draggable = true;
@@ -72,10 +76,10 @@ window.addEventListener('load', function(event) {
 		else {
 			env.radius -= env.radius > 0.5 ? 0.5 : 0;
 		}
+		sendCursor();
 		update();
 	});
 	document.addEventListener('keydown', function(event) {
-
 		if(event.keyCode >= 48 && event.keyCode <= 57) {
 			let index = event.keyCode - 49;
 			if(index == -1) {
@@ -92,9 +96,17 @@ window.addEventListener('load', function(event) {
 					}
 				});
 		}
+		sendCursor();
+		update();
 	});
 	document.addEventListener('mousemove', function(event) {
 		env.cursor = event.target === canvas ? { x: event.layerX, y: event.layerY } : null;
+		sendCursor();
+		update();
+	});
+	document.addEventListener('mouseout', function(event) {
+		env.cursor = null;
+		sendCursor();
 		update();
 	});
 
@@ -130,6 +142,7 @@ window.addEventListener('load', function(event) {
 
 	resize();
 	connect();
+	sendCursor();
 });
 
 function resize() {
@@ -153,6 +166,15 @@ function connect() {
 		g.fillStyle = data;
 		g.fillRect(0, 0, window.innerWidth, window.innerHeight);
 		g.fillStyle = 'black';
+	});
+	env.socket.on('cursor', function(data) {
+		if(data.quit) {
+			delete env.client[data.uuid];
+		}
+		else {
+			env.client[data.uuid] = data;
+		}
+		update();
 	});
 }
 
@@ -194,10 +216,22 @@ function draw(pos, last, radius, color) {
 	}
 }
 
+function sendCursor() {
+	if(env.socket) {
+		env.socket.emit('cursor', {
+			cursor: env.cursor,
+			color: env.color,
+			radius: env.radius,
+			uuid: env.uuid
+		});
+	}
+}
+
 function update() {
 	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
 	if(env.cursor) {
 		o.fillStyle = env.color;
+		o.lineWidth = 4;
 		o.beginPath();
 		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
 		o.stroke();
@@ -205,4 +239,34 @@ function update() {
 		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
 		o.fill();
 	}
+	for(let key of Object.keys(env.client)) {
+		let client = env.client[key];
+		if(client.cursor) {
+			o.fillStyle = client.color;
+			o.lineWidth = 4;
+			o.beginPath();
+			o.arc(client.cursor.x, client.cursor.y, 2 * client.radius, 0, 2 * Math.PI);
+			o.stroke();
+			o.beginPath();
+			o.arc(client.cursor.x, client.cursor.y, 2 * client.radius, 0, 2 * Math.PI);
+			o.fill();
+			o.fillStyle = 'black';
+			o.font = '14px Roboto';
+			o.textBaseline = 'top';
+			o.textAlign = 'left';
+			let text = o.measureText(client.uuid);
+			o.fillRect(client.cursor.x, client.cursor.y, text.width + 12, 24);
+			o.fillStyle = 'white';
+			o.fillText(client.uuid, client.cursor.x + 6, client.cursor.y + 5);
+		}
+	}
+}
+
+function dark(color) {
+	let rgb = parseInt(color.substring(1));
+	let r = (rgb >> 16) & 0xff;
+	let g = (rgb >> 8) & 0xff;
+	let b = (rgb >> 9) & 0xff;
+	let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+	return luma < 40;
 }
