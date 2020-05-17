@@ -6,42 +6,43 @@ let env = {
 	bucket: [
 		{ name: 'Black', code: '#000000', active: true },
 		{ name: 'White', code: '#FFFFFF' },
+		{ name: 'Grey', code: '#808080' },
 		{ name: 'Red', code: '#FF0000' },
 		{ name: 'Blue', code: '#0000FF' },
 		{ name: 'Green', code: '#00FF00' },
-		{ name: 'Yellow', code: '#FFFF00' },
-		{ name: 'Brown', code: '#A52A2A' },
-		{ name: 'Grey', code: '#808080' },
-		{ name: 'Purple', code: '#800080' },
-		{ name: 'Bisque', code: '#FFE4C4' }
+		{ name: 'Yellow', code: '#FFFF00' }
 	],
 	colorlist: [
+		{ name: 'Salmon', code: '#FA8072' },
+		{ name: 'Crimson', code: '#DC143C' },
+		{ name: 'Firebrick', code: '#B22222' },
 		{ name: 'Pink', code: '#FFC0CB' },
+		{ name: 'Hotpink', code: '#FF69B4' },
+		{ name: 'Coral', code: '#FF7F50' },
+		{ name: 'Tomato', code: '#FF6347' },
+		{ name: 'Orange', code: '#FFA500' },
+		{ name: 'Gold', code: '#FFD700' },
+		{ name: 'Khaki', code: '#F0E68C' },
+		{ name: 'Lavender', code: '#E6E6FA' },
+		{ name: 'Plum', code: '#DDA0DD' },
 		{ name: 'Violet', code: '#EE82EE' },
 		{ name: 'Magenta', code: '#FF00FF' },
-		{ name: 'Red', code: '#FF0000' },
-		{ name: 'Orange', code: '#D2691E' },
-		{ name: 'Gold', code: '#FFD700' },
-		{ name: 'Yellow', code: '#FFFF00' },
+		{ name: 'Purple', code: '#800080' },
+		{ name: 'Indigo', code: '#4B0082' },
 		{ name: 'Lime', code: '#00FF00' },
-		{ name: 'Green', code: '#00FF00' },
+		{ name: 'Olive', code: '#808000' },
 		{ name: 'Teal', code: '#008080' },
 		{ name: 'Cyan', code: '#00FFFF' },
 		{ name: 'Aquamarine', code: '#7FFFD4' },
-		{ name: 'Blue', code: '#0000FF' },
+		{ name: 'Turquoise', code: '#40E0D0' },
 		{ name: 'Navy', code: '#000080' },
-		{ name: 'Cornsilk', code: '#FFF8DC' },
 		{ name: 'Bisque', code: '#FFE4C4' },
-		{ name: 'Wheat', code: '#F5DEB3' },
 		{ name: 'Tan', code: '#D2B48C' },
 		{ name: 'Peru', code: '#CD853F' },
-		{ name: 'Olive', code: '#808000' },
-		{ name: 'Sinna', code: '#A0522D' },
+		{ name: 'Chocolate', code: '#D2691E' },
+		{ name: 'Sienna', code: '#A0522D' },
 		{ name: 'Brown', code: '#A52A2A' },
-		{ name: 'Maroon', code: '#800000' },
-		{ name: 'Silver', code: '#C0C0C0' },
-		{ name: 'Black', code: '#000000' },
-		{ name: 'White', code: '#FFFFFF' }
+		{ name: 'Silver', code: '#C0C0C0' }
 	],
 	socket: null,
 	cursor: { x: 0, y: 0 },
@@ -122,7 +123,7 @@ window.addEventListener('load', function(event) {
 	});
 
 	document.querySelector('.action-join').addEventListener('click', function(event) {
-		env.name = document.querySelector('.action-uuid').value;
+		env.name = document.querySelector('.action-uuid').value.replace(/\s+/g, '');
 		if(env.name.length >= 3 && env.name.length <= 20) {
 			env.uuid = env.name + '-' + uuidv4();
 			close();
@@ -155,7 +156,7 @@ window.addEventListener('load', function(event) {
 	});
 	document.addEventListener('keydown', function(event) {
 		if(document.querySelector('.wrapper').style.display === 'none') {
-			if(event.keyCode >= 48 && event.keyCode <= 57) {
+			if(event.keyCode >= 48 && event.keyCode <= 55) {
 				let index = event.keyCode - 49;
 				if(index == -1) {
 					index = 9;
@@ -204,6 +205,7 @@ window.addEventListener('load', function(event) {
 		.forEach(function(item) {
 			item.addEventListener('mousedown', function(event) {
 				env.color = item.dataset.color;
+				env.temp = null;
 				Array.from(document.querySelectorAll('.bucket'))
 					.forEach(function(_item) {
 						if(_item != item) {
@@ -241,6 +243,12 @@ window.addEventListener('load', function(event) {
 
 	document.querySelector('.actions button.action-color')
 		.addEventListener('click', function(event) {
+			Array.from(document.querySelectorAll('.modal ul.bucket-list li.bucket'))
+				.forEach(function(item) {
+					if(item.dataset.color === env.color) {
+						item.classList.add('focused');
+					}
+				});
 			open('color');
 		});
 
@@ -269,12 +277,12 @@ window.addEventListener('load', function(event) {
 
 	document.querySelector('.modal button.action-save')
 		.addEventListener('click', function(event) {
-			let file = document.querySelector('.modal input.action-file').value;
+			let file = document.querySelector('.modal input.action-file').value.replace(/\s+/g, '');
 			if(file.length >= 3 && file.length <= 40) {
 				let link = document.createElement('a');
 				link.style.display = 'none';
 				link.download = file;
-				link.href = canvas.toDataURL('image/png');
+				link.href = canvas.toDataURL('image/jpg');
 				document.body.appendChild(link);
 				link.click();
 				close();
@@ -298,17 +306,28 @@ window.addEventListener('load', function(event) {
 			close();
 		});
 
-	document.querySelector('.modal button.action-default')
-		.addEventListener('click', function(event) {
-			close();
-		});
-
-	document.querySelector('.modal button.action-color')
-		.addEventListener('click', function(event) {
-			close();
+	Array.from(document.querySelectorAll('.modal ul.bucket-list li.bucket'))
+		.forEach(function(item) {
+			item.addEventListener('click', function(event) {
+				Array.from(document.querySelectorAll('.modal ul.bucket-list li.bucket'))
+					.forEach(function(_item) {
+						if(_item != item) {
+							_item.classList.remove('focused');
+						}
+					});
+				item.classList.add('focused');
+				env.color = item.dataset.color;
+				Array.from(document.querySelectorAll('.bucket'))
+					.forEach(function(item) {
+						item.classList.remove('focused');
+					});
+				close();
+			});
 		});
 
 	resize();
+	g.fillStyle = 'white';
+	g.fillRect(0, 0, canvas.width, canvas.height);
 });
 
 function resize() {

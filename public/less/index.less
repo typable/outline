@@ -211,6 +211,7 @@ canvas.overlay {
 		 .align {
 			 width: calc(100% - 200px);
 			 margin-left: 200px;
+			 justify-content: flex-end;
 		 }
 	 }
 
@@ -239,7 +240,8 @@ canvas.overlay {
 			}
 
 			&.focused {
-				transform: scale(1.1);
+				transform: scale(1);
+				border: 3px solid #212121;
 			}
 
 			&::after {
@@ -252,7 +254,7 @@ canvas.overlay {
 
 .toolbar {
 	position: fixed;
-	left: calc(50% - 360px);
+	left: calc(50% - 252px);
 	bottom: 30px;
 	z-index: 2;
 	display: flex;

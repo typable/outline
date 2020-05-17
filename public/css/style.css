@@ -4345,6 +4345,7 @@ canvas.overlay {
 .modal.modal-color .align {
   width: calc(100% - 200px);
   margin-left: 200px;
+  justify-content: flex-end;
 }
 .modal ul.bucket-list {
   display: flex;
@@ -4369,7 +4370,8 @@ canvas.overlay {
   transform: scale(1);
 }
 .modal ul.bucket-list li.bucket.focused {
-  transform: scale(1.1);
+  transform: scale(1);
+  border: 3px solid #212121;
 }
 .modal ul.bucket-list li.bucket::after {
   position: absolute;
@@ -4377,7 +4379,7 @@ canvas.overlay {
 }
 .toolbar {
   position: fixed;
-  left: calc(50% - 360px);
+  left: calc(50% - 252px);
   bottom: 30px;
   z-index: 2;
   display: flex;
