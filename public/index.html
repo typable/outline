@@ -23,12 +23,77 @@
 				<button class="action action-background tooltip" data-title="Background">
 					<i class="ico">format_paint</i>
 				</button>
+				<button class="action action-scaling tooltip" data-title="Scaling">
+					<i class="ico">bubble_chart</i>
+				</button>
 				<button class="action action-clear tooltip" data-title="Clear">
 					<i class="ico">delete</i>
 				</button>
-				<button class="action action-screenshot tooltip" data-title="Screenshot">
-					<i class="ico">fullscreen</i>
+				<button class="action action-save tooltip" data-title="Save">
+					<i class="ico">save</i>
 				</button>
+			</div>
+		</div>
+		<div class="wrapper">
+			<div class="modal modal-join" style="display: none;">
+				<input type="text" class="action-uuid" maxlength="20" spellcheck="false" autocomplete="off" placeholder="Choose a custom name">
+				<div class="seperator"></div>
+				<ul class="avatar-list">
+					<li class="avatar"></li>
+					<li class="avatar"></li>
+					<li class="avatar"></li>
+					<li class="avatar"></li>
+					<li class="avatar"></li>
+					<li class="avatar"></li>
+					<li class="avatar"></li>
+					<li class="avatar"></li>
+				</ul>
+				<div class="seperator"></div>
+				<button type="button" class="action-join success">Join</button>
+			</div>
+			<div class="modal modal-save" style="display: none;">
+				<input type="text" class="action-file" maxlength="40" spellcheck="false" autocomplete="off" placeholder="Choose a file name">
+				<div class="seperator"></div>
+				<div class="align">
+					<button type="button" class="action-cancel">Cancel</button>
+					<button type="button" class="action-save info">Save</button>
+				</div>
+			</div>
+			<div class="modal modal-clear" style="display: none;">
+				<p>Do you want to clear the screen?</p>
+				<div class="align">
+					<button type="button" class="action-cancel">Cancel</button>
+					<button type="button" class="action-clear danger">Clear</button>
+				</div>
+			</div>
+			<div class="modal modal-background" style="display: none;">
+				<p>Do you want to change the background?</p>
+				<div class="align">
+					<button type="button" class="action-cancel">Cancel</button>
+					<button type="button" class="action-background info">Change</button>
+				</div>
+			</div>
+			<div class="modal modal-scaling" style="display: none;">
+				<div class="align">
+					<input type="range" min="1" max="15" value="3" step="0.5" class="action-range">
+					<div class="preview">
+						<div class="circle"></div>
+					</div>
+				</div>
+				<div class="seperator"></div>
+				<div class="align">
+					<button type="button" class="action-cancel">Cancel</button>
+					<button type="button" class="action-scaling info">Change</button>
+				</div>
+			</div>
+			<div class="modal modal-color" style="display: none;">
+				<ul class="bucket-list">
+				</ul>
+				<div class="seperator"></div>
+				<div class="align">
+					<button type="button" class="action-default">Reset default</button>
+					<button type="button" class="action-color info">Apply</button>
+				</div>
 			</div>
 		</div>
 	</body>

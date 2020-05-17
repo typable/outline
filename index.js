@@ -34,17 +34,21 @@ io.on('connection', function(socket) {
 		socket.broadcast.emit('cursor', data);
 	});
 	socket.on('disconnect', function() {
+		if(client[socket]) {
+			socket.broadcast.emit('cursor', {
+				quit: true,
+				uuid: client[socket].uuid
+			});
+		}
+		delete client[socket];
+	});
+});
+io.on('disconnect', function(socket) {
+	if(client[socket]) {
 		socket.broadcast.emit('cursor', {
 			quit: true,
 			uuid: client[socket].uuid
 		});
 		delete client[socket];
-	});
-});
-io.on('disconnect', function(socket) {
-	socket.broadcast.emit('cursor', {
-		quit: true,
-		uuid: client[socket].uuid
-	});
-	delete client[socket];
+	}
 });

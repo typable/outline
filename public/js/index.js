@@ -1,7 +1,7 @@
 let env = {
 	drag: false,
 	last: null,
-	color: 'black',
+	color: '#000000',
 	radius: 3,
 	bucket: [
 		{ name: 'Black', code: '#000000', active: true },
@@ -15,10 +15,39 @@ let env = {
 		{ name: 'Purple', code: '#800080' },
 		{ name: 'Bisque', code: '#FFE4C4' }
 	],
+	colorlist: [
+		{ name: 'Pink', code: '#FFC0CB' },
+		{ name: 'Violet', code: '#EE82EE' },
+		{ name: 'Magenta', code: '#FF00FF' },
+		{ name: 'Red', code: '#FF0000' },
+		{ name: 'Orange', code: '#D2691E' },
+		{ name: 'Gold', code: '#FFD700' },
+		{ name: 'Yellow', code: '#FFFF00' },
+		{ name: 'Lime', code: '#00FF00' },
+		{ name: 'Green', code: '#00FF00' },
+		{ name: 'Teal', code: '#008080' },
+		{ name: 'Cyan', code: '#00FFFF' },
+		{ name: 'Aquamarine', code: '#7FFFD4' },
+		{ name: 'Blue', code: '#0000FF' },
+		{ name: 'Navy', code: '#000080' },
+		{ name: 'Cornsilk', code: '#FFF8DC' },
+		{ name: 'Bisque', code: '#FFE4C4' },
+		{ name: 'Wheat', code: '#F5DEB3' },
+		{ name: 'Tan', code: '#D2B48C' },
+		{ name: 'Peru', code: '#CD853F' },
+		{ name: 'Olive', code: '#808000' },
+		{ name: 'Sinna', code: '#A0522D' },
+		{ name: 'Brown', code: '#A52A2A' },
+		{ name: 'Maroon', code: '#800000' },
+		{ name: 'Silver', code: '#C0C0C0' },
+		{ name: 'Black', code: '#000000' },
+		{ name: 'White', code: '#FFFFFF' }
+	],
 	socket: null,
 	cursor: { x: 0, y: 0 },
 	client: {},
-	uuid: window.location.search.substr(6)
+	uuid: null,
+	name: null
 };
 
 let canvas;
@@ -28,7 +57,7 @@ let o;
 
 window.addEventListener('load', function(event) {
 
-	console.log(env.uuid);
+	open('join');
 
 	canvas = document.querySelector('.canvas');
 	canvas.draggable = true;
@@ -39,8 +68,14 @@ window.addEventListener('load', function(event) {
 
 	env.bucket.forEach(function(item) {
 		let template = document.createElement('template');
-		template.innerHTML = `<div class="bucket tooltip up${item.active ? ' focused' : ''}" data-title="${item.name}" style="background: ${item.code}"></div>`;
+		template.innerHTML = `<div class="bucket tooltip up${item.active ? ' focused' : ''}" data-title="${item.name}" data-color="${item.code}" style="background: ${item.code}"></div>`;
 		document.querySelector('.toolbar').append(template.content.cloneNode(true));
+	});
+
+	env.colorlist.forEach(function(item) {
+		let template = document.createElement('template');
+		template.innerHTML = `<li class="bucket tooltip" data-title="${item.name}" data-color="${item.code}" style="background: ${item.code}"></li>`;
+		document.querySelector('.modal.modal-color ul.bucket-list').append(template.content.cloneNode(true));
 	});
 
 	canvas.addEventListener('dragstart', function(event) {
@@ -57,49 +92,102 @@ window.addEventListener('load', function(event) {
 			env.last = pos;
 		}
 	});
+	canvas.addEventListener('touchmove', function(event) {
+		if(env.drag) {
+			let pos = { x: event.layerX, y: event.layerY };
+			send({ pos: pos, last: env.last });
+			draw(pos, env.last, env.radius, env.color);
+			env.last = pos;
+		}
+	});
 	canvas.addEventListener('mousedown', function(event) {
 		env.drag = true;
 		let pos = { x: event.layerX, y: event.layerY };
 		send({ pos: pos, last: env.last });
 		draw(pos, env.last, env.radius, env.color);
 		env.last = pos;
+		document.querySelector('.toolbar').style.pointerEvents = 'none';
+		sendCursor();
+		update();
+	});
+	canvas.addEventListener('touchstart', function(event) {
+		env.drag = true;
+		let pos = { x: event.layerX, y: event.layerY };
+		send({ pos: pos, last: env.last });
+		draw(pos, env.last, env.radius, env.color);
+		env.last = pos;
+		document.querySelector('.toolbar').style.pointerEvents = 'none';
+		sendCursor();
+		update();
+	});
+
+	document.querySelector('.action-join').addEventListener('click', function(event) {
+		env.name = document.querySelector('.action-uuid').value;
+		if(env.name.length >= 3 && env.name.length <= 20) {
+			env.uuid = env.name + '-' + uuidv4();
+			close();
+			connect();
+			sendCursor();
+		}
 	});
 
 	document.addEventListener('mouseup', function(event) {
 		env.drag = false;
 		env.last = null;
+		document.querySelector('.toolbar').style.pointerEvents = '';
+	});
+	document.addEventListener('touchend', function(event) {
+		document.querySelector('.toolbar').style.pointerEvents = '';
+		env.drag = false;
+		env.last = null;
 	});
 	document.addEventListener('wheel', function(event) {
-		if(event.deltaY < 0) {
-			env.radius += env.radius < 30 ? 0.5 : 0;
+		if(document.querySelector('.wrapper').style.display === 'none') {
+			if(event.deltaY < 0) {
+				env.radius += env.radius < 15 ? 1 : 0;
+			}
+			else {
+				env.radius -= env.radius > 1 ? 1 : 0;
+			}
+			sendCursor();
+			update();
 		}
-		else {
-			env.radius -= env.radius > 0.5 ? 0.5 : 0;
-		}
-		sendCursor();
-		update();
 	});
 	document.addEventListener('keydown', function(event) {
-		if(event.keyCode >= 48 && event.keyCode <= 57) {
-			let index = event.keyCode - 49;
-			if(index == -1) {
-				index = 9;
+		if(document.querySelector('.wrapper').style.display === 'none') {
+			if(event.keyCode >= 48 && event.keyCode <= 57) {
+				let index = event.keyCode - 49;
+				if(index == -1) {
+					index = 9;
+				}
+				Array.from(document.querySelectorAll('.bucket'))
+					.forEach(function(item, i) {
+						if(index == i) {
+							env.color = item.dataset.color;
+							item.classList.add('focused');
+						}
+						else {
+							item.classList.remove('focused');
+						}
+					});
 			}
-			Array.from(document.querySelectorAll('.bucket'))
-				.forEach(function(item, i) {
-					if(index == i) {
-						env.color = item.style.background;
-						item.classList.add('focused');
-					}
-					else {
-						item.classList.remove('focused');
-					}
-				});
+			sendCursor();
+			update();
 		}
+		else {
+			if(document.querySelector('.modal.modal-join').style.display === 'none') {
+				if(event.keyCode == 27) {
+					close();
+				}
+			}
+		}
+	});
+	document.addEventListener('mousemove', function(event) {
+		env.cursor = event.target === canvas ? { x: event.layerX, y: event.layerY } : null;
 		sendCursor();
 		update();
 	});
-	document.addEventListener('mousemove', function(event) {
+	document.addEventListener('touchmove', function(event) {
 		env.cursor = event.target === canvas ? { x: event.layerX, y: event.layerY } : null;
 		sendCursor();
 		update();
@@ -114,8 +202,8 @@ window.addEventListener('load', function(event) {
 
 	Array.from(document.querySelectorAll('div.bucket'))
 		.forEach(function(item) {
-			item.addEventListener('click', function(event) {
-				env.color = item.style.background;
+			item.addEventListener('mousedown', function(event) {
+				env.color = item.dataset.color;
 				Array.from(document.querySelectorAll('.bucket'))
 					.forEach(function(_item) {
 						if(_item != item) {
@@ -126,30 +214,112 @@ window.addEventListener('load', function(event) {
 			});
 		});
 
-	document.querySelector('button.action-clear')
+	document.querySelector('.actions button.action-clear')
+		.addEventListener('click', function(event) {
+			open('clear');
+		});
+
+	document.querySelector('.actions button.action-background')
+		.addEventListener('click', function(event) {
+			open('background');
+		});
+
+	document.querySelector('.actions button.action-save')
+		.addEventListener('click', function(event) {
+			document.querySelector('input.action-file').value = `outline-image-${uuidv4()}`;
+			open('save');
+		});
+
+	document.querySelector('.actions button.action-scaling')
+		.addEventListener('click', function(event) {
+			document.querySelector('.modal input.action-range').value = env.radius;
+			let circle = document.querySelector('.modal .circle');
+			circle.style.width = env.radius * 4 + 'px';
+			circle.style.height = env.radius * 4 + 'px';
+			open('scaling');
+		});
+
+	document.querySelector('.actions button.action-color')
+		.addEventListener('click', function(event) {
+			open('color');
+		});
+
+	Array.from(document.querySelectorAll('button.action-cancel'))
+		.forEach(function(item) {
+			item.addEventListener('click', function(event) {
+				close();
+			});
+		});
+
+	document.querySelector('.modal button.action-clear')
 		.addEventListener('click', function(event) {
 			env.socket.emit('clear');
 			g.clearRect(0, 0, window.innerWidth, window.innerHeight);
+			close();
 		});
 
-	document.querySelector('button.action-background')
+	document.querySelector('.modal button.action-background')
 		.addEventListener('click', function(event) {
 			env.socket.emit('background', env.color);
 			g.fillStyle = env.color;
 			g.fillRect(0, 0, window.innerWidth, window.innerHeight);
 			g.fillStyle = 'black';
+			close();
+		});
+
+	document.querySelector('.modal button.action-save')
+		.addEventListener('click', function(event) {
+			let file = document.querySelector('.modal input.action-file').value;
+			if(file.length >= 3 && file.length <= 40) {
+				let link = document.createElement('a');
+				link.style.display = 'none';
+				link.download = file;
+				link.href = canvas.toDataURL('image/png');
+				document.body.appendChild(link);
+				link.click();
+				close();
+			}
+		});
+
+	document.querySelector('.modal input.action-range')
+		.addEventListener('input', function(event) {
+			setTimeout(function() {
+				let circle = document.querySelector('.modal .circle');
+				circle.style.width = event.target.value * 4 + 'px';
+				circle.style.height = event.target.value * 4 + 'px';
+			}, 10);
+		});
+
+	document.querySelector('.modal button.action-scaling')
+		.addEventListener('click', function(event) {
+			env.radius = parseInt(document.querySelector('.modal input.action-range').value);
+			sendCursor();
+			update();
+			close();
+		});
+
+	document.querySelector('.modal button.action-default')
+		.addEventListener('click', function(event) {
+			close();
+		});
+
+	document.querySelector('.modal button.action-color')
+		.addEventListener('click', function(event) {
+			close();
 		});
 
 	resize();
-	connect();
-	sendCursor();
 });
 
 function resize() {
+	let ctemp = g.getImageData(0, 0, canvas.width, canvas.height);
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	g.putImageData(ctemp, 0, 0);
+	let otemp = o.getImageData(0, 0, overlay.width, overlay.height);
 	overlay.width = window.innerWidth;
 	overlay.height = window.innerHeight;
+	o.putImageData(otemp, 0, 0);
 }
 
 function connect() {
@@ -173,6 +343,17 @@ function connect() {
 		}
 		else {
 			env.client[data.uuid] = data;
+			setTimeout(function() {
+				if(env.client[data.uuid]) {
+					let last = env.client[data.uuid];
+					if(last.cursor && data.cursor) {
+						if(last.cursor.x === data.cursor.x && last.cursor.y === data.cursor.y) {
+							delete env.client[data.uuid];
+							update();
+						}
+					}
+				}
+			}, 10 * 1000);
 		}
 		update();
 	});
@@ -222,7 +403,7 @@ function sendCursor() {
 			cursor: env.cursor,
 			color: env.color,
 			radius: env.radius,
-			uuid: env.uuid
+			name: env.name
 		});
 	}
 }
@@ -234,6 +415,7 @@ function update() {
 		o.lineWidth = 4;
 		o.beginPath();
 		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
+		o.strokeStyle = dark(env.color) ? 'black' : 'white';
 		o.stroke();
 		o.beginPath();
 		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
@@ -246,27 +428,59 @@ function update() {
 			o.lineWidth = 4;
 			o.beginPath();
 			o.arc(client.cursor.x, client.cursor.y, 2 * client.radius, 0, 2 * Math.PI);
+			o.strokeStyle = dark(client.color) ? 'black' : 'white';
 			o.stroke();
 			o.beginPath();
 			o.arc(client.cursor.x, client.cursor.y, 2 * client.radius, 0, 2 * Math.PI);
 			o.fill();
-			o.fillStyle = 'black';
+			o.fillStyle = '#212121';
 			o.font = '14px Roboto';
 			o.textBaseline = 'top';
 			o.textAlign = 'left';
-			let text = o.measureText(client.uuid);
-			o.fillRect(client.cursor.x, client.cursor.y, text.width + 12, 24);
+			let text = o.measureText(client.name);
+			roundRect(o, client.cursor.x, client.cursor.y, text.width + 12, 22, 4);
 			o.fillStyle = 'white';
-			o.fillText(client.uuid, client.cursor.x + 6, client.cursor.y + 5);
+			o.fillText(client.name, client.cursor.x + 6, client.cursor.y + 5);
 		}
 	}
 }
 
 function dark(color) {
-	let rgb = parseInt(color.substring(1));
-	let r = (rgb >> 16) & 0xff;
-	let g = (rgb >> 8) & 0xff;
-	let b = (rgb >> 9) & 0xff;
-	let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-	return luma < 40;
+	color = color.substr(1);
+	let r = parseInt(color.substr(0, 2), 16);
+	let g = parseInt(color.substr(2, 4), 16);
+	let b = parseInt(color.substr(4, 6), 16);
+	return ((r * 0.299) + (g * 0.587) + (b * 0.114)) > 50;
+}
+
+function open(modal) {
+	document.querySelector('.wrapper').style.display = '';
+	document.querySelector(`.modal.modal-${modal}`).style.display = '';
+}
+
+function close() {
+	document.querySelector('.wrapper').style.display = 'none';
+	Array.from(document.querySelectorAll('.modal'))
+		.forEach(function(item) {
+			item.style.display = 'none';
+		});
+}
+
+function uuidv4() {
+	return 'xxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
+
+function roundRect(g, x, y, w, h, r) {
+	if(w < 2 * r) r = w / 2;
+	if(h < 2 * r) r = h / 2;
+	g.beginPath();
+	g.moveTo(x + r, y);
+	g.arcTo(x + w, y, x + w, y + h, r);
+	g.arcTo(x + w, y + h, x, y + h, r);
+	g.arcTo(x, y + h, x, y, r);
+	g.arcTo(x, y, x + w, y, r);
+	g.fill();
 }
