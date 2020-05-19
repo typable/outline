@@ -205,7 +205,6 @@ window.addEventListener('load', function(event) {
 		.forEach(function(item) {
 			item.addEventListener('mousedown', function(event) {
 				env.color = item.dataset.color;
-				env.temp = null;
 				Array.from(document.querySelectorAll('.bucket'))
 					.forEach(function(_item) {
 						if(_item != item) {
