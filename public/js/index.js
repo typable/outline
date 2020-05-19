@@ -389,6 +389,14 @@ function send({ pos, last }) {
 }
 
 function draw(pos, last, radius, color) {
+	if(radius < 1) {
+		radius = 1;
+		env.radius = radius;
+	}
+	if(radius > 15) {
+		radius = 15;
+		env.radius = radius;
+	}
 	if(last) {
 		let diff = {
 			x: last.x - pos.x,
@@ -427,6 +435,12 @@ function sendCursor() {
 }
 
 function update() {
+	if(env.radius < 1) {
+		env.radius = 1;
+	}
+	if(env.radius > 15) {
+		env.radius = 15;
+	}
 	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
 	if(env.cursor) {
 		o.fillStyle = env.color;
