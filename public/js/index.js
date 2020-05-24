@@ -332,13 +332,6 @@ window.addEventListener('load', function(event) {
 	resize();
 	g.fillStyle = 'white';
 	g.fillRect(0, 0, canvas.width, canvas.height);
-
-	// temp
-	env.name = 'typable';
-	env.uuid = env.name + '-' + uuidv4();
-	close();
-	connect();
-	sendCursor();
 });
 
 function resize() {
