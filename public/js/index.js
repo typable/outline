@@ -55,6 +55,7 @@ let canvas;
 let overlay
 let g;
 let o;
+let delay;
 
 window.addEventListener('load', function(event) {
 
@@ -95,10 +96,11 @@ window.addEventListener('load', function(event) {
 	});
 	canvas.addEventListener('touchmove', function(event) {
 		if(env.drag) {
-			let pos = { x: event.layerX, y: event.layerY };
+			let pos = { x: event.touches[0].pageX, y: event.touches[0].pageY };
 			send({ pos: pos, last: env.last });
 			draw(pos, env.last, env.radius, env.color);
 			env.last = pos;
+			event.preventDefault();
 		}
 	});
 	canvas.addEventListener('mousedown', function(event) {
@@ -199,7 +201,10 @@ window.addEventListener('load', function(event) {
 		update();
 	});
 
-	window.addEventListener('resize', resize);
+	window.addEventListener('resize', function(event) {
+		clearTimeout(delay);
+  		delay = setTimeout(resize, 100);
+	});
 
 	Array.from(document.querySelectorAll('div.bucket'))
 		.forEach(function(item) {
@@ -327,22 +332,50 @@ window.addEventListener('load', function(event) {
 	resize();
 	g.fillStyle = 'white';
 	g.fillRect(0, 0, canvas.width, canvas.height);
+
+	// temp
+	env.name = 'typable';
+	env.uuid = env.name + '-' + uuidv4();
+	close();
+	connect();
+	sendCursor();
 });
 
 function resize() {
-	let ctemp = g.getImageData(0, 0, canvas.width, canvas.height);
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	g.putImageData(ctemp, 0, 0);
-	let otemp = o.getImageData(0, 0, overlay.width, overlay.height);
+	let temp = o.getImageData(0, 0, overlay.width, overlay.height);
 	overlay.width = window.innerWidth;
 	overlay.height = window.innerHeight;
-	o.putImageData(otemp, 0, 0);
+	o.putImageData(temp, 0, 0);
+	if(env.socket) {
+		env.socket.emit('request', {
+			x: 0,
+			y: 0,
+			width: canvas.width,
+			height: canvas.height
+		});
+	}
 }
 
 function connect() {
 	env.socket = io('http://' + window.location.host, {
 		path: '/pipe'
+	});
+	env.socket.emit('request', {
+		x: 0,
+		y: 0,
+		width: canvas.width,
+		height: canvas.height
+	});
+	env.socket.on('load', function(data) {
+		let buffer = new Uint8Array(data);
+		let image = g.getImageData(0, 0, canvas.width, canvas.height);
+		let array = image.data;
+		for(let i = 0; i < buffer.length; i++) {
+			array[i] = buffer[i];
+		}
+		g.putImageData(image, 0, 0);
 	});
 	env.socket.on('data', function(data) {
 		draw(data.pos, data.last, data.radius, data.color);
