@@ -1,3 +1,6 @@
+import util from './mod/util.js';
+import modal from './mod/modal.js';
+
 let env = {
 	drag: false,
 	last: null,
@@ -59,14 +62,30 @@ let delay;
 
 window.addEventListener('load', function(event) {
 
-	open('join');
-
 	canvas = document.querySelector('.canvas');
 	canvas.draggable = true;
 	overlay = document.querySelector('.overlay');
 
 	g = canvas.getContext('2d');
 	o = overlay.getContext('2d');
+
+	paint.init(g);
+	modal.init();
+
+	modal.open('join');
+	modal.get('join').action.uuid.element.focus();
+
+	document.querySelector('.action-uuid').addEventListener('keydown', function(event) {
+		if(event.keyCode === 13) {
+			env.name = document.querySelector('.action-uuid').value.replace(/\s+/g, '');
+			if(env.name.length >= 3 && env.name.length <= 20) {
+				env.uuid = env.name + '-' + util.uuid();
+				modal.close();
+				connect();
+				sendCursor();
+			}
+		}
+	});
 
 	env.bucket.forEach(function(item) {
 		let template = document.createElement('template');
@@ -90,7 +109,7 @@ window.addEventListener('load', function(event) {
 		if(env.drag) {
 			let pos = { x: event.layerX, y: event.layerY };
 			send({ pos: pos, last: env.last });
-			draw(pos, env.last, env.radius, env.color);
+			paint.draw(Object.assign({ pos: pos }, env));
 			env.last = pos;
 		}
 	});
@@ -98,7 +117,7 @@ window.addEventListener('load', function(event) {
 		if(env.drag) {
 			let pos = { x: event.touches[0].pageX, y: event.touches[0].pageY };
 			send({ pos: pos, last: env.last });
-			draw(pos, env.last, env.radius, env.color);
+			paint.draw(Object.assign({ pos: pos }, env));
 			env.last = pos;
 			event.preventDefault();
 		}
@@ -107,7 +126,7 @@ window.addEventListener('load', function(event) {
 		env.drag = true;
 		let pos = { x: event.layerX, y: event.layerY };
 		send({ pos: pos, last: env.last });
-		draw(pos, env.last, env.radius, env.color);
+		paint.draw(Object.assign({ pos: pos }, env));
 		env.last = pos;
 		document.querySelector('.toolbar').style.pointerEvents = 'none';
 		sendCursor();
@@ -117,7 +136,7 @@ window.addEventListener('load', function(event) {
 		env.drag = true;
 		let pos = { x: event.layerX, y: event.layerY };
 		send({ pos: pos, last: env.last });
-		draw(pos, env.last, env.radius, env.color);
+		paint.draw(Object.assign({ pos: pos }, env));
 		env.last = pos;
 		document.querySelector('.toolbar').style.pointerEvents = 'none';
 		sendCursor();
@@ -127,8 +146,8 @@ window.addEventListener('load', function(event) {
 	document.querySelector('.action-join').addEventListener('click', function(event) {
 		env.name = document.querySelector('.action-uuid').value.replace(/\s+/g, '');
 		if(env.name.length >= 3 && env.name.length <= 20) {
-			env.uuid = env.name + '-' + uuidv4();
-			close();
+			env.uuid = env.name + '-' + util.uuid();
+			modal.close();
 			connect();
 			sendCursor();
 		}
@@ -157,7 +176,7 @@ window.addEventListener('load', function(event) {
 		}
 	});
 	document.addEventListener('keydown', function(event) {
-		if(document.querySelector('.wrapper').style.display === 'none') {
+		if(!modal.opened) {
 			if(event.keyCode >= 48 && event.keyCode <= 55) {
 				let index = event.keyCode - 49;
 				if(index == -1) {
@@ -176,13 +195,6 @@ window.addEventListener('load', function(event) {
 			}
 			sendCursor();
 			update();
-		}
-		else {
-			if(document.querySelector('.modal.modal-join').style.display === 'none') {
-				if(event.keyCode == 27) {
-					close();
-				}
-			}
 		}
 	});
 	document.addEventListener('mousemove', function(event) {
@@ -222,18 +234,18 @@ window.addEventListener('load', function(event) {
 
 	document.querySelector('.actions button.action-clear')
 		.addEventListener('click', function(event) {
-			open('clear');
+			modal.open('clear');
 		});
 
 	document.querySelector('.actions button.action-background')
 		.addEventListener('click', function(event) {
-			open('background');
+			modal.open('background');
 		});
 
 	document.querySelector('.actions button.action-save')
 		.addEventListener('click', function(event) {
-			document.querySelector('input.action-file').value = `outline-image-${uuidv4()}`;
-			open('save');
+			document.querySelector('input.action-file').value = `outline-image-${util.uuid()}`;
+			modal.open('save');
 		});
 
 	document.querySelector('.actions button.action-scaling')
@@ -242,7 +254,7 @@ window.addEventListener('load', function(event) {
 			let circle = document.querySelector('.modal .circle');
 			circle.style.width = env.radius * 4 + 'px';
 			circle.style.height = env.radius * 4 + 'px';
-			open('scaling');
+			modal.open('scaling');
 		});
 
 	document.querySelector('.actions button.action-color')
@@ -253,21 +265,14 @@ window.addEventListener('load', function(event) {
 						item.classList.add('focused');
 					}
 				});
-			open('color');
-		});
-
-	Array.from(document.querySelectorAll('button.action-cancel'))
-		.forEach(function(item) {
-			item.addEventListener('click', function(event) {
-				close();
-			});
+			modal.open('color');
 		});
 
 	document.querySelector('.modal button.action-clear')
 		.addEventListener('click', function(event) {
 			env.socket.emit('clear');
 			g.clearRect(0, 0, window.innerWidth, window.innerHeight);
-			close();
+			modal.close();
 		});
 
 	document.querySelector('.modal button.action-background')
@@ -276,7 +281,7 @@ window.addEventListener('load', function(event) {
 			g.fillStyle = env.color;
 			g.fillRect(0, 0, window.innerWidth, window.innerHeight);
 			g.fillStyle = 'black';
-			close();
+			modal.close();
 		});
 
 	document.querySelector('.modal button.action-save')
@@ -289,7 +294,7 @@ window.addEventListener('load', function(event) {
 				link.href = canvas.toDataURL('image/jpg');
 				document.body.appendChild(link);
 				link.click();
-				close();
+				modal.close();
 			}
 		});
 
@@ -307,7 +312,7 @@ window.addEventListener('load', function(event) {
 			env.radius = parseInt(document.querySelector('.modal input.action-range').value);
 			sendCursor();
 			update();
-			close();
+			modal.close();
 		});
 
 	Array.from(document.querySelectorAll('.modal ul.bucket-list li.bucket'))
@@ -325,7 +330,7 @@ window.addEventListener('load', function(event) {
 					.forEach(function(item) {
 						item.classList.remove('focused');
 					});
-				close();
+				modal.close();
 			});
 		});
 
@@ -371,7 +376,7 @@ function connect() {
 		g.putImageData(image, 0, 0);
 	});
 	env.socket.on('data', function(data) {
-		draw(data.pos, data.last, data.radius, data.color);
+		paint.draw(data.pos, data.last, data.radius, data.color);
 	});
 	env.socket.on('clear', function(data) {
 		g.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -414,41 +419,6 @@ function send({ pos, last }) {
 	}
 }
 
-function draw(pos, last, radius, color) {
-	if(radius < 1) {
-		radius = 1;
-		env.radius = radius;
-	}
-	if(radius > 15) {
-		radius = 15;
-		env.radius = radius;
-	}
-	if(last) {
-		let diff = {
-			x: last.x - pos.x,
-			y: last.y - pos.y
-		};
-		let dist = Math.sqrt(Math.pow(diff.x, 2) + Math.pow(diff.y, 2), 2);
-		let length = dist / (radius / 2);
-		for(let i = 0; i < length; i++) {
-			let x = pos.x + (diff.x / length * i);
-			let y = pos.y + (diff.y / length * i);
-			g.fillStyle = color;
-			g.beginPath();
-			g.arc(x, y, 2 * radius, 0, 2 * Math.PI);
-			g.fill();
-			g.fillStyle = 'black';
-		}
-	}
-	else {
-		g.fillStyle = color;
-		g.beginPath();
-		g.arc(pos.x, pos.y, 2 * radius, 0, 2 * Math.PI);
-		g.fill();
-		g.fillStyle = 'black';
-	}
-}
-
 function sendCursor() {
 	if(env.socket) {
 		env.socket.emit('cursor', {
@@ -473,7 +443,7 @@ function update() {
 		o.lineWidth = 4;
 		o.beginPath();
 		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
-		o.strokeStyle = dark(env.color) ? 'black' : 'white';
+		o.strokeStyle = util.luma(env.color) ? 'black' : 'white';
 		o.stroke();
 		o.beginPath();
 		o.arc(env.cursor.x, env.cursor.y, 2 * env.radius, 0, 2 * Math.PI);
@@ -486,7 +456,7 @@ function update() {
 			o.lineWidth = 4;
 			o.beginPath();
 			o.arc(client.cursor.x, client.cursor.y, 2 * client.radius, 0, 2 * Math.PI);
-			o.strokeStyle = dark(client.color) ? 'black' : 'white';
+			o.strokeStyle = util.luma(client.color) ? 'black' : 'white';
 			o.stroke();
 			o.beginPath();
 			o.arc(client.cursor.x, client.cursor.y, 2 * client.radius, 0, 2 * Math.PI);
@@ -496,49 +466,10 @@ function update() {
 			o.textBaseline = 'top';
 			o.textAlign = 'left';
 			let text = o.measureText(client.name);
-			roundRect(o, client.cursor.x, client.cursor.y, text.width + 12, 22, 4);
+			paint.roundRect(client.cursor.x, client.cursor.y, text.width + 12, 22, 4);
+			o.fill();
 			o.fillStyle = 'white';
 			o.fillText(client.name, client.cursor.x + 6, client.cursor.y + 5);
 		}
 	}
-}
-
-function dark(color) {
-	color = color.substr(1);
-	let r = parseInt(color.substr(0, 2), 16);
-	let g = parseInt(color.substr(2, 4), 16);
-	let b = parseInt(color.substr(4, 6), 16);
-	return ((r * 0.299) + (g * 0.587) + (b * 0.114)) > 50;
-}
-
-function open(modal) {
-	document.querySelector('.wrapper').style.display = '';
-	document.querySelector(`.modal.modal-${modal}`).style.display = '';
-}
-
-function close() {
-	document.querySelector('.wrapper').style.display = 'none';
-	Array.from(document.querySelectorAll('.modal'))
-		.forEach(function(item) {
-			item.style.display = 'none';
-		});
-}
-
-function uuidv4() {
-	return 'xxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-		let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-		return v.toString(16);
-	});
-}
-
-function roundRect(g, x, y, w, h, r) {
-	if(w < 2 * r) r = w / 2;
-	if(h < 2 * r) r = h / 2;
-	g.beginPath();
-	g.moveTo(x + r, y);
-	g.arcTo(x + w, y, x + w, y + h, r);
-	g.arcTo(x + w, y + h, x, y + h, r);
-	g.arcTo(x, y + h, x, y, r);
-	g.arcTo(x, y, x + w, y, r);
-	g.fill();
 }
