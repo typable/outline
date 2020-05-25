@@ -1,14 +1,21 @@
 {
-  "name": "Outline",
-  "version": "1.0.0",
-  "description": "Draw with friends together",
-  "main": "index.js",
-  "scripts": {
-  },
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^2.3.0"
-  }
+	"name": "Outline",
+	"version": "1.0.0",
+	"description": "Draw with friends together",
+	"main": "index.js",
+	"scripts": {
+		"build": "npm i",
+		"start": "node index"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/typable/Outline.git"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"canvas": "^2.6.1",
+		"express": "^4.17.1",
+		"socket.io": "^2.3.0"
+	}
 }
