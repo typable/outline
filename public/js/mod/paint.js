@@ -8,8 +8,9 @@ function use(name, obj) {
 }
 
 use('paint', {
-	init: function(g) {
+	init: function(g, o) {
 		this.g = g;
+		this.o = o;
 	},
 	draw: function(args) {
 		let { pos, last, radius, color } = args || {};
@@ -47,11 +48,11 @@ use('paint', {
 	roundRect: function(x, y, w, h, r) {
 		if(w < 2 * r) r = w / 2;
 		if(h < 2 * r) r = h / 2;
-		g.beginPath();
-		g.moveTo(x + r, y);
-		g.arcTo(x + w, y, x + w, y + h, r);
-		g.arcTo(x + w, y + h, x, y + h, r);
-		g.arcTo(x, y + h, x, y, r);
-		g.arcTo(x, y, x + w, y, r);
+		this.o.beginPath();
+		this.o.moveTo(x + r, y);
+		this.o.arcTo(x + w, y, x + w, y + h, r);
+		this.o.arcTo(x + w, y + h, x, y + h, r);
+		this.o.arcTo(x, y + h, x, y, r);
+		this.o.arcTo(x, y, x + w, y, r);
 	}
 });

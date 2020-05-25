@@ -1,13 +1,45 @@
+const fs = require('fs');
 const express = require('express');
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const http = require('http');
+const https = require('https');
+const io = require('socket.io');
+
+let env = {
+	port: 443,
+	path: '/etc/letsencrypt/live/',
+	domain: 'prototype-studio.de',
+	ssl: true
+};
+
+if(fs.existsSync(env.path)) {
+	env.credentials = {
+		key: fs.readFileSync(env.path + env.domain + '/privkey.pem', 'utf8'),
+		cert: fs.readFileSync(env.path + env.domain + '/cert.pem', 'utf8'),
+		ca: fs.readFileSync(env.path + env.domain + '/chain.pem', 'utf8')
+	};
+}
+else {
+	env.ssl = false;
+	env.port = 80;
+}
+
+const proxy = env.ssl ? https.createServer(env.credentials, app) : http.createServer(app);
+const server = io(https);
+
+app.use(express.static(__dirname + '/public'));
+
+proxy.listen(env.port, function() {
+	console.log('Server started on port:', env.port);
+});
+
+server.path('/pipe');
+server.listen(proxy);
+
 const { createCanvas } = require('canvas');
 const paint = require('./public/js/mod/paint');
 
-let port = 80;
 let client = {};
-
 let width = 1920;
 let height = 1080;
 let canvas = createCanvas(width, height);
@@ -15,18 +47,9 @@ let g = canvas.getContext('2d');
 g.fillStyle = 'white';
 g.fillRect(0, 0, width, height);
 
-app.use(express.static(__dirname + '/public'));
-
-const proxy = http.listen(port, function() {
-	console.log('Server started on port: ' + port);
-});
-
 paint.init(g);
 
-io.path('/pipe');
-io.listen(proxy);
-
-io.on('connection', function(socket) {
+server.on('connection', function(socket) {
 	client[socket] = {};
 	socket.on('request', function(data) {
 		let { x, y, width, height } = data;
@@ -64,7 +87,7 @@ io.on('connection', function(socket) {
 		delete client[socket];
 	});
 });
-io.on('disconnect', function(socket) {
+server.on('disconnect', function(socket) {
 	if(client[socket]) {
 		socket.broadcast.emit('cursor', {
 			quit: true,

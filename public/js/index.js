@@ -69,7 +69,7 @@ window.addEventListener('load', function(event) {
 	g = canvas.getContext('2d');
 	o = overlay.getContext('2d');
 
-	paint.init(g);
+	paint.init(g, o);
 	modal.init();
 
 	modal.open('join');
@@ -176,7 +176,7 @@ window.addEventListener('load', function(event) {
 		}
 	});
 	document.addEventListener('keydown', function(event) {
-		if(!modal.opened) {
+		if(!modal.opened && !event.getModifierState("CapsLock")) {
 			if(event.keyCode >= 48 && event.keyCode <= 55) {
 				let index = event.keyCode - 49;
 				if(index == -1) {
@@ -357,7 +357,7 @@ function resize() {
 }
 
 function connect() {
-	env.socket = io('http://' + window.location.host, {
+	env.socket = io('https://' + window.location.host, {
 		path: '/pipe'
 	});
 	env.socket.emit('request', {
@@ -376,7 +376,7 @@ function connect() {
 		g.putImageData(image, 0, 0);
 	});
 	env.socket.on('data', function(data) {
-		paint.draw(data.pos, data.last, data.radius, data.color);
+		paint.draw(data);
 	});
 	env.socket.on('clear', function(data) {
 		g.clearRect(0, 0, window.innerWidth, window.innerHeight);
