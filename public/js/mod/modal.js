@@ -1,66 +1,62 @@
 export default {
-	opened: false,
-	current: undefined,
-	init: function() {
+	init: function(app) {
+		this.app = app;
 		let that = this;
-		this.wrapper = document.querySelector('.wrapper');
-		this.modal = {};
-		Array.from(document.querySelectorAll('.modal')).forEach(function(item) {
-			let modal = { element: item, action: {} };
+		for(let item of this.app.node.modal) {
 			let name = item.dataset.modal;
+			let modal = { element: item, action: {} };
 			let cancel = item.querySelector('button.action-cancel');
 			if(cancel) {
 				modal.action.cancel = { element: cancel };
 				cancel.addEventListener('click', function(event) {
 					that.close();
-					// that.trigger(modal.action.cancel);
-				});
-				document.addEventListener('keydown', function(event) {
-					if(that.opened && typeof that.current.action.cancel !== 'undefined') {
-						if(event.keyCode == 27) {
-							that.close();
-						}
-					}
 				});
 			}
-			Array.from(item.querySelectorAll('[class*="action-"]')).forEach(function(item) {
+			this.app.state.modal[name] = modal;
+			for(let item of modal.element.querySelectorAll('[class*="action-"]')) {
 				let name = item.classList[0].substr(7);
 				if(name !== 'cancel') {
 					modal.action[name] = { element: item };
 				}
-			});
-			that.modal[name] = modal;
-		});
+			}
+		}
+		this.app.state.current = this.app.state.modal.join;
+		for(let item of this.app.node.action) {
+			let name = item.dataset.action;
+			if(this.app.state.modal[name]) {
+				let modal = this.app.state.modal[name];
+				modal.action.open = {};
+				item.addEventListener('click', function(event) {
+					if(typeof modal.action.open.before === 'function') {
+						modal.action.open.before(modal);
+					}
+					that.open(name);
+					if(typeof modal.action.open.after === 'function') {
+						modal.action.open.after(modal);
+					}
+				});
+			}
+		}
 	},
 	open: function(name) {
-		if(this.modal[name]) {
-			this.modal[name].element.style.display = '';
-			this.wrapper.style.display = '';
-			this.opened = true;
-			this.current = this.modal[name];
+		if(this.app.state.modal[name]) {
+			this.app.state.modal[name].element.classList.remove('hidden');
+			this.app.node.wrapper.classList.remove('hidden');
+			this.app.state.opened = true;
+			this.app.state.current = this.app.state.modal[name];
 		}
 	},
 	close: function() {
-		this.wrapper.style.display = 'none';
-		Object.entries(this.modal).forEach(function([ key, value ]) {
-			value.element.style.display = 'none';
-		});
-		this.opened = false;
-		this.current = undefined;
+		this.app.node.wrapper.classList.add('hidden');
+		for(let item of Object.values(this.app.state.modal)) {
+			item.element.classList.add('hidden');
+		}
+		this.app.state.opened = false;
+		this.app.state.current = undefined;
 	},
 	get: function(name) {
-		if(this.modal[name]) {
-			return this.modal[name];
+		if(this.app.state.modal[name]) {
+			return this.app.state.modal[name];
 		}
 	}
-	/*
-	bind: function(action, callback) {
-		action.callback = callback;
-	},
-	trigger: function(action) {
-		if(typeof action.callback === 'function') {
-			action.callback(this);
-		}
-	}
-	*/
 };

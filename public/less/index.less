@@ -40,6 +40,57 @@ canvas.overlay {
 	padding: 20px;
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.03);
 
+	&.theme-dark {
+		background: @color-dark;
+		color: white;
+
+		button.action-cancel {
+			background: @color-dark-grey;
+			color: white;
+
+			&:hover {
+				background: lighten(@color-dark-grey, -2%);
+			}
+		}
+
+		input[type="text"] {
+			background: @color-black;
+			color: white;
+
+			&:hover {
+				background: lighten(@color-black, -2%);
+			}
+
+			&:focus {
+				background: lighten(@color-black, -2%);
+			}
+		}
+
+		.separator {
+			border-color: @color-dark-grey;
+		}
+
+		input[type="range"] {
+			background: lighten(@color-black, 2%);
+		}
+
+		.preview {
+			background: lighten(@color-black, 2%);
+		}
+
+		ul.avatar-list {
+
+			li.avatar {
+				border-color: @color-dark;
+				background: lighten(@color-black, 1%);
+
+				&:hover {
+					border-color: lighten(@color-black, 3.5%);
+				}
+			}
+		}
+	}
+
 	input.action-uuid,
 	input.action-file {
 		padding: 12px 14px;
@@ -59,7 +110,7 @@ canvas.overlay {
 		}
 	}
 
-	.seperator {
+	.separator {
 		border-top: 1px solid #F5F5F5;
 		margin: 20px 0;
 	}
@@ -240,7 +291,7 @@ canvas.overlay {
 				transform: scale(1);
 			}
 
-			&.focused {
+			&.active {
 				transform: scale(1);
 				border: 3px solid #212121;
 			}
@@ -278,7 +329,7 @@ canvas.overlay {
 			transform: scale(1);
 		}
 
-		&.focused {
+		&.active {
 			transform: scale(1.1);
 		}
 	}

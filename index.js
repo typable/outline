@@ -8,7 +8,7 @@ const io = require('socket.io');
 let env = {
 	port: 443,
 	path: '/etc/letsencrypt/live/',
-	domain: 'prototype-studio.de',
+	domain: 'server.typable.dev',
 	ssl: true
 };
 
@@ -37,7 +37,7 @@ server.path('/pipe');
 server.listen(proxy);
 
 const { createCanvas } = require('canvas');
-const paint = require('./public/js/mod/paint');
+const paint = require('./mod/paint');
 
 let client = {};
 let width = 1920;
