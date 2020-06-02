@@ -27,8 +27,6 @@ else {
 const proxy = env.ssl ? https.createServer(env.credentials, app) : http.createServer(app);
 const server = io(https);
 
-app.use(express.static(__dirname + '/public'));
-
 proxy.listen(env.port, function() {
 	console.log('Server started on port:', env.port);
 });

@@ -135,6 +135,7 @@ export default {
 			}
 		}
 
+		this.modal.get('join').element.querySelector('.action-uuid').focus();
 		this.event.action(this.modal.get('join').action.uuid, 'keydown', function(event) {
 			if(event.keyCode === 13) {
 				that.state.name = that.modal.get('join').element.querySelector('.action-uuid').value.replace(/\s+/g, '');
@@ -198,6 +199,10 @@ export default {
 				that.modal.close();
 			});
 		}
+		this.event.action(this.modal.get('error').action.reconnect, 'click', function(event) {
+			that.modal.close();
+			that.socket.reconnect();
+		});
 	},
 	update: function() {
 		this.paint.o.clearRect(0, 0, window.innerWidth, window.innerHeight);

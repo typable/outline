@@ -6,8 +6,9 @@ export default {
 	},
 	connect: function() {
 		let that = this;
-		this.socket = io(window.location.origin, {
-			path: '/pipe'
+		this.socket = io('https://server.typable.dev', {
+			path: '/pipe',
+			reconnection: false
 		});
 		this.socket.on('connect', function() {
 			that.connected = true;
@@ -15,6 +16,10 @@ export default {
 		});
 		this.socket.on('disconnect', function() {
 			that.connected = false;
+			that.app.modal.open('error');
+		});
+		this.socket.on('connect_error', function() {
+			that.app.modal.open('error');
 		});
 		this.socket.on('load', function(data) {
 			let buffer = new Uint8Array(data);
@@ -45,6 +50,9 @@ export default {
 			}
 			that.app.update();
 		});
+	},
+	reconnect: function() {
+		this.socket.open();
 	},
 	_send: function(key, data) {
 		if(this.socket) {
