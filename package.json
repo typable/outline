@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "npm i",
-		"start": "node index"
+		"serve": "firebase serve --only hosting:outline-website --port 80",
+		"start": "node index",
+		"deploy": "firebase deploy --only hosting:outline-website"
 	},
 	"repository": {
 		"type": "git",

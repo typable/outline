@@ -78,7 +78,8 @@ export default {
 			wrapper: '.wrapper',
 			modal: { query: '.modal', all: true },
 			action: { query: '[data-action]', all: true },
-			list: '.bucket-list'
+			list: '.bucket-list',
+			spinner: '.spinner'
 		});
 		this.template.bucket = node.template(function(item) {
 			return `<li class="bucket tooltip${item.up ? ' up' : ''}${item.active ? ' active' : ''}" data-title="${item.name}" data-color="${item.code}" style="background: ${item.code}"></li>`;
@@ -143,7 +144,6 @@ export default {
 					that.state.uuid = that.state.name + '-' + that.util.uuid();
 					that.socket.connect();
 					that.socket.cursor();
-					that.modal.close();
 				}
 			}
 		});
@@ -153,7 +153,6 @@ export default {
 				that.state.uuid = that.state.name + '-' + that.util.uuid();
 				that.socket.connect();
 				that.socket.cursor();
-				that.modal.close();
 			}
 		});
 		this.modal.get('scaling').action.open.before = function(modal) {

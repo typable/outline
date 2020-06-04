@@ -46,8 +46,18 @@ export default {
 			this.app.state.current = this.app.state.modal[name];
 		}
 	},
+	load: function() {
+		this.app.node.wrapper.classList.remove('hidden');
+		for(let item of Object.values(this.app.state.modal)) {
+			item.element.classList.add('hidden');
+		}
+		this.app.node.spinner.classList.remove('hidden');
+		this.app.state.opened = true;
+		this.app.state.current = undefined;
+	},
 	close: function() {
 		this.app.node.wrapper.classList.add('hidden');
+		this.app.node.spinner.classList.add('hidden');
 		for(let item of Object.values(this.app.state.modal)) {
 			item.element.classList.add('hidden');
 		}

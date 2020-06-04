@@ -29,6 +29,7 @@ export default {
 				array[i] = buffer[i];
 			}
 			that.app.paint.g.putImageData(image, 0, 0);
+			that.app.modal.close();
 		});
 		this.socket.on('data', function(data) {
 			that.app.paint.draw(data);
@@ -77,6 +78,9 @@ export default {
 		});
 	},
 	request: function() {
+		if(this.app.socket.connected) {
+			this.app.modal.load();
+		}
 		this._send('request', {
 			x: 0,
 			y: 0,
