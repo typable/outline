@@ -59,7 +59,8 @@ server.on('connection', function(socket) {
 		socket.broadcast.emit('data', data);
 	});
 	socket.on('clear' , function(data) {
-		g.clearRect(0, 0, width, height);
+		g.fillStyle = 'white';
+		g.fillRect(0, 0, width, height);
 		socket.broadcast.emit('clear', data);
 	});
 	socket.on('background' , function(data) {

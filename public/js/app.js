@@ -175,7 +175,8 @@ export default {
 			that.modal.close();
 		});
 		this.event.action(this.modal.get('clear').action.clear, 'click', function(event) {
-			that.paint.g.clearRect(0, 0, window.innerWidth, window.innerHeight);
+			that.paint.g.fillStyle = 'white';
+			that.paint.g.fillRect(0, 0, window.innerWidth, window.innerHeight);
 			that.socket.clear();
 			that.modal.close();
 		});

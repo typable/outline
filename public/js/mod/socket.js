@@ -43,7 +43,8 @@ export default {
 			that.app.paint.draw(data);
 		});
 		this.socket.on('clear', function(data) {
-			that.app.paint.g.clearRect(0, 0, window.innerWidth, window.innerHeight);
+			that.app.paint.g.fillStyle = 'white';
+			that.app.paint.g.fillRect(0, 0, window.innerWidth, window.innerHeight);
 		});
 		this.socket.on('background', function(data) {
 			that.app.paint.g.fillStyle = data;
