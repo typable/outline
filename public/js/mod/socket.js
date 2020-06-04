@@ -1,6 +1,8 @@
 export default {
 	socket: null,
 	connected: false,
+	timeout: false,
+	interval: null,
 	init: function(app) {
 		this.app = app;
 	},
@@ -12,14 +14,24 @@ export default {
 		});
 		this.socket.on('connect', function() {
 			that.connected = true;
+			that.timeout = false;
 			that.request();
 		});
 		this.socket.on('disconnect', function() {
 			that.connected = false;
+			that.timeout = true;
 			that.app.modal.open('error');
+			that.app.state.client = [];
+			that.app.update();
+			that._reconnectInterval();
 		});
 		this.socket.on('connect_error', function() {
+			that.connected = false;
+			that.timeout = true;
 			that.app.modal.open('error');
+			that.app.state.client = [];
+			that.app.update();
+			that._reconnectInterval();
 		});
 		this.socket.on('load', function(data) {
 			let buffer = new Uint8Array(data);
@@ -60,6 +72,17 @@ export default {
 			}
 			that.app.update();
 		});
+	},
+	_reconnectInterval: function() {
+		let that = this;
+		this.interval = setInterval(function() {
+			if(!that.timeout) {
+				clearInterval(this.interval);
+			}
+			else {
+				that.reconnect();
+			}
+		}, 30 * 1000);
 	},
 	reconnect: function() {
 		this.socket.open();

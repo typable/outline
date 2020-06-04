@@ -40,6 +40,10 @@ export default {
 	},
 	open: function(name) {
 		if(this.app.state.modal[name]) {
+			this.app.node.spinner.classList.add('hidden');
+			for(let item of Object.values(this.app.state.modal)) {
+				item.element.classList.add('hidden');
+			}
 			this.app.state.modal[name].element.classList.remove('hidden');
 			this.app.node.wrapper.classList.remove('hidden');
 			this.app.state.opened = true;

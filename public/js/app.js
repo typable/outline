@@ -200,7 +200,7 @@ export default {
 			});
 		}
 		this.event.action(this.modal.get('error').action.reconnect, 'click', function(event) {
-			that.modal.close();
+			that.modal.load();
 			that.socket.reconnect();
 		});
 	},
