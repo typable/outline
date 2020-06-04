@@ -25,8 +25,16 @@ export default {
 			let buffer = new Uint8Array(data);
 			let image = that.app.paint.g.getImageData(0, 0, that.app.node.canvas.width, that.app.node.canvas.height);
 			let array = image.data;
-			for(let i = 0; i < buffer.length; i++) {
-				array[i] = buffer[i];
+			for(let i = 0; i < buffer.length / 4; i++) {
+				let p = i * 4;
+				let data = buffer.slice(i * 4, i * 4 + 4);
+				if(data[3] === 0) {
+					data = [255, 255, 255, 255];
+				}
+				array[p] = data[0];
+				array[p + 1] = data[1];
+				array[p + 2] = data[2];
+				array[p + 3] = data[3];
 			}
 			that.app.paint.g.putImageData(image, 0, 0);
 			that.app.modal.close();
