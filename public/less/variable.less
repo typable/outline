@@ -1,3 +1,13 @@
+@screen-xx: 425px;
+@screen-xs: 576px;
+@screen-sm: 768px;
+@screen-md: 992px;
+@screen-lg: 1200px;
+
+@color-success: #28A745;
+@color-danger: #DC3545;
+@color-info: #007BFF;
+
 * {
 	margin: 0;
 	padding: 0;
@@ -12,15 +22,14 @@
 
 html {
 	position: relative;
-	width: 100vw;
-	heigth: 100vh;
 	overflow: hidden;
-	touch-action: manipulation;
+	min-height: 100vh;
 }
 
 body {
 	width: 100%;
 	font-size: 14px;
+	min-height: 100vh;
 }
 
 img {
@@ -28,28 +37,16 @@ img {
 	user-select: none;
 }
 
-a {
-	color: blue;
-	text-decoration: none;
-	cursor: pointer;
-
-	&:hover {
-		text-decoration: underline;
-		color: blue;
-	}
-}
-
 input {
 	-webkit-appearance: none;
 }
 
-@screen-xx: 425px;
-@screen-xs: 576px;
-@screen-sm: 768px;
-@screen-md: 992px;
-@screen-lg: 1200px;
+button {
+	user-select: none;
+	cursor: pointer;
+}
 
-.gutter(@unit) {
+.gutter(@unit, @width) {
 
 	[class*="col"],
 	.col-auto,
@@ -65,7 +62,18 @@ input {
 	}
 
 	.row {
+		display: flex;
 		margin-left: -@unit;
 		margin-right: -@unit;
 	}
+
+	.container {
+		max-width: @width;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.hidden {
+	display: none !important;
 }

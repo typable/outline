@@ -27,9 +27,23 @@ canvas.overlay {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: rgba(0, 0, 0, 0.1);
+	background: rgba(0, 0, 0, 0.2);
 	z-index: 99999;
 	user-select: none;
+}
+
+.spinner {
+	width: 80px;
+	height: 80px;
+	border-radius: 40px;
+	border: 10px solid rgba(255,255,255,0.2);
+	border-top: 10px solid white;
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
 
 .modal {
@@ -39,6 +53,65 @@ canvas.overlay {
 	margin-top: -100px;
 	padding: 20px;
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.03);
+
+	&.modal-error {
+		width: 300px;
+
+		.align {
+			justify-content: flex-end;
+		}
+	}
+
+	&.theme-dark {
+		background: @color-dark;
+		color: white;
+
+		button.action-cancel {
+			background: @color-dark-grey;
+			color: white;
+
+			&:hover {
+				background: lighten(@color-dark-grey, -2%);
+			}
+		}
+
+		input[type="text"] {
+			background: @color-black;
+			color: white;
+
+			&:hover {
+				background: lighten(@color-black, -2%);
+			}
+
+			&:focus {
+				background: lighten(@color-black, -2%);
+			}
+		}
+
+		.separator {
+			border-color: @color-dark-grey;
+		}
+
+		input[type="range"] {
+			background: lighten(@color-black, 2%);
+		}
+
+		.preview {
+			background: lighten(@color-black, 2%);
+		}
+
+		ul.avatar-list {
+
+			li.avatar {
+				border-color: @color-dark;
+				background: lighten(@color-black, 1%);
+
+				&:hover {
+					border-color: lighten(@color-black, 3.5%);
+				}
+			}
+		}
+	}
 
 	input.action-uuid,
 	input.action-file {
@@ -59,7 +132,7 @@ canvas.overlay {
 		}
 	}
 
-	.seperator {
+	.separator {
 		border-top: 1px solid #F5F5F5;
 		margin: 20px 0;
 	}
@@ -240,7 +313,7 @@ canvas.overlay {
 				transform: scale(1);
 			}
 
-			&.focused {
+			&.active {
 				transform: scale(1);
 				border: 3px solid #212121;
 			}
@@ -278,7 +351,7 @@ canvas.overlay {
 			transform: scale(1);
 		}
 
-		&.focused {
+		&.active {
 			transform: scale(1.1);
 		}
 	}

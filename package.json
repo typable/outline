@@ -4,7 +4,8 @@
 	"description": "Draw with friends together",
 	"main": "index.js",
 	"scripts": {
-		"build": "npm i",
+		"build": "npm i --unsafe-perm --allow-root",
+		"serve": "firebase serve --only hosting --port 80",
 		"start": "node index"
 	},
 	"repository": {
