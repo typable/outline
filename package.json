@@ -4,13 +4,9 @@
 	"description": "Draw with friends together",
 	"main": "index.js",
 	"scripts": {
-		"build": "npm i",
-		"build-linux": "npm i --unsafe-perm=true --allow-root",
-		"serve": "firebase serve --only hosting:outline-website --port 80",
-		"start": "node index",
-		"deploy": "firebase deploy --only hosting:outline-website",
-		"require": "npm i -g windows-build-tools",
-		"require-linux": "apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev"
+		"build": "npm i --unsafe-perm --allow-root",
+		"serve": "firebase serve --only hosting --port 80",
+		"start": "node index"
 	},
 	"repository": {
 		"type": "git",
