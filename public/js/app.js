@@ -5,6 +5,8 @@ import paint from './mod/paint.js';
 import modal from './mod/modal.js';
 import socket from './mod/socket.js';
 
+const GOOGLE_API_KEY = 'QUl6YVN5QzZVcFRpNVlYc1h6eFJ2aEo4Z1RWbnJtTkpCQ2JCMjBn';
+
 export default {
 	constant: {
 		color: [
@@ -210,5 +212,8 @@ export default {
 		for(let client of Object.values(this.state.client)) {
 			this.paint.cursor(client);
 		}
+	},
+	verify: function() {
+		return atob(GOOGLE_API_KEY);
 	}
 };

@@ -4,7 +4,7 @@ window.addEventListener('load', function(event) {
 
 	if(typeof firebase !== 'undefined') {
 		firebase.initializeApp({
-			apiKey: "AIzaSyC6UpTi5YXsXzxRvhJ8gTVnrmNJBCbB20g",
+			apiKey: app.verify(),
 			authDomain: "typable-website.firebaseapp.com",
 			databaseURL: "https://typable-website.firebaseio.com",
 			projectId: "typable-website",
