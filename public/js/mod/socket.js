@@ -8,7 +8,7 @@ export default {
 	},
 	connect: function() {
 		let that = this;
-		this.socket = io('https://server.typable.dev', {
+		this.socket = io('https://192.168.2.3', {
 			path: '/pipe',
 			reconnection: false
 		});
@@ -16,6 +16,7 @@ export default {
 			that.connected = true;
 			that.timeout = false;
 			that.request();
+			that.cursor();
 		});
 		this.socket.on('disconnect', function() {
 			that.connected = false;
@@ -23,7 +24,6 @@ export default {
 			that.app.modal.open('error');
 			that.app.state.client = [];
 			that.app.update();
-			that._reconnectInterval();
 		});
 		this.socket.on('connect_error', function() {
 			that.connected = false;
@@ -31,7 +31,6 @@ export default {
 			that.app.modal.open('error');
 			that.app.state.client = [];
 			that.app.update();
-			that._reconnectInterval();
 		});
 		this.socket.on('load', function(data) {
 			let buffer = new Uint8Array(data);
@@ -73,19 +72,9 @@ export default {
 			that.app.update();
 		});
 	},
-	_reconnectInterval: function() {
-		let that = this;
-		this.interval = setInterval(function() {
-			if(!that.timeout) {
-				clearInterval(this.interval);
-			}
-			else {
-				that.reconnect();
-			}
-		}, 30 * 1000);
-	},
 	reconnect: function() {
 		this.socket.open();
+		this.timeout = false;
 	},
 	_send: function(key, data) {
 		if(this.socket) {

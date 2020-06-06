@@ -145,7 +145,7 @@ export default {
 				if(that.state.name.length >= 3 && that.state.name.length <= 20) {
 					that.state.uuid = that.state.name + '-' + that.util.uuid();
 					that.socket.connect();
-					that.socket.cursor();
+					that.modal.load();
 				}
 			}
 		});
@@ -154,7 +154,7 @@ export default {
 			if(that.state.name.length >= 3 && that.state.name.length <= 20) {
 				that.state.uuid = that.state.name + '-' + that.util.uuid();
 				that.socket.connect();
-				that.socket.cursor();
+				that.modal.load();
 			}
 		});
 		this.modal.get('scaling').action.open.before = function(modal) {
