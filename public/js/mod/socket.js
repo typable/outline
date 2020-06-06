@@ -8,7 +8,7 @@ export default {
 	},
 	connect: function() {
 		let that = this;
-		this.socket = io('https://192.168.2.3', {
+		this.socket = io('https://server.typable.dev', {
 			path: '/pipe',
 			reconnection: false
 		});
