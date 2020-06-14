@@ -7,7 +7,7 @@ export default {
 			for(let entry of Object.entries(args)) {
 				let [ key, value ] = entry;
 				if(typeof this[key] === 'function' || typeof this.app.state.action[key] === 'object') {
-					this._bindType(element, key, value);
+					this.bindType(element, key, value);
 				}
 			}
 		}
@@ -23,7 +23,7 @@ export default {
 			}
 		}, args);
 	},
-	_bindType: function(element, key, value) {
+	bindType: function(element, key, value) {
 		let that = this;
 		if(typeof value === 'string') {
 			if(Array.isArray(element)) {
@@ -52,7 +52,7 @@ export default {
 		if(typeof value === 'object') {
 			if(Array.isArray(value)) {
 				for(let item of value) {
-					this._bindType(element, key, item);
+					this.bindType(element, key, item);
 				}
 			}
 			else {
@@ -90,16 +90,14 @@ export default {
 	},
 	begin: function(event) {
 		this.app.state.dragging = true;
-		let state = this._state(event);
+		let state = this.state(event);
 		this.app.socket.data(state);
 		this.app.paint.draw(state);
 		this.app.state.last = state.pos;
 		this.app.node.toolbar.style.pointerEvents = 'none';
-		this.app.socket.cursor();
-		this.app.update();
 	},
 	drag: function(event) {
-		let state = this._state(event);
+		let state = this.state(event);
 		if(this.app.state.dragging && document.hasFocus()) {
 			this.app.socket.data(state);
 			this.app.paint.draw(state);
@@ -108,26 +106,18 @@ export default {
 				this.prevent(event);
 			}
 		}
-		this.app.socket.cursor();
-		this.app.update();
 	},
 	end: function(event) {
-		this._state(event);
+		this.state(event);
 		this.app.state.dragging = false;
 		this.app.state.last = null;
 		this.app.node.toolbar.style.pointerEvents = '';
-		this.app.socket.cursor();
-		this.app.update();
 	},
 	move: function(event) {
 			this.app.state.cursor = event.target === this.app.node.canvas ? this.app.state.pos : null;
-			this.app.socket.cursor();
-			this.app.update();
 	},
 	out: function(event) {
 		this.app.state.cursor = null;
-		this.app.socket.cursor();
-		this.app.update();
 	},
 	scroll: function(event) {
 		if(event.ctrlKey) {
@@ -142,8 +132,6 @@ export default {
 				this.app.state.radius -= this.app.state.radius > 1 ? 1 : 0;
 			}
 		}
-		this.app.socket.cursor();
-		this.app.update();
 	},
 	key: function(event) {
 		if(!this.app.state.opened) {
@@ -175,8 +163,6 @@ export default {
 				this.app.modal.close();
 			}
 		}
-		this.app.socket.cursor();
-		this.app.update();
 	},
 	button: function(event) {
 		for(let item of this.app.node.bucket) {
@@ -194,14 +180,14 @@ export default {
 			let that = this;
 			clearTimeout(this.app.state.delay);
 			this.app.state.delay = setTimeout(function() {
-				that._delayResize();
+				that.delayResize();
 			}, 100);
 		}
 		else {
-			this._delayResize();
+			this.delayResize();
 		}
 	},
-	_delayResize: function(event) {
+	delayResize: function(event) {
 		this.app.node.canvas.width = window.innerWidth;
 		this.app.node.canvas.height = window.innerHeight;
 		let cache = this.app.paint.o.getImageData(0, 0, this.app.node.overlay.width, this.app.node.overlay.height);
@@ -210,7 +196,7 @@ export default {
 		this.app.paint.o.putImageData(cache, 0, 0);
 		this.app.socket.request();
 	},
-	_state: function(event) {
+	state: function(event) {
 		let pos = null;
 		if(event.type === 'mousemove' || event.type === 'mousedown') {
 			pos = {

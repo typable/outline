@@ -1,3 +1,5 @@
+import { luma } from './util.js';
+
 export default {
 	init: function(app) {
 		this.app = app;
@@ -12,7 +14,7 @@ export default {
 					x: last.x - pos.x,
 					y: last.y - pos.y
 				};
-				let dist = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2), 2);
+				let dist = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
 				let length = dist / (radius / 2);
 				for(let i = 0; i < length; i++) {
 					let x = pos.x + (delta.x / length * i);
@@ -49,7 +51,7 @@ export default {
 			this.o.lineWidth = 4;
 			this.o.beginPath();
 			this.o.arc(state.cursor.x, state.cursor.y, 2 * state.radius, 0, 2 * Math.PI);
-			this.o.strokeStyle = this.app.util.luma(state.color) ? 'black' : 'white';
+			this.o.strokeStyle = luma(state.color) ? 'black' : 'white';
 			this.o.stroke();
 			this.o.beginPath();
 			this.o.arc(state.cursor.x, state.cursor.y, 2 * state.radius, 0, 2 * Math.PI);

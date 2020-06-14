@@ -1,10 +1,12 @@
 import app from './app.js';
 
+const GOOGLE_API_KEY = 'QUl6YVN5QzZVcFRpNVlYc1h6eFJ2aEo4Z1RWbnJtTkpCQ2JCMjBn';
+
 window.addEventListener('load', function(event) {
 
 	if(typeof firebase !== 'undefined') {
 		firebase.initializeApp({
-			apiKey: app.verify(),
+			apiKey: atob(GOOGLE_API_KEY),
 			authDomain: "typable-website.firebaseapp.com",
 			databaseURL: "https://typable-website.firebaseio.com",
 			projectId: "typable-website",

@@ -2,7 +2,6 @@ export default {
 	socket: null,
 	connected: false,
 	timeout: false,
-	interval: null,
 	init: function(app) {
 		this.app = app;
 	},
@@ -23,14 +22,12 @@ export default {
 			that.timeout = true;
 			that.app.modal.open('error');
 			that.app.state.client = [];
-			that.app.update();
 		});
 		this.socket.on('connect_error', function() {
 			that.connected = false;
 			that.timeout = true;
 			that.app.modal.open('error');
 			that.app.state.client = [];
-			that.app.update();
 		});
 		this.socket.on('load', function(data) {
 			let buffer = new Uint8Array(data);
@@ -69,20 +66,19 @@ export default {
 			else {
 				that.app.state.client[data.uuid] = data;
 			}
-			that.app.update();
 		});
 	},
 	reconnect: function() {
 		this.socket.open();
 		this.timeout = false;
 	},
-	_send: function(key, data) {
+	send: function(key, data) {
 		if(this.socket) {
 			this.socket.emit(key, data);
 		}
 	},
 	data: function({ pos, last }) {
-		this._send('data', {
+		this.send('data', {
 			pos: pos,
 			last: last,
 			radius: this.app.state.radius,
@@ -90,7 +86,7 @@ export default {
 		});
 	},
 	cursor: function() {
-		this._send('cursor', {
+		this.send('cursor', {
 			cursor: this.app.state.cursor,
 			color: this.app.state.color,
 			radius: this.app.state.radius,
@@ -102,7 +98,7 @@ export default {
 		if(this.app.socket.connected) {
 			this.app.modal.load();
 		}
-		this._send('request', {
+		this.send('request', {
 			x: 0,
 			y: 0,
 			width: window.innerWidth,
@@ -110,6 +106,6 @@ export default {
 		});
 	},
 	clear: function() {
-		this._send('clear');
+		this.send('clear');
 	}
 }
