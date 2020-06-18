@@ -156,6 +156,19 @@ export default {
 						}
 					}
 				}
+				console.log(event.code);
+				if(event.code === 'KeyC') {
+					this.app.modal.open('color');
+				}
+				if(event.code === 'KeyV') {
+					this.app.modal.open('scaling');
+				}
+				if(event.code === 'KeyT') {
+					this.app.modal.open('clear');
+				}
+				if(event.code === 'KeyS') {
+					this.app.modal.open('save');
+				}
 			}
 		}
 		else if(this.app.state.current && this.app.state.current.action.cancel) {
