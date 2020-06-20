@@ -1,3 +1,5 @@
+import { uuid } from './util.js';
+
 export default {
 	init: function(app) {
 		this.app = app;
@@ -156,8 +158,10 @@ export default {
 						}
 					}
 				}
-				console.log(event.code);
 				if(event.code === 'KeyC') {
+					for(let item of this.app.node.color) {
+						item.classList[this.app.state.color === item.dataset.color ? 'add' : 'remove']('active');
+					}
 					this.app.modal.open('color');
 				}
 				if(event.code === 'KeyV') {
@@ -167,6 +171,7 @@ export default {
 					this.app.modal.open('clear');
 				}
 				if(event.code === 'KeyS') {
+					this.app.modal.get('save').element.querySelector('input.action-file').value = 'outline-image-' + uuid();
 					this.app.modal.open('save');
 				}
 			}
