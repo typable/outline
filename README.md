@@ -19,6 +19,15 @@ Now the node module can be installed.
 $ npm run build
 ```
 
+### Deployment
+
+Define the target hosting site for deployment.
+
+```bash
+$ firebase target:apply outline-website outline-website
+$ firebase deploy --only hosting:outline-website
+```
+
 ### Grant Port Binding
 
 The following command makes it for node possible to bind a port beneath *1024*. The command must be execute after every single `apt-get update`.
