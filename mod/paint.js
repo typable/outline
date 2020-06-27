@@ -10,7 +10,7 @@ module.exports = {
 				x: last.x - pos.x,
 				y: last.y - pos.y
 			};
-			let dist = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2), 2);
+			let dist = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
 			let length = dist / (radius / 2);
 			for(let i = 0; i < length; i++) {
 				let x = pos.x + (delta.x / length * i);

@@ -20,7 +20,7 @@ export default {
 				}
 			}
 		}
-		this.app.state.current = this.app.state.modal.join;
+		this.app.state.current = this.get('join');
 		for(let item of this.app.node.action) {
 			let name = item.dataset.action;
 			if(this.app.state.modal[name]) {

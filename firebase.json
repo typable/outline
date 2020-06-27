@@ -1,17 +1,17 @@
 {
-	"hosting": {
-		"site": "outline-website",
-		"public": "public",
-		"ignore": [
-			"firebase.json",
-			"**/.*",
-			"**/node_modules/**"
-		],
-		"rewrites": [
-			{
-				"source": "**",
-				"destination": "/index.html"
-			}
-		]
-	}
+  "hosting": {
+	  "target": "outline-website",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
 }
