@@ -28,8 +28,41 @@ canvas.overlay {
 	justify-content: center;
 	align-items: center;
 	background: rgba(0, 0, 0, 0.2);
-	z-index: 99999;
+	z-index: 9999;
 	user-select: none;
+
+	& > .info {
+		position: fixed;
+		right: 30px;
+		bottom: 30px;
+		display: flex;
+
+		ul.info-list {
+			display: flex;
+			list-style-type: none;
+
+			li.info-item {
+				color: @color-dark;
+				margin-left: 15px;
+				user-select: none;
+				font-weight: 500;
+
+				a {
+					user-select: none;
+					color: @color-blue;
+					text-decoration: none;
+
+					&.subtle {
+						color: @color-grey;
+					}
+
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+			}
+		}
+	}
 }
 
 .spinner {
@@ -121,6 +154,7 @@ canvas.overlay {
 		border-radius: 3px;
 		font-size: 16px;
 		user-select: none;
+		margin-bottom: 3px;
 
 		&:hover {
 			background: #F8F8F8;
@@ -128,6 +162,12 @@ canvas.overlay {
 
 		&:focus {
 			background: #F5F5F5;
+		}
+
+		&.invalid {
+			border-bottom: 3px solid #FF4A4A;
+			border-radius: 3px 3px 0 0;
+			margin-bottom: 0;
 		}
 	}
 
@@ -377,7 +417,6 @@ canvas.overlay {
 	position: fixed;
 	left: calc(50% - 210px);
 	bottom: 30px;
-	z-index: 2;
 	display: flex;
 	z-index: 999;
 

@@ -98,21 +98,30 @@ export default {
 
 		this.modal.get('join').element.querySelector('.action-uuid').focus();
 		this.event.action(this.modal.get('join').action.uuid, 'keydown', function(event) {
+			let input = that.modal.get('join').element.querySelector('.action-uuid');
+			input.classList.remove('invalid');
 			if(event.keyCode === 13) {
-				that.state.name = that.modal.get('join').element.querySelector('.action-uuid').value.replace(/\s+/g, '');
+				that.state.name = input.value.replace(/\s+/g, '');
 				if(that.state.name.length >= 3 && that.state.name.length <= 20) {
 					that.state.uuid = that.state.name + '-' + uuid();
 					that.socket.connect();
 					that.modal.load();
 				}
+				else {
+					input.classList.add('invalid');
+				}
 			}
 		});
 		this.event.action(this.modal.get('join').action.join, 'click', function(event) {
-			that.state.name = that.modal.get('join').element.querySelector('.action-uuid').value.replace(/\s+/g, '');
+			let input = that.modal.get('join').element.querySelector('.action-uuid');
+			that.state.name = input.value.replace(/\s+/g, '');
 			if(that.state.name.length >= 3 && that.state.name.length <= 20) {
 				that.state.uuid = that.state.name + '-' + uuid();
 				that.socket.connect();
 				that.modal.load();
+			}
+			else {
+				input.classList.add('invalid');
 			}
 		});
 		this.modal.get('scaling').action.open.before = function(modal) {
@@ -140,12 +149,19 @@ export default {
 		});
 		this.modal.get('save').action.open.before = function(modal) {
 			modal.element.querySelector('input.action-file').value = 'outline-image-' + uuid();
+			let input = that.modal.get('save').element.querySelector('.modal input.action-file');
+			input.classList.remove('invalid');
 		}
 		this.event.action(this.modal.get('save').action.save, 'click', function(event) {
-			let file = that.modal.get('save').element.querySelector('.modal input.action-file').value.replace(/\s+/g, '');
+			let input = that.modal.get('save').element.querySelector('.modal input.action-file');
+			input.classList.remove('invalid');
+			let file = input.value.replace(/\s+/g, '');
 			if(file.length >= 3 && file.length <= 40) {
 				download(file, that.node.canvas.toDataURL('image/jpg'));
 				that.modal.close();
+			}
+			else {
+				input.classList.add('invalid');
 			}
 		});
 		for(let item of this.node.color) {

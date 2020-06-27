@@ -172,6 +172,8 @@ export default {
 				}
 				if(event.code === 'KeyS') {
 					this.app.modal.get('save').element.querySelector('input.action-file').value = 'outline-image-' + uuid();
+					let input = this.app.modal.get('save').element.querySelector('.modal input.action-file');
+					input.classList.remove('invalid');
 					this.app.modal.open('save');
 				}
 			}
