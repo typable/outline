@@ -45,7 +45,9 @@ export default {
 				array[p + 3] = data[3];
 			}
 			that.app.paint.g.putImageData(image, 0, 0);
-			that.app.modal.close();
+			if(!that.app.state.current) {
+				that.app.modal.close();
+			}
 		});
 		this.socket.on('data', function(data) {
 			that.app.paint.draw(data);
@@ -96,7 +98,9 @@ export default {
 	},
 	request: function() {
 		if(this.app.socket.connected) {
-			this.app.modal.load();
+			if(!this.app.state.current) {
+				this.app.modal.load();
+			}
 		}
 		this.send('request', {
 			x: 0,

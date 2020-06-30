@@ -4,7 +4,7 @@ export default {
 		let that = this;
 		for(let item of this.app.node.modal) {
 			let name = item.dataset.modal;
-			let modal = { element: item, action: {} };
+			let modal = { element: item, action: {}, type: name };
 			let cancel = item.querySelector('button.action-cancel');
 			if(cancel) {
 				modal.action.cancel = { element: cancel };
