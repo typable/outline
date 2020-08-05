@@ -72,6 +72,11 @@ canvas.overlay {
 	border: 10px solid rgba(255,255,255,0.2);
 	border-top: 10px solid white;
 	animation: spin 2s linear infinite;
+
+	&.theme-dark {
+		border: 10px solid rgba(0,0,0,0.2);
+		border-top: 10px solid @color-black;
+	}
 }
 
 @keyframes spin {
@@ -100,11 +105,11 @@ canvas.overlay {
 		color: white;
 
 		button.action-cancel {
-			background: @color-dark-grey;
+			background: lighten(@color-dark, 5%);
 			color: white;
 
 			&:hover {
-				background: lighten(@color-dark-grey, -2%);
+				background: lighten(@color-dark, 2%);
 			}
 		}
 
@@ -122,11 +127,23 @@ canvas.overlay {
 		}
 
 		.separator {
-			border-color: @color-dark-grey;
+			border-color: lighten(@color-dark, 5%);
 		}
 
 		input[type="range"] {
 			background: lighten(@color-black, 2%);
+
+			&:hover {
+				background: @color-black;
+
+				&::-webkit-slider-thumb {
+					background: lighten(@color-dark, 2%);
+				}
+			}
+
+			&::-webkit-slider-thumb {
+				background: lighten(@color-dark, 5%);
+			}
 		}
 
 		.preview {
@@ -141,6 +158,28 @@ canvas.overlay {
 
 				&:hover {
 					border-color: lighten(@color-black, 3.5%);
+				}
+			}
+		}
+
+		&.modal-color {
+
+			&:before {
+				background: linear-gradient(@color-dark, transparent);
+			}
+
+			&:after {
+				background: linear-gradient(transparent, @color-dark);
+			}
+
+			.bucket-list {
+
+				&::-webkit-scrollbar-thumb {
+					background: lighten(@color-black, 2%);
+
+					&:hover {
+						background: @color-black;
+					}
 				}
 			}
 		}
