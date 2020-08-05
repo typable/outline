@@ -145,8 +145,8 @@ export default {
 				if(event.code.startsWith('Numpad')) {
 					index = parseInt(event.code.substr(6));
 				}
-				index--;
-				if(Number.isInteger(index) && index < 7) {
+				if(Number.isInteger(index) && index < 7 && index > 0) {
+					index--;
 					for(let i in this.app.node.bucket) {
 						let item = this.app.node.bucket[i];
 						if(index === parseInt(i)) {
