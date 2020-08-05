@@ -27,6 +27,7 @@ function switchTheme(item, that, isChanged) {
 		that.state.dark = !that.state.dark;
 	}
 	item.querySelector('.ico').textContent = that.state.dark ? 'wb_sunny' : 'brightness_2';
+	item.dataset.title = that.state.dark ? 'Light Theme' : 'Dark Theme';
 	for(let modal of that.node.modal) {
 		modal.classList[that.state.dark ? 'add' : 'remove']('theme-dark');
 	}

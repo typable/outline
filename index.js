@@ -48,7 +48,6 @@ g.fillRect(0, 0, width, height);
 paint.init(g);
 
 server.on('connection', function(socket) {
-	client[socket] = {};
 	socket.on('request', function(data) {
 		let { x, y, width, height } = data;
 		let image = g.getImageData(x, y, width, height);
@@ -70,28 +69,28 @@ server.on('connection', function(socket) {
 		socket.broadcast.emit('background', data);
 	});
 	socket.on('cursor' , function(data) {
-		if(!client[socket]) {
-			client[socket] = {};
+		if(typeof client[socket.id] === 'undefined') {
+			client[socket.id] = data.uuid;
 		}
-		client[socket].uuid = data.uuid;
 		socket.broadcast.emit('cursor', data);
 	});
 	socket.on('disconnect', function() {
-		if(client[socket]) {
+		if(typeof client[socket.id] !== 'undefined') {
 			socket.broadcast.emit('cursor', {
 				quit: true,
-				uuid: client[socket].uuid
+				uuid: client[socket.id]
 			});
+			delete client[socket.id];
 		}
-		delete client[socket];
 	});
 });
+
 server.on('disconnect', function(socket) {
-	if(client[socket]) {
+	if(typeof client[socket.id] !== 'undefined') {
 		socket.broadcast.emit('cursor', {
 			quit: true,
-			uuid: client[socket].uuid
+			uuid: client[socket.id].uuid
 		});
-		delete client[socket];
+		delete client[socket.id];
 	}
 });
