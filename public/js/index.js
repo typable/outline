@@ -20,4 +20,5 @@ window.addEventListener('load', function(event) {
 	}
 
 	app.init();
+	// window.app = app;
 });

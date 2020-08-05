@@ -22,8 +22,22 @@ function download(file, data) {
 	link.click();
 }
 
+function switchTheme(item, that, isChanged) {
+	if(isChanged) {
+		that.state.dark = !that.state.dark;
+	}
+	item.querySelector('.ico').textContent = that.state.dark ? 'wb_sunny' : 'brightness_2';
+	for(let modal of that.node.modal) {
+		modal.classList[that.state.dark ? 'add' : 'remove']('theme-dark');
+	}
+	that.node.spinner.classList[that.state.dark ? 'add' : 'remove']('theme-dark');
+	if(typeof localStorage !== 'undefined') {
+		localStorage.setItem('outline.theme.dark', that.state.dark);
+	}
+}
+
 function isMobile() {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent.toLowerCase());
 }
 
-export { uuid, luma, download, isMobile };
+export { uuid, luma, download, switchTheme, isMobile };

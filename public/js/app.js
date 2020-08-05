@@ -1,5 +1,5 @@
 import constant from './mod/constant.js';
-import { uuid, download } from './mod/util.js';
+import { uuid, download, switchTheme } from './mod/util.js';
 import { define, html } from './mod/node.js';
 import event from './mod/event.js';
 import paint from './mod/paint.js';
@@ -20,7 +20,8 @@ export default {
 		modal: {},
 		action: {},
 		fps: 1000 / 60,
-		then: Date.now()
+		then: Date.now(),
+		dark: false
 	},
 	template: {},
 	modal: {},
@@ -68,6 +69,18 @@ export default {
 		this.socket.init(this);
 		let that = this;
 
+		// cache
+		if(typeof localStorage !== 'undefined') {
+			if(typeof localStorage.getItem('outline.theme.dark') !== 'undefined') {
+				this.state.dark = (localStorage.getItem('outline.theme.dark') === 'true');
+				for(let item of this.node.action) {
+					if(item.dataset.action === 'theme') {
+						switchTheme(item, that);
+					}
+				}
+			}
+		}
+
 		// events
 		this.event.bind(this.node.canvas, {
 			prevent: ['dragstart', 'contextmenu'],
@@ -90,6 +103,14 @@ export default {
 		this.event.resize();
 
 		// actions
+		for(let item of this.node.action) {
+			if(item.dataset.action === 'theme') {
+				item.addEventListener('click', function(event) {
+					switchTheme(item, that, true);
+				});
+			}
+		}
+
 		this.modal.get('color').action.open.before = function(modal) {
 			for(let item of that.node.color) {
 				item.classList[that.state.color === item.dataset.color ? 'add' : 'remove']('active');
