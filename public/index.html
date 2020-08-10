@@ -5,98 +5,340 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 		<meta name="author" content="typable">
 		<meta name="keywords" content="">
-		<meta name="description" content="Draw with friends together">
-		<meta name="robots" content="index,follow">
+		<meta name="description" content="">
+		<meta name="robots" content="noindex,nofollow">
 		<meta name="google" content="notranslate">
 		<title>Outline</title>
+		<link href="asset/favicon.png" rel="shortcut icon" type="image/png">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
-		<!-- <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" data-ad-client="ca-pub-3486258424475487" async></script> -->
-		<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-performance.js"></script>
-		<script src="js/lib/socket.io.min.js"></script>
-		<script src="js/index.js" type="module"></script>
+		<script src="js/index.js"></script>
 	</head>
 	<body>
-		<canvas class="canvas"></canvas>
-		<canvas class="overlay"></canvas>
-		<div class="toolbar">
-			<div class="actions">
-				<button class="action tooltip" data-title="Color &nbsp;( C )" data-action="color">
-					<i class="ico">color_lens</i>
-				</button>
-				<button class="action tooltip" data-title="Scaling &nbsp;( V )" data-action="scaling">
+		<canvas id="canvas"></canvas>
+		<canvas id="overlay"></canvas>
+		<div class="controls">
+			<div class="notification">
+				<p class="content"></p>
+			</div>
+			<div class="ad hidden"></div>
+			<div class="toolbar">
+				<div class="tool ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-modal="colors" onclick="toggle_modal(this)">
+					<i class="ico">palette</i>
+				</div>
+				<div class="tool ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-modal="scale" onclick="toggle_modal(this)">
 					<i class="ico">bubble_chart</i>
-				</button>
-				<button class="action tooltip" data-title="Clear &nbsp;( T )" data-action="clear">
+				</div>
+				<div class="tool ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-modal="clear" onclick="toggle_modal(this)">
 					<i class="ico">delete</i>
-				</button>
-				<button class="action tooltip" data-title="Save &nbsp;( S )" data-action="save">
-					<i class="ico">save</i>
-				</button>
+				</div>
+				<div class="tool ripple tooltip" data-lang="tool.screenshot" data-type="tooltip" data-title="Screenshot" data-modal="screenshot" onclick="toggle_modal(this)">
+					<i class="ico">crop_free</i>
+				</div>
 			</div>
-			<div class="infobar">
-				<button class="action tooltip" data-title="Dark Theme" data-action="theme">
-					<i class="ico">brightness_2</i>
-				</button>
+			<div class="actionbar">
+				<div class="action ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Multiplayer" data-modal="multiplayer" onclick="toggle_modal(this)">
+					<i class="ico">dns</i>
+				</div>
+				<div class="action ripple tooltip" data-lang="action.account" data-type="tooltip" data-title="Account" data-modal="account" onclick="toggle_modal(this)">
+					<i class="ico">person</i>
+				</div>
+				<div class="action ripple tooltip" data-lang="action.settings" data-type="tooltip" data-title="Settings" data-modal="settings" onclick="toggle_modal(this)">
+					<i class="ico">settings</i>
+				</div>
 			</div>
-		</div>
-		<div class="wrapper">
-			<div class="info">
-				<ul class="info-list">
-					<li class="info-item">
-						<a href="https://github.com/typable/outline/issues" target="_blank">Found an issue?</a>
+			<div class="hotbar">
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+			</div>
+			<div class="modal colors-modal hidden">
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+			</div>
+			<div class="modal scale-modal hidden">
+				<input type="range" min="1" max="50" value="3" step="1" class="action-range">
+				<div class="preview-circle"></div>
+			</div>
+			<div class="modal clear-modal hidden">
+			</div>
+			<div class="modal screenshot-modal hidden">
+			</div>
+			<div class="modal multiplayer-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple">
+							<i class="ico">login</i>
+							<div class="info">
+								<p data-lang="multiplayer.join">Join</p>
+								<span data-lang="multiplayer.join.info">Search for channel to join</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">add</i>
+							<div class="info">
+								<p data-lang="multiplayer.create">Create</p>
+								<span data-lang="multiplayer.create.info">Create a new channel</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">device_hub</i>
+							<div class="info">
+								<p data-lang="multiplayer.host" data-prime="true">Host<b class="prime-badge">Prime</b></p>
+								<span data-lang="multiplayer.host.info">Host current state as channel</span>
+							</div>
+						</li>
+						<!--
+						<li class="item ripple">
+							<i class="ico">info</i>
+							<div class="info">
+								<p data-lang="channel.information">Info</p>
+								<span data-lang="channel.information.info">Customize channel info</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">person_add</i>
+							<div class="info">
+								<p data-lang="channel.invite-friends">Invite friends</p>
+								<span data-lang="channel.invite-friends.info">Share channel with others</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">lock</i>
+							<div class="info">
+								<p data-lang="channel.private">Private</p>
+								<span data-lang="channel.private.info">Prevent channel being listed</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">watch_later</i>
+							<div class="info">
+								<p data-lang="channel.permanent" data-prime="true">Permanent<b class="prime-badge">Prime</b></p>
+								<span data-lang="channel.permanent.info">Keep channel permanent online</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">verified_user</i>
+							<div class="info">
+								<p data-lang="channel.roles" data-prime="true">Roles<b class="prime-badge">Prime</b></p>
+								<span data-lang="channel.roles.info">Manage user permissions</span>
+							</div>
+						</li>
+						-->
+					</ul>
+				</div>
+				<ul class="tab-list"></ul>
+			</div>
+			<div class="modal account-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple">
+							<i class="ico">account_circle</i>
+							<div class="info">
+								<p data-lang="account.profile">Profile</p>
+								<span data-lang="account.profile.info">View your profile</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">card_giftcard</i>
+							<div class="info">
+								<p data-lang="account.support" data-beta="true">Support<b class="beta-badge">Beta</b></p>
+								<span data-lang="account.support.info">Donate a cup of coffee</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">exit_to_app</i>
+							<div class="info">
+								<p data-lang="account.logout">Log out</p>
+								<span data-lang="account.logout.info">Sign out from account</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="tab-list"></ul>
+			</div>
+			<div class="modal settings-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple" data-tab="language" onclick="open_tab(this)">
+							<i class="ico">language</i>
+							<div class="info">
+								<p data-lang="setting.language">Language</p>
+								<span data-lang="setting.language.info">Choose preferred language</span>
+							</div>
+						</li>
+						<li class="item ripple" data-tab="device" onclick="open_tab(this)">
+							<i class="ico">power</i>
+							<div class="info">
+								<p data-lang="setting.input-device">Input Device</p>
+								<span data-lang="setting.input-device.info">Choose preferred input device</span>
+							</div>
+						</li>
+						<li class="item ripple" data-tab="appearance" onclick="open_tab(this)">
+							<i class="ico">brush</i>
+							<div class="info">
+								<p data-lang="setting.appearance" data-prime="true">Appearance<b class="prime-badge">Prime</b></p>
+								<span data-lang="setting.appearance.info">Customize how you want</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="tab-list">
+					<li class="tab language-tab hidden">
+						<div class="header">
+							<div class="back ripple" onclick="close_tab(this)">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="setting.language">Language</p>
+								<span data-lang="setting.language.info">Choose preferred language</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="item ripple active" data-code="en" onclick="change_language(this)">
+								<i class="lang">EN</i>
+								<div class="info">
+									<p>English</p>
+									<span data-lang="setting.language.default">Default language</span>
+								</div>
+							</li>
+							<li class="item ripple" data-code="de" onclick="change_language(this)">
+								<i class="lang">DE</i>
+								<div class="info">
+									<p>Deutsch</p>
+								</div>
+							</li>
+						</ul>
 					</li>
-					<li class="info-item">
-						Powered by <a href="https://typable.dev">typable</a>
+					<li class="tab device-tab hidden">
+						<div class="header">
+							<div class="back ripple" onclick="close_tab(this)">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="setting.input-device">Input Device</p>
+								<span data-lang="setting.input-device.info">Choose preferred input device</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="item empty inactive">
+								<p data-lang="setting.input-device.empty">No devices detected</p>
+							</li>
+							<li class="item ripple hidden" data-device="mouse" onclick="change_device(this)">
+								<i class="ico">mouse</i>
+								<div class="info">
+									<p data-lang="setting.input-device.mouse">Mouse</p>
+									<span data-lang="setting.input-device.default">Default input device</span>
+								</div>
+							</li>
+							<li class="item ripple hidden" data-device="touch" onclick="change_device(this)">
+								<i class="ico">gesture</i>
+								<div class="info">
+									<p data-lang="setting.input-device.touch">Touch</p>
+									<span data-lang="setting.input-device.touch.info">Finger interaction</span>
+								</div>
+							</li>
+							<li class="item hidden" data-device="pen" onclick="change_device(this)">
+								<i class="ico">edit</i>
+								<div class="info">
+									<p data-lang="setting.input-device.pencil" data-prime="true">Pencil<b class="prime-badge">Prime</b></p>
+									<span data-lang="setting.input-device.pencil.info">Stylus pen, touch disabled</span>
+								</div>
+							</li>
+							<li class="item hidden" data-device="gamepad" onclick="change_device(this)">
+								<i class="ico">sports_esports</i>
+								<div class="info">
+									<p data-lang="setting.input-device.gamepad" data-prime="true">Gamepad<b class="prime-badge">Prime</b></p>
+									<span data-lang="setting.input-device.gamepad.info">Stadia Controller supported</span>
+								</div>
+							</li>
+						</ul>
+					</li>
+					<li class="tab appearance-tab hidden">
+						<div class="header">
+							<div class="back ripple" onclick="close_tab(this)">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="setting.appearance" data-prime="true">Appearance<b class="prime-badge">Prime</b></p>
+								<span data-lang="setting.appearance.info">Customize how you want</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="item ripple inactive">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p>Dark Mode</p>
+									<span data-lang="">More pleasant for your eyes</span>
+								</div>
+							</li>
+							<li class="item ripple inactive">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p>Fading UI</p>
+									<span data-lang="">UI fades out while drawing</span>
+								</div>
+							</li>
+						</ul>
 					</li>
 				</ul>
-			</div>
-			<div class="spinner hidden"></div>
-			<div class="modal modal-join" data-modal="join">
-				<input type="text" class="action-uuid" maxlength="20" spellcheck="false" autocomplete="off" placeholder="Choose a custom name">
-				<div class="separator"></div>
-				<button type="button" class="action-join success">Join</button>
-			</div>
-			<div class="modal modal-save hidden" data-modal="save">
-				<input type="text" class="action-file" maxlength="40" spellcheck="false" autocomplete="off" placeholder="Choose a file name">
-				<div class="separator"></div>
-				<div class="align">
-					<button type="button" class="action-cancel">Cancel</button>
-					<button type="button" class="action-save info">Save</button>
-				</div>
-			</div>
-			<div class="modal modal-clear hidden" data-modal="clear">
-				<p>Do you want to clear the screen?</p>
-				<div class="align">
-					<button type="button" class="action-cancel">Cancel</button>
-					<button type="button" class="action-clear danger">Clear</button>
-				</div>
-			</div>
-			<div class="modal modal-scaling hidden" data-modal="scaling">
-				<div class="align">
-					<input type="range" min="1" max="15" value="3" step="0.5" class="action-range">
-					<div class="preview">
-						<div class="circle"></div>
-					</div>
-				</div>
-				<div class="separator"></div>
-				<div class="align">
-					<button type="button" class="action-cancel">Cancel</button>
-					<button type="button" class="action-scaling info">Change</button>
-				</div>
-			</div>
-			<div class="modal modal-color hidden" data-modal="color">
-				<div class="bucket-list"></div>
-				<div class="align">
-					<button type="button" class="action-cancel">Cancel</button>
-				</div>
-			</div>
-			<div class="modal modal-error hidden" data-modal="error">
-				<p>Service currently unavailable! Try again later.</p>
-				<div class="align">
-					<button type="button" class="action-reconnect danger">Reconnect</button>
-				</div>
 			</div>
 		</div>
 	</body>

@@ -1,24 +1,985 @@
-import app from './app.js';
-
-const GOOGLE_API_KEY = 'QUl6YVN5QzZVcFRpNVlYc1h6eFJ2aEo4Z1RWbnJtTkpCQ2JCMjBn';
-
-window.addEventListener('load', function(event) {
-
-	if(typeof firebase !== 'undefined') {
-		firebase.initializeApp({
-			apiKey: atob(GOOGLE_API_KEY),
-			authDomain: "typable-website.firebaseapp.com",
-			databaseURL: "https://typable-website.firebaseio.com",
-			projectId: "typable-website",
-			storageBucket: "typable-website.appspot.com",
-			messagingSenderId: "1097239723234",
-			appId: "1:1097239723234:web:a9b8491f4778f46b96f2bb",
-			measurementId: "G-6881VEFYTQ"
-		});
-		firebase.analytics();
-		firebase.performance();
+const LANG = {
+	en: {
+		'tool.colors': 'Colors',
+		'tool.scale': 'Scale',
+		'tool.clear': 'Clear',
+		'tool.screenshot': 'Screenshot',
+		'action.multiplayer': 'Multiplayer',
+		'action.account': 'Account',
+		'action.settings': 'Settings',
+		'notification.input-device.mouse.add': 'Mouse detected',
+		'notification.input-device.touch.add': 'Touch detected',
+		'notification.input-device.pencil.add': 'Pencil detected',
+		'notification.input-device.gamepad.add': 'Gamepad detected',
+		'notification.input-device.gamepad.remove': 'Gamepad removed',
+		'multiplayer.join': 'Join',
+		'multiplayer.join.info': 'Search for channel to join',
+		'multiplayer.create': 'Create',
+		'multiplayer.create.info': 'Create a new channel',
+		'multiplayer.host': 'Host',
+		'multiplayer.host.info': 'Host current state as channel',
+		'channel.information': 'Info',
+		'channel.information.info': 'Customize channel info',
+		'channel.invite-friends': 'Invite friends',
+		'channel.invite-friends.info': 'Share channel with others',
+		'channel.private': 'Private',
+		'channel.private.info': 'Prevent channel being listed',
+		'channel.permanent': 'Permanent',
+		'channel.permanent.info': 'Keep channel permanent online',
+		'channel.roles': 'Roles',
+		'channel.roles.info': 'Manage user permissions',
+		'account.profile': 'Profile',
+		'account.profile.info': 'View your profile',
+		'account.support': 'Support',
+		'account.support.info': 'Donate a cup of coffee',
+		'account.logout': 'Log out',
+		'account.logout.info': 'Sign out from account',
+		'setting.language': 'Language',
+		'setting.language.info': 'Choose preferred language',
+		'setting.language.default': 'Default language',
+		'setting.input-device': 'Input Device',
+		'setting.input-device.info': 'Choose preferred input device',
+		'setting.input-device.default': 'Default input device',
+		'setting.input-device.empty': 'No devices detected',
+		'setting.input-device.mouse':	'Mouse',
+		'setting.input-device.touch': 'Touch',
+		'setting.input-device.pencil': 'Pencil',
+		'setting.input-device.gamepad': 'Gamepad',
+		'setting.input-device.touch.info': 'Finger interaction',
+		'setting.input-device.pencil.info': 'Stylus pen, touch disabled',
+		'setting.input-device.gamepad.info': 'Stadia Controller supported',
+		'setting.dark-mode': 'Dark Mode',
+		'setting.dark-mode.info': 'More pleasant for your eyes',
+		'setting.appearance': 'Appearance',
+		'setting.appearance.info': 'Customize how you want'
+	},
+	de: {
+		'tool.colors': 'Farben',
+		'tool.scale': 'Skalierung',
+		'tool.clear': 'Löschen',
+		'tool.screenshot': 'Screenshot',
+		'action.multiplayer': 'Mehrspieler',
+		'action.account': 'Konto',
+		'action.settings': 'Einstellungen',
+		'notification.input-device.mouse.add': 'Maus erkannt',
+		'notification.input-device.touch.add': 'Touch erkannt',
+		'notification.input-device.pencil.add': 'Stift erkannt',
+		'notification.input-device.gamepad.add': 'Gamepad erkannt',
+		'notification.input-device.gamepad.remove': 'Gamepad entfernt',
+		'multiplayer.join': 'Beitreten',
+		'multiplayer.join.info': 'Suche nach beitretbaren Channels',
+		'multiplayer.create': 'Erstellen',
+		'multiplayer.create.info': 'Erstelle einen Channel',
+		'multiplayer.host': 'Hosten',
+		'multiplayer.host.info': 'Hoste aktuellen Stand als Channel',
+		'channel.information': 'Info',
+		'channel.information.info': 'Personalisiere Channel Info',
+		'channel.invite-friends': 'Freunde einladen',
+		'channel.invite-friends.info': 'Teile Channel mit anderen',
+		'channel.private': 'Privat',
+		'channel.private.info': 'Verhindere Channel Listung',
+		'channel.permanent': 'Permanent',
+		'channel.permanent.info': 'Behalte Channel dauerhaft online',
+		'channel.roles': 'Rollen',
+		'channel.roles.info': 'Verwalte Nutzerberechtigungen',
+		'account.profile': 'Profil',
+		'account.profile.info': 'Zu Profil gehen',
+		'account.support': 'Unterstützen',
+		'account.support.info': 'Spende eine Tasse Kaffee',
+		'account.logout': 'Abmelden',
+		'account.logout.info': 'Von Konto abmelden',
+		'setting.language': 'Sprache',
+		'setting.language.info': 'Wähle bevorzugte Sprache',
+		'setting.language.default': 'Standard Sprache',
+		'setting.input-device': 'Eingabegerät',
+		'setting.input-device.info': 'Wähle bevorzugtes Eingabegerät',
+		'setting.input-device.default': 'Standard Eingabegerät',
+		'setting.input-device.empty': 'Keine Geräte erkannt',
+		'setting.input-device.mouse':	'Maus',
+		'setting.input-device.touch': 'Touch',
+		'setting.input-device.pencil': 'Stift',
+		'setting.input-device.gamepad': 'Gamepad',
+		'setting.input-device.touch.info': 'Fingerinteraktion',
+		'setting.input-device.pencil.info': 'Stylus Stift, touch deaktiviert',
+		'setting.input-device.gamepad.info': 'Stadia Controller unterstützt',
+		'setting.dark-mode': 'Dark Mode',
+		'setting.dark-mode.info': 'Angenehmer für deine Augen',
+		'setting.appearance': 'Erscheinungsbild',
+		'setting.appearance.info': 'Gestalte wie du möchtest'
 	}
+};
 
-	app.init();
-	// window.app = app;
-});
+const PRIME_CODE = '<b class="prime-badge">Prime</b>';
+const BETA_CODE = '<b class="beta-badge">Beta</b>';
+
+const KEY_BINDING = {
+	0: 'A',
+	1: 'B',
+	2: 'X',
+	3: 'Y',
+	4: 'L1',
+	5: 'R1',
+	6: 'L2',
+	7: 'R2',
+	8: 'Option',
+	9: 'Menu',
+	10: 'L3',
+	11: 'R3',
+	12: 'Up',
+	13: 'Down',
+	14: 'Left',
+	15: 'Right',
+	16: 'Power',
+	17: 'Assist',
+	18: 'Capture'
+};
+
+const COLORS = {
+	0: '#FFCDD2',
+	1: '#E57373',
+	2: '#F44336',
+	3: '#D32F2F',
+	4: '#B71C1C',
+	5: '#F8BBD0',
+	6: '#F06292',
+	7: '#E91E63',
+	8: '#C2185B',
+	9: '#880E4F',
+	10: '#E1BEE7',
+	11: '#BA68C8',
+	12: '#9C27B0',
+	13: '#7B1FA2',
+	14: '#4A148C',
+	15: '#BBDEFB',
+	16: '#64B5F6',
+	17: '#2196F3',
+	18: '#1976D2',
+	19: '#0D47A1',
+	20: '#B2EBF2',
+	21: '#4DD0E1',
+	22: '#00BCD4',
+	23: '#0097A7',
+	24: '#006064',
+	25: '#B2DFDB',
+	26: '#4DB6AC',
+	27: '#009688',
+	28: '#00796B',
+	29: '#004D40',
+	30: '#C8E6C9',
+	31: '#81C784',
+	32: '#4CAF50',
+	33: '#388E3C',
+	34: '#1B5E20',
+	35: '#FFF9C4',
+	36: '#FFF176',
+	37: '#FFEB3B',
+	38: '#FBC02D',
+	39: '#F57F17',
+	40: '#FFE0B2',
+	41: '#FFB74D',
+	42: '#FF9800',
+	43: '#F57C00',
+	44: '#E65100',
+	45: '#D7CCC8',
+	46: '#A1887F',
+	47: '#795548',
+	48: '#5D4037',
+	49: '#3E2723',
+	50: '#F5F5F5',
+	51: '#E0E0E0',
+	52: '#9E9E9E',
+	53: '#616161',
+	54: '#141414'
+};
+
+const COLOR = {
+	0: '#141414',
+	1: '#F44336',
+	2: '#2196F3',
+	3: '#009688',
+	4: '#FFEB3B',
+	5: '#9C27B0'
+};
+
+const COLORS_LENGTH = Object.values(COLORS).length;
+const COLOR_LENGTH = Object.values(COLOR).length;
+
+let canvas;
+let overlay;
+let g;
+let o;
+let ad;
+let hotbar;
+let toolbar;
+let actionbar;
+let colors;
+let actions;
+let tools;
+let modals;
+let device_options;
+let device_empty;
+let current_modal;
+let current_tab;
+let modal_colors;
+let colors_modal;
+
+let device;
+let devices = {
+	mouse: false,
+	touch: false,
+	pen: false,
+	gamepad: false
+};
+let fallback_device;
+
+let lang = 'en';
+let notification_code;
+
+let cache;
+let point;
+let last;
+let index = 0;
+let radius = 14;
+let lock_x = false;
+let lock_y = false;
+let draw;
+let erase;
+let pressed = {};
+let arrow_y = 0;
+let arrow_x = 0;
+
+window.addEventListener('load', init);
+
+function init() {
+	canvas = document.querySelector('#canvas');
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	g = canvas.getContext('2d');
+	overlay = document.querySelector('#overlay');
+	overlay.width = window.innerWidth;
+	overlay.height = window.innerHeight;
+	o = overlay.getContext('2d');
+	window.onresize = function() {
+	 	cache = g.getImageData(0, 0, canvas.width, canvas.height);
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		g.putImageData(cache, 0, 0);
+		cache = o.getImageData(0, 0, overlay.width, overlay.height);
+		overlay.width = window.innerWidth;
+		overlay.height = window.innerHeight;
+		o.putImageData(cache, 0, 0);
+	}
+	let ripple = document.querySelectorAll('.ripple');
+	for(let item of ripple) {
+		item.addEventListener('mousedown', function(event) {
+			item.classList.add('ripple-active');
+		});
+	}
+	document.addEventListener('touchmove', function(event) {
+		event.preventDefault();
+	}, { passive: false });
+	document.addEventListener('mouseup', function(event) {
+		for(let item of ripple) {
+			item.classList.remove('ripple-active');
+		}
+	});
+
+	device_options = document.querySelectorAll('.settings-modal .device-tab .item[data-device]');
+	device_empty = document.querySelector('.settings-modal .device-tab .item.empty');
+
+	ad = document.querySelector('.controls .ad');
+	hotbar = document.querySelector('.controls .hotbar');
+	toolbar = document.querySelector('.controls .toolbar');
+	actionbar = document.querySelector('.controls .actionbar');
+	colors = Array.from(hotbar.querySelectorAll('.color'));
+	actions = document.querySelectorAll('.actionbar .action');
+	tools = document.querySelectorAll('.toolbar .tool');
+	modals = document.querySelectorAll('.modal');
+	modal_colors = document.querySelectorAll('.colors-modal .color');
+	colors_modal = document.querySelector('.toolbar .tool[data-modal="colors"]');
+	for(let i in colors) {
+		if(COLOR_LENGTH > i) {
+			if(i == index) {
+				colors[i].classList.add('active');
+			}
+			colors[i].style.background = COLOR[i];
+			colors[i].addEventListener('click', function(event) {
+				for(let j in colors) {
+					if(COLOR_LENGTH > j) {
+						if(j == i) {
+							index = j;
+						}
+						colors[j].classList[j == i ? 'add' : 'remove']('active');
+					}
+				}
+			});
+		}
+	}
+	for(let i in modal_colors) {
+		if(COLORS_LENGTH > i) {
+			modal_colors[i].style.background = COLORS[i];
+			/*
+			modal_colors[i].addEventListener('click', function(event) {
+				for(let j in colors) {
+					if(COLORS_LENGTH > j) {
+						if(j == i) {
+							index = j;
+						}
+						colors[j].classList[j == i ? 'add' : 'remove']('active');
+					}
+				}
+			});
+			*/
+		}
+	}
+	document.addEventListener('dragstart', function(event) {
+		event.preventDefault();
+	});
+	document.addEventListener('contextmenu', function(event) {
+		event.preventDefault();
+	});
+	document.addEventListener('wheel', function(event) {
+		if(device !== 'gamepad') {
+			let { deltaY } = event;
+			let y = deltaY < 0 ? 1 : -1;
+			if(radius + y > 2 - 1 && radius + y < 50 + 1) {
+				radius += y;
+			}
+		}
+	});
+	document.addEventListener('wheel', function(event) {
+		if(device !== 'gamepad') {
+			let { ctrlKey } = event;
+			if(ctrlKey) {
+				event.preventDefault();
+				return;
+			}
+		}
+	}, { passive: false });
+	canvas.addEventListener('pointerdown', function(event) {
+		let { layerX, layerY, buttons, pointerType } = event;
+		if(!devices.touch && pointerType === 'touch') {
+			devices.touch = true;
+			if(device) {
+				show_notification('notification.input-device.touch.add');
+			}
+		}
+		if(!devices.pen && pointerType === 'pen') {
+			devices.pen = true;
+			show_notification('notification.input-device.pencil.add');
+		}
+		if(device !== 'gamepad') {
+			if(device === pointerType) {
+				if(!lock_x) {
+					point.x = layerX;
+					last.x = layerX;
+				}
+				if(!lock_y) {
+					point.y = layerY;
+					last.y = layerY;
+				}
+				draw = buttons == 1;
+				erase = buttons == 2;
+				ad.style.pointerEvents = 'none';
+				hotbar.style.pointerEvents = 'none';
+				toolbar.style.pointerEvents = 'none';
+				actionbar.style.pointerEvents = 'none';
+				for(let modal of modals) {
+					modal.style.pointerEvents = 'none';
+				}
+			}
+		}
+	});
+	document.addEventListener('pointermove', function(event) {
+		let { layerX, layerY, target, pointerType } = event;
+		if(!devices.mouse && pointerType === 'mouse') {
+			devices.mouse = true;
+		}
+		if(device !== 'gamepad') {
+			if(device === pointerType) {
+				if(target == canvas) {
+					if(!lock_x) {
+						point.x = layerX;
+					}
+					if(!lock_y) {
+						point.y = layerY;
+					}
+				}
+			}
+			if(!document.hasFocus()) {
+				draw = false;
+				erase = false;
+			}
+		}
+	});
+	document.addEventListener('pointerout', function(event) {
+		if(device !== 'gamepad') {
+			if(!lock_x && !lock_y) {
+				point.x = null;
+				point.y = null;
+			}
+		}
+	});
+	document.addEventListener('pointerup', function(event) {
+		if(device !== 'gamepad') {
+			let { buttons } = event;
+			draw = buttons == 1;
+			erase = buttons == 2;
+			last.x = null;
+			last.y = null;
+			ad.style.pointerEvents = '';
+			hotbar.style.pointerEvents = '';
+			toolbar.style.pointerEvents = '';
+			actionbar.style.pointerEvents = '';
+			for(let modal of modals) {
+				modal.style.pointerEvents = '';
+			}
+		}
+	});
+	document.addEventListener('keydown', function(event) {
+		let { code, ctrlKey, shiftKey, altKey } = event;
+		if(device !== 'gamepad') {
+			let lock = event.getModifierState("CapsLock");
+			if(!ctrlKey && !shiftKey && !altKey) {
+				if(code === 'KeyX') {
+					lock_y = !lock_y;
+					lock_x = false;
+				}
+				if(code === 'KeyZ') {
+					lock_x = !lock_x;
+					lock_y = false;
+				}
+				if(!lock) {
+					if(code.startsWith('Digit')) {
+						let number = parseInt(code.substr(5)) - 1;
+						if(number >= 0 && number < COLOR_LENGTH) {
+							index = number;
+							for(let i in colors) {
+								if(COLOR_LENGTH > i) {
+									colors[i].classList[i == index ? 'add' : 'remove']('active');
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if(code === 'Escape') {
+			if(current_tab) {
+				close_tab(current_tab);
+			}
+			else if(current_modal) {
+				toggle_modal(current_modal);
+			}
+		}
+	});
+	point = { x: null, y: null };
+	last = { x: null, y: null };
+	update();
+}
+
+function read_input(gamepad) {
+	let input = {
+		button: {},
+		axes: {}
+	};
+	for(let [ id, key ] of Object.entries(KEY_BINDING)) {
+		if(gamepad.buttons[id]) {
+			input.button[key] = gamepad.buttons[id].pressed;
+		}
+	}
+	input.axes['Left'] = {
+		x: gamepad.axes[0],
+		y: gamepad.axes[1]
+	};
+	input.axes['Right'] = {
+		x: gamepad.axes[2],
+		y: gamepad.axes[3]
+	};
+	return input;
+}
+
+function key_pressed(key, input, func) {
+	if(input.button[key]) {
+		if(!pressed[key]) {
+			pressed[key] = true;
+			if(func) {
+				func();
+			}
+		}
+	}
+	else {
+		pressed[key] = false;
+	}
+}
+
+function update() {
+	if(radius < 2) {
+		radius = 2;
+	}
+	if(radius > 50) {
+		radius = 50;
+	}
+	let gamepad = navigator.getGamepads()[0];
+	if(gamepad) {
+		if(!devices.gamepad) {
+			devices.gamepad = true;
+			show_notification('notification.input-device.gamepad.add');
+		}
+		if(device === 'gamepad') {
+			if(point.x == null && point.y == null) {
+				point.x = parseInt(window.innerWidth / 2);
+				point.y = parseInt(window.innerHeight / 2);
+			}
+			let input = read_input(gamepad);
+			let speed = 4;
+			draw = input.button['A'];
+			erase = input.button['B'];
+			if(pressed['L2'] && !pressed['R2']) {
+				speed = 10;
+			}
+			if(pressed['R2'] && !pressed['L2']) {
+				speed = 1;
+			}
+			// move
+			if(!lock_x) {
+				point.x += input.axes['Left'].x * speed;
+				if(point.x < 0 ) {
+					point.x = 0;
+				}
+				if(point.x > window.innerWidth) {
+					point.x = window.innerWidth;
+				}
+			}
+			if(!lock_y) {
+				point.y += input.axes['Left'].y * speed;
+				if(point.y < 0) {
+					point.y = 0;
+				}
+				if(point.y > window.innerHeight) {
+					point.y = window.innerHeight;
+				}
+			}
+			// colors
+			key_pressed('Option', input, function() {
+				toggle_modal(colors_modal);
+			});
+			// draw
+			key_pressed('A', input, function() {
+				last.x = null;
+				last.y = null;
+			});
+			// erase
+			key_pressed('B', input, function() {
+				last.x = null;
+				last.y = null;
+				if(current_tab) {
+					close_tab(current_tab);
+				}
+				else if(current_modal) {
+					toggle_modal(current_modal);
+				}
+			});
+			// sprint
+			key_pressed('L2', input);
+			// sneak
+			key_pressed('R2', input);
+			// clear
+			key_pressed('Y', input, function() {
+				if(!current_modal) {
+					g.clearRect(0, 0, window.innerWidth, window.innerHeight);
+				}
+			});
+			// radius
+			let y = -(input.axes['Right'].y / 2);
+			if(y !== 0 && radius + y > 2 && radius + y < 50 + 1) {
+				radius += y;
+			}
+			// lock y
+			key_pressed('L3', input, function() {
+				lock_y = !lock_y;
+				lock_x = false;
+			});
+			// lock x
+			key_pressed('R3', input, function() {
+				lock_x = !lock_x;
+				lock_y = false;
+			});
+			// color-wheel left
+			key_pressed('L1', input, function() {
+				if(index > 0) {
+					index--;
+					for(let i in colors) {
+						if(COLOR_LENGTH > i) {
+							colors[i].classList[i == index ? 'add' : 'remove']('active');
+						}
+					}
+				}
+			});
+			// color-wheel right
+			key_pressed('R1', input, function() {
+				if(index < COLOR_LENGTH - 1) {
+					index++;
+					for(let i in colors) {
+						if(COLOR_LENGTH > i) {
+							colors[i].classList[i == index ? 'add' : 'remove']('active');
+						}
+					}
+				}
+			});
+			key_pressed('Up', input, function() {
+				if(arrow_y > 0) {
+					arrow_y--;
+				}
+			});
+			key_pressed('Down', input, function() {
+				if(arrow_y < 10) {
+					arrow_y++;
+				}
+			});
+			key_pressed('Left', input, function() {
+				if(arrow_x > 0) {
+					arrow_x--;
+				}
+			});
+			key_pressed('Right', input, function() {
+				if(arrow_x < 4) {
+					arrow_x++;
+				}
+			});
+		}
+	}
+	else {
+		if(devices.gamepad) {
+			devices.gamepad = false;
+			show_notification('notification.input-device.gamepad.remove');
+		}
+	}
+	if(device !== 'gamepad') {
+		let pos = arrow_y * 5 + arrow_x;
+		if(modal_colors[pos].classList.contains('focus')) {
+			modal_colors[pos].classList.remove('focus');
+		}
+	}
+	// device mouse option
+	let mouse_option = document.querySelector('.settings-modal .device-tab .item[data-device="mouse"]');
+	if(devices.mouse && mouse_option.classList.contains('hidden')) {
+		mouse_option.classList.remove('hidden');
+		if(!device) {
+			device = 'mouse';
+			fallback_device = 'mouse';
+			mouse_option.classList.add('active');
+		}
+	}
+	// device touch option
+	let touch_option = document.querySelector('.settings-modal .device-tab .item[data-device="touch"]');
+	if(devices.touch && touch_option.classList.contains('hidden')) {
+		touch_option.classList.remove('hidden');
+		if(!device) {
+			device = 'touch';
+			fallback_device = 'touch';
+			touch_option.classList.add('active');
+		}
+	}
+	// device pen option
+	let pen_option = document.querySelector('.settings-modal .device-tab .item[data-device="pen"]');
+	if(devices.pen && pen_option.classList.contains('hidden')) {
+		pen_option.classList.remove('hidden');
+		if(!device) {
+			device = 'pen';
+			fallback_device = 'pen';
+			pen_option.classList.add('active');
+		}
+	}
+	// device gamepad option
+	let gamepad_option = document.querySelector('.settings-modal .device-tab .item[data-device="gamepad"]');
+	if(devices.gamepad && gamepad_option.classList.contains('hidden')) {
+		gamepad_option.classList.remove('hidden');
+		if(!device) {
+			device = 'gamepad';
+			fallback_device = 'gamepad';
+			gamepad_option.classList.add('active');
+		}
+	}
+	if(!devices.gamepad && !gamepad_option.classList.contains('hidden')) {
+		gamepad_option.classList.add('hidden');
+		gamepad_option.classList.remove('active');
+		if(device !== fallback_device) {
+			device = fallback_device;
+			let option = document.querySelector(`.device-modal .item[data-device="${device}"]`);
+			option.classList.add('active');
+		}
+		else {
+			device = null;
+		}
+	}
+	// cursor visible
+	canvas.style.cursor = device === 'mouse' ? 'none' : 'default';
+	if(!current_modal) {
+		// pencil
+		if(draw && !erase) {
+			if(point.x !== null && point.y !== null) {
+				if(last.x !== null && last.y !== null) {
+					for(let p of lerp(point, last, radius)) {
+						g.fillStyle = COLOR[index];
+						g.beginPath();
+						g.arc(p.x, p.y, parseInt(radius), 2 * Math.PI, 0);
+						g.fill();
+					}
+				}
+			}
+		}
+		// eraser
+		if(erase && !draw) {
+			if(point.x !== null && point.y !== null) {
+				if(last.x !== null && last.y !== null) {
+					for(let p of lerp(point, last, radius)) {
+						g.fillStyle = 'white';
+						g.beginPath();
+						g.arc(p.x, p.y, parseInt(radius), 2 * Math.PI, 0);
+						g.fill();
+					}
+				}
+			}
+		}
+	}
+	// at least one device
+	let one_device = Object.values(devices).some(function(device) {
+		return device;
+	});
+	if(one_device && !device_empty.classList.contains('hidden')) {
+		device_empty.classList.add('hidden');
+	}
+	if(!one_device && device_empty.classList.contains('hidden')) {
+		device_empty.classList.remove('hidden');
+	}
+	// navigate colors
+	let pos = arrow_y * 5 + arrow_x;
+	if(device === 'gamepad') {
+		for(let [ i, item ] of Object.entries(modal_colors)) {
+			item.classList[parseInt(i) == pos ? 'add' : 'remove']('focus');
+		}
+	}
+	render();
+	if(draw || erase) {
+		last.x = point.x;
+		last.y = point.y;
+	}
+	requestAnimationFrame(update);
+}
+
+function render() {
+	if(radius < 2) {
+		radius = 2;
+	}
+	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
+	if(point.x !== null && point.y !== null) {
+		o.fillStyle = 'white';
+		o.beginPath();
+		o.arc(point.x, point.y, parseInt(radius) + 2, 2 * Math.PI, 0);
+		o.fill();
+		o.fillStyle = COLOR[index];
+		o.beginPath();
+		o.arc(point.x, point.y, parseInt(radius), 2 * Math.PI, 0);
+		o.fill();
+	}
+	if(erase && !draw) {
+		o.beginPath();
+		o.lineWidth = 2;
+		o.strokeStyle = 'white';
+		o.moveTo(point.x, point.y - parseInt(radius) * 0.5);
+		o.lineTo(point.x, point.y + parseInt(radius) * 0.5);
+		o.moveTo(point.x - parseInt(radius) * 0.5, point.y);
+		o.lineTo(point.x + parseInt(radius) * 0.5, point.y);
+		o.stroke();
+	}
+	if(lock_x || lock_y) {
+		o.beginPath();
+		o.lineWidth = 2;
+		o.strokeStyle = 'white';
+		if(lock_x) {
+			o.moveTo(point.x, point.y - parseInt(radius));
+			o.lineTo(point.x, point.y + parseInt(radius));
+		}
+		if(lock_y) {
+			o.moveTo(point.x - parseInt(radius), point.y);
+			o.lineTo(point.x + parseInt(radius), point.y);
+		}
+		o.stroke();
+	}
+}
+
+function lerp(point, last, radius) {
+	let result = [];
+	let delta = {
+		x: last.x - point.x,
+		y: last.y - point.y
+	};
+	let distance = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
+	let length = parseInt(distance / (radius / 20));
+	for(let i = 0; i < length; i++) {
+		let x = point.x + (delta.x / length * i);
+		let y = point.y + (delta.y / length * i);
+		result.push({ x: x, y: y });
+	}
+	if(length == 0) {
+		result.push({ x: point.x, y: point.y });
+	}
+	return result;
+}
+
+function change_device(element) {
+	device = element.dataset.device;
+	for(let item of device_options) {
+		item.classList[element === item ? 'add' : 'remove']('active');
+	}
+	if(device !== 'gamepad') {
+		point.x = null;
+		point.y = null;
+		last.x = null;
+		last.y = null;
+	}
+}
+
+function change_language(element) {
+	let code = element.dataset.code;
+	lang = code;
+	let items = document.querySelectorAll('[data-lang]');
+	for(let item of items) {
+		let prime = item.dataset.prime === 'true';
+		let beta = item.dataset.beta === 'true';
+		let type = item.dataset.type;
+		let text = LANG[code][item.dataset.lang];
+		if(text) {
+			if(type === 'tooltip') {
+				item.dataset.title = text;
+			}
+			else {
+				item.textContent = text;
+			}
+			if(prime && type !== 'tooltip') {
+				item.innerHTML += PRIME_CODE;
+			}
+			if(beta && type !== 'tooltip') {
+				item.innerHTML += BETA_CODE;
+			}
+		}
+	}
+	let options = document.querySelectorAll('.language-tab .item');
+	for(let option of options) {
+		option.classList[option === element ? 'add' : 'remove']('active');
+	}
+}
+
+function toggle_modal(element) {
+	let code = element.dataset.modal;
+	let modal = document.querySelector(`.${code}-modal`);
+	if(modal) {
+		let open = modal.classList.contains('hidden');
+		if(open) {
+			current_modal = element;
+			for(let item of actions) {
+				if(item !== element) {
+					item.classList.remove('active');
+				}
+			}
+			for(let item of tools) {
+				if(item !== element) {
+					item.classList.remove('active');
+				}
+			}
+			for(let item of modals) {
+				if(item !== modal) {
+					item.classList.add('hidden');
+				}
+				let main = item.querySelector('.main');
+				if(main) {
+					main.classList.remove('hidden');
+					main.style.marginLeft = '0';
+				}
+				let tab_list = item.querySelector('.tab-list');
+				if(tab_list) {
+					let tabs = tab_list.querySelectorAll('.tab');
+					for(let tab of tabs) {
+						tab.classList.add('hidden');
+					}
+				}
+			}
+			if(code === 'colors') {
+				if(device === 'gamepad') {
+					modal_colors[0].classList.add('focus');
+					arrow_x = 0;
+					arrow_y = 0;
+				}
+			}
+		}
+		else {
+			current_modal = null;
+		}
+		element.classList[open ? 'add' : 'remove']('active');
+		modal.classList[open ? 'remove' : 'add']('hidden');
+		modal.animate([
+			{ opacity: 0, marginTop: '-6px' },
+			{ opacity: 1, marginTop: '0' }
+		], {
+			duration: 100,
+			fill: 'both'
+		});
+	}
+}
+
+function open_tab(element) {
+	let code = element.dataset.tab;
+	let main = element.parentNode.parentNode;
+	main.style.marginLeft = '-100%';
+	let tab = document.querySelector(`.${code}-tab`);
+	current_tab = tab.querySelector('.back');
+	tab.classList.remove('hidden');
+	main.classList.add('hidden');
+}
+
+function close_tab(element) {
+	let modal = element.parentNode.parentNode.parentNode.parentNode;
+	let main = modal.querySelector('.main');
+	let tab_list = modal.querySelector('.tab-list');
+	let tabs = tab_list.querySelectorAll('.tab');
+	for(let tab of tabs) {
+		tab.classList.add('hidden');
+	}
+	main.classList.remove('hidden');
+	main.style.marginLeft = '0';
+	current_tab = null;
+}
+
+function show_notification(message) {
+	let code = uuid();
+	notification_code = code;
+	let element = document.querySelector('.notification');
+	let content = element.querySelector('.content');
+	content.textContent = LANG[lang][message];
+	element.animate([
+		{ opacity: 0 },
+		{ opacity: 1}
+	], {
+		duration: 200,
+		fill: 'both'
+	});
+	setTimeout(function() {
+		if(notification_code === code) {
+			element.animate([
+				{ opacity: 1 },
+				{ opacity: 0}
+			], {
+				duration: 200,
+				fill: 'both'
+			});
+		}
+	}, 2000);
+}
+
+function uuid() {
+	return 'xxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
