@@ -1,127 +1,19 @@
-const LANG = {
-	en: {
-		'tool.colors': 'Colors',
-		'tool.scale': 'Scale',
-		'tool.clear': 'Clear',
-		'tool.capture': 'Capture',
-		'action.multiplayer': 'Multiplayer',
-		'action.account': 'Account',
-		'action.settings': 'Settings',
-		'notification.input-device.mouse.add': 'Mouse detected',
-		'notification.input-device.touch.add': 'Touch detected',
-		'notification.input-device.pencil.add': 'Pencil detected',
-		'notification.input-device.gamepad.add': 'Gamepad detected',
-		'notification.input-device.gamepad.remove': 'Gamepad removed',
-		'notification.clear': 'Screen cleared',
-		'multiplayer.join': 'Join',
-		'multiplayer.join.info': 'Search for channel to join',
-		'multiplayer.create': 'Create',
-		'multiplayer.create.info': 'Create a new channel',
-		'multiplayer.host': 'Host',
-		'multiplayer.host.info': 'Host current state as channel',
-		'multiplayer.invite-friends': 'Invite friends',
-		'multiplayer.invite-friends.info': 'Share channel with others',
-		'channel.information': 'Info',
-		'channel.information.info': 'Customize channel info',
-		'channel.private': 'Private',
-		'channel.private.info': 'Prevent channel being listed',
-		'channel.permanent': 'Permanent',
-		'channel.permanent.info': 'Keep channel permanent online',
-		'channel.roles': 'Roles',
-		'channel.roles.info': 'Manage user permissions',
-		'account.upgrade': 'Upgrade',
-		'account.upgrade.info': 'Unlock all fancy features',
-		'account.profile': 'Profile',
-		'account.profile.info': 'View your profile',
-		'account.support': 'Support',
-		'account.support.info': 'Donate a cup of coffee',
-		'account.feedback': 'Feedback',
-		'account.feedback.info': 'Improve our service',
-		'account.logout': 'Log out',
-		'account.logout.info': 'Sign out from account',
-		'setting.help': 'Help',
-		'setting.help.info': 'Learn more about the features',
-		'setting.language': 'Language',
-		'setting.language.info': 'Choose preferred language',
-		'setting.language.default': 'Default language',
-		'setting.input-device': 'Input Device',
-		'setting.input-device.info': 'Choose preferred input device',
-		'setting.input-device.default': 'Default input device',
-		'setting.input-device.empty': 'No devices detected',
-		'setting.input-device.mouse':	'Mouse',
-		'setting.input-device.touch': 'Touch',
-		'setting.input-device.pencil': 'Pencil',
-		'setting.input-device.gamepad': 'Gamepad',
-		'setting.input-device.touch.info': 'Finger interaction',
-		'setting.input-device.pencil.info': 'Stylus pen, touch disabled',
-		'setting.input-device.gamepad.info': 'Stadia Controller supported',
-		'setting.dark-mode': 'Dark Mode',
-		'setting.dark-mode.info': 'More pleasant for your eyes',
-		'setting.appearance': 'Appearance',
-		'setting.appearance.info': 'Customize how you want'
-	},
-	de: {
-		'tool.colors': 'Farben',
-		'tool.scale': 'Skalierung',
-		'tool.clear': 'Löschen',
-		'tool.capture': 'Capture',
-		'action.multiplayer': 'Mehrspieler',
-		'action.account': 'Konto',
-		'action.settings': 'Einstellungen',
-		'notification.input-device.mouse.add': 'Maus erkannt',
-		'notification.input-device.touch.add': 'Touch erkannt',
-		'notification.input-device.pencil.add': 'Stift erkannt',
-		'notification.input-device.gamepad.add': 'Gamepad erkannt',
-		'notification.input-device.gamepad.remove': 'Gamepad entfernt',
-		'notification.clear': 'Bildschirm gelöscht',
-		'multiplayer.join': 'Beitreten',
-		'multiplayer.join.info': 'Suche nach beitretbaren Channels',
-		'multiplayer.create': 'Erstellen',
-		'multiplayer.create.info': 'Erstelle einen Channel',
-		'multiplayer.host': 'Hosten',
-		'multiplayer.invite-friends': 'Freunde einladen',
-		'multiplayer.invite-friends.info': 'Teile Channel mit anderen',
-		'multiplayer.host.info': 'Hoste aktuellen Stand als Channel',
-		'channel.information': 'Info',
-		'channel.information.info': 'Personalisiere Channel Info',
-		'channel.private': 'Privat',
-		'channel.private.info': 'Verhindere Channel Listung',
-		'channel.permanent': 'Permanent',
-		'channel.permanent.info': 'Behalte Channel dauerhaft online',
-		'channel.roles': 'Rollen',
-		'channel.roles.info': 'Verwalte Nutzerberechtigungen',
-		'account.upgrade': 'Upgrade',
-		'account.upgrade.info': 'Schalte alle Features frei',
-		'account.profile': 'Profil',
-		'account.profile.info': 'Zu Profil gehen',
-		'account.support': 'Unterstützen',
-		'account.support.info': 'Spende eine Tasse Kaffee',
-		'account.feedback': 'Feedback',
-		'account.feedback.info': 'Verbessere unseren Service',
-		'account.logout': 'Abmelden',
-		'account.logout.info': 'Von Konto abmelden',
-		'setting.help': 'Hilfe',
-		'setting.help.info': 'Erfahre mehr über die Funktionen',
-		'setting.language': 'Sprache',
-		'setting.language.info': 'Wähle bevorzugte Sprache',
-		'setting.language.default': 'Standard Sprache',
-		'setting.input-device': 'Eingabegerät',
-		'setting.input-device.info': 'Wähle bevorzugtes Eingabegerät',
-		'setting.input-device.default': 'Standard Eingabegerät',
-		'setting.input-device.empty': 'Keine Geräte erkannt',
-		'setting.input-device.mouse':	'Maus',
-		'setting.input-device.touch': 'Touch',
-		'setting.input-device.pencil': 'Stift',
-		'setting.input-device.gamepad': 'Gamepad',
-		'setting.input-device.touch.info': 'Fingerinteraktion',
-		'setting.input-device.pencil.info': 'Stylus Stift, touch deaktiviert',
-		'setting.input-device.gamepad.info': 'Stadia Controller unterstützt',
-		'setting.dark-mode': 'Dark Mode',
-		'setting.dark-mode.info': 'Angenehmer für deine Augen',
-		'setting.appearance': 'Erscheinungsbild',
-		'setting.appearance.info': 'Gestalte wie du möchtest'
-	}
-};
+import { uuid } from './util.js';
+import { load } from './locale.js';
+import { read, key_pressed } from './gamepad.js';
+
+/* !!! JS -> PROPERTIES */
+// ^'([\w.-]+)':\s'(.*)',?$
+// $1=$2
+
+window.toggle_modal = toggle_modal;
+window.open_tab = open_tab;
+window.close_tab = close_tab;
+window.change_device = change_device;
+window.change_language = change_language;
+window.clear_screen = clear_screen;
+
+let LANG;
 
 const KEY_BINDING = {
 	0: 'A',
@@ -267,6 +159,10 @@ let left_modal = false;
 window.addEventListener('load', init);
 
 function init() {
+	load('../asset/lang', ['en', 'de'])
+		.then(function(data) {
+			LANG = data;
+		});
 	canvas = document.querySelector('#canvas');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
@@ -529,41 +425,6 @@ function init() {
 	update();
 }
 
-function read_input(gamepad) {
-	let input = {
-		button: {},
-		axes: {}
-	};
-	for(let [ id, key ] of Object.entries(KEY_BINDING)) {
-		if(gamepad.buttons[id]) {
-			input.button[key] = gamepad.buttons[id].pressed;
-		}
-	}
-	input.axes['Left'] = {
-		x: gamepad.axes[0],
-		y: gamepad.axes[1]
-	};
-	input.axes['Right'] = {
-		x: gamepad.axes[2],
-		y: gamepad.axes[3]
-	};
-	return input;
-}
-
-function key_pressed(key, input, func) {
-	if(input.button[key]) {
-		if(!pressed[key]) {
-			pressed[key] = true;
-			if(func) {
-				func();
-			}
-		}
-	}
-	else {
-		pressed[key] = false;
-	}
-}
-
 function update() {
 	if(radius < 2) {
 		radius = 2;
@@ -590,7 +451,7 @@ function update() {
 				point.x = parseInt(window.innerWidth / 2);
 				point.y = parseInt(window.innerHeight / 2);
 			}
-			let input = read_input(gamepad);
+			let input = read(gamepad);
 			let speed = 4;
 			draw = input.button['A'];
 			erase = input.button['B'];
@@ -1070,13 +931,6 @@ function show_notification(message) {
 			});
 		}
 	}, 2000);
-}
-
-function uuid() {
-	return 'xxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-		let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-		return v.toString(16);
-	});
 }
 
 function clear_screen() {
