@@ -2,9 +2,7 @@ import { uuid } from './util.js';
 import { load } from './locale.js';
 import { read, key_pressed } from './gamepad.js';
 
-/* !!! JS -> PROPERTIES */
-// ^'([\w.-]+)':\s'(.*)',?$
-// $1=$2
+import Ripple from './addon/ripple.js';
 
 window.toggle_modal = toggle_modal;
 window.open_tab = open_tab;
@@ -12,30 +10,6 @@ window.close_tab = close_tab;
 window.change_device = change_device;
 window.change_language = change_language;
 window.clear_screen = clear_screen;
-
-let LANG;
-
-const KEY_BINDING = {
-	0: 'A',
-	1: 'B',
-	2: 'X',
-	3: 'Y',
-	4: 'L1',
-	5: 'R1',
-	6: 'L2',
-	7: 'R2',
-	8: 'Option',
-	9: 'Menu',
-	10: 'L3',
-	11: 'R3',
-	12: 'Up',
-	13: 'Down',
-	14: 'Left',
-	15: 'Right',
-	16: 'Power',
-	17: 'Assist',
-	18: 'Capture'
-};
 
 const COLORS = {
 	0: '#FFCDD2',
@@ -107,6 +81,9 @@ const COLOR = {
 const COLORS_LENGTH = Object.values(COLORS).length;
 const COLOR_LENGTH = Object.values(COLOR).length;
 
+let LANG;
+
+let node;
 let canvas;
 let overlay;
 let g;
@@ -151,18 +128,15 @@ let lock_x = false;
 let lock_y = false;
 let draw;
 let erase;
-let pressed = {};
 let arrow_y = 0;
 let arrow_x = 0;
 let left_modal = false;
 
 window.addEventListener('load', init);
 
-function init() {
-	load('../asset/lang', ['en', 'de'])
-		.then(function(data) {
-			LANG = data;
-		});
+async function init() {
+	Ripple.init();
+	LANG = await load('../asset/lang', ['en', 'de']);
 	canvas = document.querySelector('#canvas');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
@@ -181,23 +155,12 @@ function init() {
 		overlay.height = window.innerHeight;
 		o.putImageData(cache, 0, 0);
 	}
-	let ripple = document.querySelectorAll('.ripple');
-	for(let item of ripple) {
-		item.addEventListener('pointerdown', function(event) {
-			item.classList.add('ripple-active');
-		});
-	}
 	document.addEventListener('touchmove', function(event) {
 		let { target } = event;
 		if(target !== scale_range) {
 			event.preventDefault();
 		}
 	}, { passive: false });
-	document.addEventListener('pointerup', function(event) {
-		for(let item of ripple) {
-			item.classList.remove('ripple-active');
-		}
-	});
 	device_options = document.querySelectorAll('.settings-modal .device-tab .item[data-device]');
 	device_empty = document.querySelector('.settings-modal .device-tab .item.empty');
 

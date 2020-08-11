@@ -24,12 +24,13 @@ const CONTROLLER_PATTERN = {
 let pressed = {};
 
 /**
-	Converts controller input into readable data.
+	Converts controller input into readable input.
 
 	@function read
 	@param {Object} gamepad - The gamepad object.
 	@return {Object} The formatted input object.
 */
+
 function read(gamepad) {
 	let result = {
 		button: {},
