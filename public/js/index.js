@@ -3,7 +3,7 @@ const LANG = {
 		'tool.colors': 'Colors',
 		'tool.scale': 'Scale',
 		'tool.clear': 'Clear',
-		'tool.screenshot': 'Screenshot',
+		'tool.capture': 'Capture',
 		'action.multiplayer': 'Multiplayer',
 		'action.account': 'Account',
 		'action.settings': 'Settings',
@@ -12,28 +12,35 @@ const LANG = {
 		'notification.input-device.pencil.add': 'Pencil detected',
 		'notification.input-device.gamepad.add': 'Gamepad detected',
 		'notification.input-device.gamepad.remove': 'Gamepad removed',
+		'notification.clear': 'Screen cleared',
 		'multiplayer.join': 'Join',
 		'multiplayer.join.info': 'Search for channel to join',
 		'multiplayer.create': 'Create',
 		'multiplayer.create.info': 'Create a new channel',
 		'multiplayer.host': 'Host',
 		'multiplayer.host.info': 'Host current state as channel',
+		'multiplayer.invite-friends': 'Invite friends',
+		'multiplayer.invite-friends.info': 'Share channel with others',
 		'channel.information': 'Info',
 		'channel.information.info': 'Customize channel info',
-		'channel.invite-friends': 'Invite friends',
-		'channel.invite-friends.info': 'Share channel with others',
 		'channel.private': 'Private',
 		'channel.private.info': 'Prevent channel being listed',
 		'channel.permanent': 'Permanent',
 		'channel.permanent.info': 'Keep channel permanent online',
 		'channel.roles': 'Roles',
 		'channel.roles.info': 'Manage user permissions',
+		'account.upgrade': 'Upgrade',
+		'account.upgrade.info': 'Unlock all fancy features',
 		'account.profile': 'Profile',
 		'account.profile.info': 'View your profile',
 		'account.support': 'Support',
 		'account.support.info': 'Donate a cup of coffee',
+		'account.feedback': 'Feedback',
+		'account.feedback.info': 'Improve our service',
 		'account.logout': 'Log out',
 		'account.logout.info': 'Sign out from account',
+		'setting.help': 'Help',
+		'setting.help.info': 'Learn more about the features',
 		'setting.language': 'Language',
 		'setting.language.info': 'Choose preferred language',
 		'setting.language.default': 'Default language',
@@ -57,7 +64,7 @@ const LANG = {
 		'tool.colors': 'Farben',
 		'tool.scale': 'Skalierung',
 		'tool.clear': 'Löschen',
-		'tool.screenshot': 'Screenshot',
+		'tool.capture': 'Capture',
 		'action.multiplayer': 'Mehrspieler',
 		'action.account': 'Konto',
 		'action.settings': 'Einstellungen',
@@ -66,28 +73,35 @@ const LANG = {
 		'notification.input-device.pencil.add': 'Stift erkannt',
 		'notification.input-device.gamepad.add': 'Gamepad erkannt',
 		'notification.input-device.gamepad.remove': 'Gamepad entfernt',
+		'notification.clear': 'Bildschirm gelöscht',
 		'multiplayer.join': 'Beitreten',
 		'multiplayer.join.info': 'Suche nach beitretbaren Channels',
 		'multiplayer.create': 'Erstellen',
 		'multiplayer.create.info': 'Erstelle einen Channel',
 		'multiplayer.host': 'Hosten',
+		'multiplayer.invite-friends': 'Freunde einladen',
+		'multiplayer.invite-friends.info': 'Teile Channel mit anderen',
 		'multiplayer.host.info': 'Hoste aktuellen Stand als Channel',
 		'channel.information': 'Info',
 		'channel.information.info': 'Personalisiere Channel Info',
-		'channel.invite-friends': 'Freunde einladen',
-		'channel.invite-friends.info': 'Teile Channel mit anderen',
 		'channel.private': 'Privat',
 		'channel.private.info': 'Verhindere Channel Listung',
 		'channel.permanent': 'Permanent',
 		'channel.permanent.info': 'Behalte Channel dauerhaft online',
 		'channel.roles': 'Rollen',
 		'channel.roles.info': 'Verwalte Nutzerberechtigungen',
+		'account.upgrade': 'Upgrade',
+		'account.upgrade.info': 'Schalte alle Features frei',
 		'account.profile': 'Profil',
 		'account.profile.info': 'Zu Profil gehen',
 		'account.support': 'Unterstützen',
 		'account.support.info': 'Spende eine Tasse Kaffee',
+		'account.feedback': 'Feedback',
+		'account.feedback.info': 'Verbessere unseren Service',
 		'account.logout': 'Abmelden',
 		'account.logout.info': 'Von Konto abmelden',
+		'setting.help': 'Hilfe',
+		'setting.help.info': 'Erfahre mehr über die Funktionen',
 		'setting.language': 'Sprache',
 		'setting.language.info': 'Wähle bevorzugte Sprache',
 		'setting.language.default': 'Standard Sprache',
@@ -108,9 +122,6 @@ const LANG = {
 		'setting.appearance.info': 'Gestalte wie du möchtest'
 	}
 };
-
-const PRIME_CODE = '<b class="prime-badge">Prime</b>';
-const BETA_CODE = '<b class="beta-badge">Beta</b>';
 
 const KEY_BINDING = {
 	0: 'A',
@@ -222,6 +233,9 @@ let current_modal;
 let current_tab;
 let modal_colors;
 let colors_modal;
+let capture_modal;
+let clear_modal;
+let scale_range;
 
 let device;
 let devices = {
@@ -238,6 +252,7 @@ let notification_code;
 let cache;
 let point;
 let last;
+let start;
 let index = 0;
 let radius = 14;
 let lock_x = false;
@@ -247,6 +262,7 @@ let erase;
 let pressed = {};
 let arrow_y = 0;
 let arrow_x = 0;
+let left_modal = false;
 
 window.addEventListener('load', init);
 
@@ -271,19 +287,21 @@ function init() {
 	}
 	let ripple = document.querySelectorAll('.ripple');
 	for(let item of ripple) {
-		item.addEventListener('mousedown', function(event) {
+		item.addEventListener('pointerdown', function(event) {
 			item.classList.add('ripple-active');
 		});
 	}
 	document.addEventListener('touchmove', function(event) {
-		event.preventDefault();
+		let { target } = event;
+		if(target !== scale_range) {
+			event.preventDefault();
+		}
 	}, { passive: false });
-	document.addEventListener('mouseup', function(event) {
+	document.addEventListener('pointerup', function(event) {
 		for(let item of ripple) {
 			item.classList.remove('ripple-active');
 		}
 	});
-
 	device_options = document.querySelectorAll('.settings-modal .device-tab .item[data-device]');
 	device_empty = document.querySelector('.settings-modal .device-tab .item.empty');
 
@@ -297,13 +315,16 @@ function init() {
 	modals = document.querySelectorAll('.modal');
 	modal_colors = document.querySelectorAll('.colors-modal .color');
 	colors_modal = document.querySelector('.toolbar .tool[data-modal="colors"]');
+	capture_modal = document.querySelector('.toolbar .tool[data-modal="capture"]');
+	clear_modal = document.querySelector('.toolbar .tool[data-modal="clear"]');
+	scale_range = document.querySelector('.scale-modal input[type="range"]');
 	for(let i in colors) {
 		if(COLOR_LENGTH > i) {
 			if(i == index) {
 				colors[i].classList.add('active');
 			}
 			colors[i].style.background = COLOR[i];
-			colors[i].addEventListener('click', function(event) {
+			colors[i].addEventListener('pointerdown', function(event) {
 				for(let j in colors) {
 					if(COLOR_LENGTH > j) {
 						if(j == i) {
@@ -318,18 +339,6 @@ function init() {
 	for(let i in modal_colors) {
 		if(COLORS_LENGTH > i) {
 			modal_colors[i].style.background = COLORS[i];
-			/*
-			modal_colors[i].addEventListener('click', function(event) {
-				for(let j in colors) {
-					if(COLORS_LENGTH > j) {
-						if(j == i) {
-							index = j;
-						}
-						colors[j].classList[j == i ? 'add' : 'remove']('active');
-					}
-				}
-			});
-			*/
 		}
 	}
 	document.addEventListener('dragstart', function(event) {
@@ -338,12 +347,19 @@ function init() {
 	document.addEventListener('contextmenu', function(event) {
 		event.preventDefault();
 	});
+	scale_range.addEventListener('input', function(event) {
+		radius = parseInt(scale_range.value);
+		left_modal = false;
+		point.x = parseInt(window.innerWidth / 2);
+		point.y = parseInt(window.innerHeight / 2);
+	});
 	document.addEventListener('wheel', function(event) {
 		if(device !== 'gamepad') {
 			let { deltaY } = event;
 			let y = deltaY < 0 ? 1 : -1;
 			if(radius + y > 2 - 1 && radius + y < 50 + 1) {
 				radius += y;
+				scale_range.value = radius;
 			}
 		}
 	});
@@ -357,7 +373,7 @@ function init() {
 		}
 	}, { passive: false });
 	canvas.addEventListener('pointerdown', function(event) {
-		let { layerX, layerY, buttons, pointerType } = event;
+		let { layerX, layerY, buttons, pointerType, target } = event;
 		if(!devices.touch && pointerType === 'touch') {
 			devices.touch = true;
 			if(device) {
@@ -369,17 +385,33 @@ function init() {
 			show_notification('notification.input-device.pencil.add');
 		}
 		if(device !== 'gamepad') {
+			if(!lock_x) {
+				start.x = layerX;
+			}
+			if(!lock_y) {
+				start.y = layerY;
+			}
+			if(current_modal && target === canvas) {
+				toggle_modal(current_modal);
+				left_modal = true;
+			}
+			else {
+				left_modal = false;
+			}
 			if(device === pointerType) {
-				if(!lock_x) {
-					point.x = layerX;
-					last.x = layerX;
+				if(!current_modal && !left_modal) {
+					if(start.x !== null && start.y !== null) {
+						if(buttons == 1) {
+							draw_line(start, null, radius, COLOR[index]);
+						}
+						if(buttons == 2) {
+							draw_line(start, null, radius, 'white');
+							erase = true;
+							last.x = null;
+							last.y = null;
+						}
+					}
 				}
-				if(!lock_y) {
-					point.y = layerY;
-					last.y = layerY;
-				}
-				draw = buttons == 1;
-				erase = buttons == 2;
 				ad.style.pointerEvents = 'none';
 				hotbar.style.pointerEvents = 'none';
 				toolbar.style.pointerEvents = 'none';
@@ -391,12 +423,26 @@ function init() {
 		}
 	});
 	document.addEventListener('pointermove', function(event) {
-		let { layerX, layerY, target, pointerType } = event;
+		let { layerX, layerY, target, pointerType, buttons } = event;
 		if(!devices.mouse && pointerType === 'mouse') {
 			devices.mouse = true;
 		}
 		if(device !== 'gamepad') {
+			draw = buttons == 1;
+			erase = buttons == 2;
+			if(buttons == 3) {
+				draw = true;
+				erase = true;
+			}
+			if(start.x !== null || start.y !== null) {
+				last = start;
+				start = {
+					x: null,
+					y: null
+				};
+			}
 			if(device === pointerType) {
+				left_modal = false;
 				if(target == canvas) {
 					if(!lock_x) {
 						point.x = layerX;
@@ -404,6 +450,10 @@ function init() {
 					if(!lock_y) {
 						point.y = layerY;
 					}
+				}
+				if(draw && erase) {
+					last.x = null;
+					last.y = null;
 				}
 			}
 			if(!document.hasFocus()) {
@@ -475,6 +525,7 @@ function init() {
 	});
 	point = { x: null, y: null };
 	last = { x: null, y: null };
+	start = { x: null, y: null };
 	update();
 }
 
@@ -525,6 +576,14 @@ function update() {
 		if(!devices.gamepad) {
 			devices.gamepad = true;
 			show_notification('notification.input-device.gamepad.add');
+			if(gamepad.vibrationActuator) {
+				gamepad.vibrationActuator.playEffect("dual-rumble", {
+					startDelay: 0,
+					duration: 100,
+					weakMagnitude: 1.0,
+					strongMagnitude: 1.0
+				});
+			}
 		}
 		if(device === 'gamepad') {
 			if(point.x == null && point.y == null) {
@@ -564,10 +623,17 @@ function update() {
 			key_pressed('Option', input, function() {
 				toggle_modal(colors_modal);
 			});
+			// capture
+			key_pressed('Capture', input, function() {
+				toggle_modal(capture_modal);
+			});
 			// draw
 			key_pressed('A', input, function() {
 				last.x = null;
 				last.y = null;
+				if(!current_modal) {
+					left_modal = false;
+				}
 			});
 			// erase
 			key_pressed('B', input, function() {
@@ -575,9 +641,14 @@ function update() {
 				last.y = null;
 				if(current_tab) {
 					close_tab(current_tab);
+					left_modal = true;
 				}
 				else if(current_modal) {
 					toggle_modal(current_modal);
+					left_modal = true;
+				}
+				else {
+					left_modal = false;
 				}
 			});
 			// sprint
@@ -586,14 +657,13 @@ function update() {
 			key_pressed('R2', input);
 			// clear
 			key_pressed('Y', input, function() {
-				if(!current_modal) {
-					g.clearRect(0, 0, window.innerWidth, window.innerHeight);
-				}
+				toggle_modal(clear_modal);
 			});
 			// radius
 			let y = -(input.axes['Right'].y / 2);
 			if(y !== 0 && radius + y > 2 && radius + y < 50 + 1) {
 				radius += y;
+				scale_range.value = radius;
 			}
 			// lock y
 			key_pressed('L3', input, function() {
@@ -663,8 +733,8 @@ function update() {
 	}
 	// device mouse option
 	let mouse_option = document.querySelector('.settings-modal .device-tab .item[data-device="mouse"]');
-	if(devices.mouse && mouse_option.classList.contains('hidden')) {
-		mouse_option.classList.remove('hidden');
+	if(devices.mouse && mouse_option.classList.contains('inactive')) {
+		mouse_option.classList.remove('inactive');
 		if(!device) {
 			device = 'mouse';
 			fallback_device = 'mouse';
@@ -673,8 +743,8 @@ function update() {
 	}
 	// device touch option
 	let touch_option = document.querySelector('.settings-modal .device-tab .item[data-device="touch"]');
-	if(devices.touch && touch_option.classList.contains('hidden')) {
-		touch_option.classList.remove('hidden');
+	if(devices.touch && touch_option.classList.contains('inactive')) {
+		touch_option.classList.remove('inactive');
 		if(!device) {
 			device = 'touch';
 			fallback_device = 'touch';
@@ -683,8 +753,8 @@ function update() {
 	}
 	// device pen option
 	let pen_option = document.querySelector('.settings-modal .device-tab .item[data-device="pen"]');
-	if(devices.pen && pen_option.classList.contains('hidden')) {
-		pen_option.classList.remove('hidden');
+	if(devices.pen && pen_option.classList.contains('inactive')) {
+		pen_option.classList.remove('inactive');
 		if(!device) {
 			device = 'pen';
 			fallback_device = 'pen';
@@ -693,39 +763,40 @@ function update() {
 	}
 	// device gamepad option
 	let gamepad_option = document.querySelector('.settings-modal .device-tab .item[data-device="gamepad"]');
-	if(devices.gamepad && gamepad_option.classList.contains('hidden')) {
-		gamepad_option.classList.remove('hidden');
+	if(devices.gamepad && gamepad_option.classList.contains('inactive')) {
+		gamepad_option.classList.remove('inactive');
 		if(!device) {
 			device = 'gamepad';
 			fallback_device = 'gamepad';
 			gamepad_option.classList.add('active');
 		}
 	}
-	if(!devices.gamepad && !gamepad_option.classList.contains('hidden')) {
-		gamepad_option.classList.add('hidden');
+	if(!devices.gamepad && !gamepad_option.classList.contains('inactive')) {
+		gamepad_option.classList.add('inactive');
 		gamepad_option.classList.remove('active');
-		if(device !== fallback_device) {
-			device = fallback_device;
-			let option = document.querySelector(`.device-modal .item[data-device="${device}"]`);
-			option.classList.add('active');
-		}
-		else {
-			device = null;
+		if(device === 'gamepad') {
+			if(device !== fallback_device) {
+				device = fallback_device;
+				let option = document.querySelector(`.settings-modal .device-tab .item[data-device="${device}"]`);
+				option.classList.add('active');
+			}
+			else {
+				device = null;
+			}
+			point.x = null;
+			point.y = null;
+			last.x = null;
+			last.y = null;
 		}
 	}
 	// cursor visible
 	canvas.style.cursor = device === 'mouse' ? 'none' : 'default';
-	if(!current_modal) {
+	if(!current_modal && !left_modal) {
 		// pencil
 		if(draw && !erase) {
 			if(point.x !== null && point.y !== null) {
 				if(last.x !== null && last.y !== null) {
-					for(let p of lerp(point, last, radius)) {
-						g.fillStyle = COLOR[index];
-						g.beginPath();
-						g.arc(p.x, p.y, parseInt(radius), 2 * Math.PI, 0);
-						g.fill();
-					}
+					draw_line(point, last, radius, COLOR[index]);
 				}
 			}
 		}
@@ -733,12 +804,7 @@ function update() {
 		if(erase && !draw) {
 			if(point.x !== null && point.y !== null) {
 				if(last.x !== null && last.y !== null) {
-					for(let p of lerp(point, last, radius)) {
-						g.fillStyle = 'white';
-						g.beginPath();
-						g.arc(p.x, p.y, parseInt(radius), 2 * Math.PI, 0);
-						g.fill();
-					}
+					draw_line(point, last, radius, 'white');
 				}
 			}
 		}
@@ -774,24 +840,41 @@ function render() {
 	}
 	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
 	if(point.x !== null && point.y !== null) {
-		o.fillStyle = 'white';
-		o.beginPath();
-		o.arc(point.x, point.y, parseInt(radius) + 2, 2 * Math.PI, 0);
-		o.fill();
-		o.fillStyle = COLOR[index];
-		o.beginPath();
-		o.arc(point.x, point.y, parseInt(radius), 2 * Math.PI, 0);
-		o.fill();
+		let touch_device = (device === 'touch' || device === 'pen');
+		if(touch_device) {
+			if(!left_modal) {
+				o.fillStyle = 'white';
+				o.beginPath();
+				o.arc(point.x, point.y, parseInt(radius) + 2, 2 * Math.PI, 0);
+				o.fill();
+				o.fillStyle = COLOR[index];
+				o.beginPath();
+				o.arc(point.x, point.y, parseInt(radius), 2 * Math.PI, 0);
+				o.fill();
+			}
+		}
+		else {
+			o.fillStyle = 'white';
+			o.beginPath();
+			o.arc(point.x, point.y, parseInt(radius) + 2, 2 * Math.PI, 0);
+			o.fill();
+			o.fillStyle = COLOR[index];
+			o.beginPath();
+			o.arc(point.x, point.y, parseInt(radius), 2 * Math.PI, 0);
+			o.fill();
+		}
 	}
-	if(erase && !draw) {
-		o.beginPath();
-		o.lineWidth = 2;
-		o.strokeStyle = 'white';
-		o.moveTo(point.x, point.y - parseInt(radius) * 0.5);
-		o.lineTo(point.x, point.y + parseInt(radius) * 0.5);
-		o.moveTo(point.x - parseInt(radius) * 0.5, point.y);
-		o.lineTo(point.x + parseInt(radius) * 0.5, point.y);
-		o.stroke();
+	if(!left_modal) {
+		if(erase && !draw) {
+			o.beginPath();
+			o.lineWidth = 2;
+			o.strokeStyle = 'white';
+			o.moveTo(point.x, point.y - parseInt(radius) * 0.5);
+			o.lineTo(point.x, point.y + parseInt(radius) * 0.5);
+			o.moveTo(point.x - parseInt(radius) * 0.5, point.y);
+			o.lineTo(point.x + parseInt(radius) * 0.5, point.y);
+			o.stroke();
+		}
 	}
 	if(lock_x || lock_y) {
 		o.beginPath();
@@ -809,35 +892,37 @@ function render() {
 	}
 }
 
-function lerp(point, last, radius) {
-	let result = [];
-	let delta = {
-		x: last.x - point.x,
-		y: last.y - point.y
-	};
-	let distance = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
-	let length = parseInt(distance / (radius / 20));
-	for(let i = 0; i < length; i++) {
-		let x = point.x + (delta.x / length * i);
-		let y = point.y + (delta.y / length * i);
-		result.push({ x: x, y: y });
+function draw_line(point, last, radius, color) {
+	if(last) {
+		g.lineCap = 'round';
+		g.strokeStyle = color;
+		g.lineWidth = 2 * parseInt(radius);
+		g.beginPath();
+		g.moveTo(last.x + 0.5, last.y + 0.5);
+		g.lineTo(point.x + 0.5, point.y + 0.5);
+		g.stroke();
 	}
-	if(length == 0) {
-		result.push({ x: point.x, y: point.y });
+	else {
+		g.fillStyle = color;
+		g.beginPath();
+		g.arc(point.x, point.y, parseInt(radius), 2 * Math.PI, 0);
+		g.fill();
 	}
-	return result;
 }
 
 function change_device(element) {
-	device = element.dataset.device;
-	for(let item of device_options) {
-		item.classList[element === item ? 'add' : 'remove']('active');
-	}
-	if(device !== 'gamepad') {
-		point.x = null;
-		point.y = null;
-		last.x = null;
-		last.y = null;
+	let value = element.dataset.device;
+	if(devices[value]) {
+		device = value;
+		for(let item of device_options) {
+			item.classList[element === item ? 'add' : 'remove']('active');
+		}
+		if(device !== 'gamepad') {
+			point.x = null;
+			point.y = null;
+			last.x = null;
+			last.y = null;
+		}
 	}
 }
 
@@ -850,6 +935,14 @@ function change_language(element) {
 		let beta = item.dataset.beta === 'true';
 		let type = item.dataset.type;
 		let text = LANG[code][item.dataset.lang];
+		let prime_content;
+		let beta_content;
+		if(prime) {
+			 prime_content = item.querySelector('b.prime-badge').textContent;
+		}
+		if(beta) {
+			beta_content = item.querySelector('b.beta-badge').textContent;
+		}
 		if(text) {
 			if(type === 'tooltip') {
 				item.dataset.title = text;
@@ -858,10 +951,10 @@ function change_language(element) {
 				item.textContent = text;
 			}
 			if(prime && type !== 'tooltip') {
-				item.innerHTML += PRIME_CODE;
+				item.innerHTML += `<b class="prime-badge">${prime_content}</b>`;
 			}
 			if(beta && type !== 'tooltip') {
-				item.innerHTML += BETA_CODE;
+				item.innerHTML += `<b class="beta-badge">${beta_content}</b>`;
 			}
 		}
 	}
@@ -930,12 +1023,14 @@ function toggle_modal(element) {
 
 function open_tab(element) {
 	let code = element.dataset.tab;
-	let main = element.parentNode.parentNode;
-	main.style.marginLeft = '-100%';
+	let main = element.parentNode.parentNode
 	let tab = document.querySelector(`.${code}-tab`);
-	current_tab = tab.querySelector('.back');
-	tab.classList.remove('hidden');
-	main.classList.add('hidden');
+	if(tab) {
+		main.style.marginLeft = '-100%';
+		current_tab = tab.querySelector('.back');
+		tab.classList.remove('hidden');
+		main.classList.add('hidden');
+	}
 }
 
 function close_tab(element) {
@@ -982,4 +1077,10 @@ function uuid() {
 		let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
 		return v.toString(16);
 	});
+}
+
+function clear_screen() {
+	g.clearRect(0, 0, canvas.width, canvas.height);
+	show_notification('notification.clear');
+	toggle_modal(clear_modal);
 }

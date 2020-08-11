@@ -33,7 +33,7 @@
 				<div class="tool ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-modal="clear" onclick="toggle_modal(this)">
 					<i class="ico">delete</i>
 				</div>
-				<div class="tool ripple tooltip" data-lang="tool.screenshot" data-type="tooltip" data-title="Screenshot" data-modal="screenshot" onclick="toggle_modal(this)">
+				<div class="tool ripple tooltip" data-lang="tool.capture" data-type="tooltip" data-title="Capture" data-modal="capture" onclick="toggle_modal(this)">
 					<i class="ico">crop_free</i>
 				</div>
 			</div>
@@ -114,12 +114,16 @@
 				<div class="color"></div>
 			</div>
 			<div class="modal scale-modal hidden">
-				<input type="range" min="1" max="50" value="3" step="1" class="action-range">
-				<div class="preview-circle"></div>
+				<input type="range" min="2" max="50" value="14" step="1">
 			</div>
 			<div class="modal clear-modal hidden">
+				<p class="text-clear">Do you want to clear the screen?</p>
+				<div class="align">
+					<button class="btn btn-cancel" data-modal="clear" onclick="toggle_modal(this)">No</button>
+					<button class="btn btn-apply" onclick="clear_screen()">Yes</button>
+				</div>
 			</div>
-			<div class="modal screenshot-modal hidden">
+			<div class="modal capture-modal hidden">
 			</div>
 			<div class="modal multiplayer-modal hidden">
 				<div class="main">
@@ -138,69 +142,112 @@
 								<span data-lang="multiplayer.create.info">Create a new channel</span>
 							</div>
 						</li>
-						<li class="item ripple">
+						<li class="item ripple inactive">
 							<i class="ico">device_hub</i>
 							<div class="info">
 								<p data-lang="multiplayer.host" data-prime="true">Host<b class="prime-badge">Prime</b></p>
 								<span data-lang="multiplayer.host.info">Host current state as channel</span>
 							</div>
 						</li>
-						<!--
-						<li class="item ripple">
-							<i class="ico">info</i>
+						<li class="separator"></li>
+						<li class="item ripple" data-tab="customize" onclick="open_tab(this)">
+							<i class="ico">build</i>
 							<div class="info">
-								<p data-lang="channel.information">Info</p>
-								<span data-lang="channel.information.info">Customize channel info</span>
+								<p data-lang="multiplayer.customize">Customize</p>
+								<span data-lang="multiplayer.host.info">Manage own channel</span>
 							</div>
 						</li>
 						<li class="item ripple">
 							<i class="ico">person_add</i>
 							<div class="info">
-								<p data-lang="channel.invite-friends">Invite friends</p>
-								<span data-lang="channel.invite-friends.info">Share channel with others</span>
+								<p data-lang="multiplayer.invite-friends">Invite friends</p>
+								<span data-lang="multiplayer.invite-friends.info">Share channel with others</span>
 							</div>
 						</li>
 						<li class="item ripple">
-							<i class="ico">lock</i>
+							<i class="ico">close</i>
 							<div class="info">
-								<p data-lang="channel.private">Private</p>
-								<span data-lang="channel.private.info">Prevent channel being listed</span>
+								<p data-lang="multiplayer.leave">Leave</p>
+								<span data-lang="multiplayer.leave.info">Leave current channel</span>
 							</div>
 						</li>
-						<li class="item ripple">
-							<i class="ico">watch_later</i>
-							<div class="info">
-								<p data-lang="channel.permanent" data-prime="true">Permanent<b class="prime-badge">Prime</b></p>
-								<span data-lang="channel.permanent.info">Keep channel permanent online</span>
-							</div>
-						</li>
-						<li class="item ripple">
-							<i class="ico">verified_user</i>
-							<div class="info">
-								<p data-lang="channel.roles" data-prime="true">Roles<b class="prime-badge">Prime</b></p>
-								<span data-lang="channel.roles.info">Manage user permissions</span>
-							</div>
-						</li>
-						-->
 					</ul>
 				</div>
-				<ul class="tab-list"></ul>
+				<ul class="tab-list">
+					<li class="tab customize-tab">
+						<div class="header">
+							<div class="back ripple" onclick="close_tab(this)">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="multiplayer.customize">Customize</p>
+								<span data-lang="multiplayer.host.info">Manage own channel</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="item ripple">
+								<i class="ico">info</i>
+								<div class="info">
+									<p data-lang="channel.information">Info</p>
+									<span data-lang="channel.information.info">Customize channel info</span>
+								</div>
+							</li>
+							<li class="item ripple">
+								<i class="ico">lock</i>
+								<div class="info">
+									<p data-lang="channel.private">Private</p>
+									<span data-lang="channel.private.info">Prevent channel being listed</span>
+								</div>
+							</li>
+							<li class="item ripple inactive">
+								<i class="ico">watch_later</i>
+								<div class="info">
+									<p data-lang="channel.permanent" data-prime="true">Permanent<b class="prime-badge">Prime</b></p>
+									<span data-lang="channel.permanent.info">Keep channel permanent online</span>
+								</div>
+							</li>
+							<li class="item ripple inactive">
+								<i class="ico">verified_user</i>
+								<div class="info">
+									<p data-lang="channel.roles" data-prime="true">Roles<b class="prime-badge">Prime</b></p>
+									<span data-lang="channel.roles.info">Manage user permissions</span>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
 			</div>
 			<div class="modal account-modal hidden">
 				<div class="main">
 					<ul class="item-list">
 						<li class="item ripple">
+							<i class="ico">publish</i>
+							<div class="info">
+								<p data-lang="account.upgrade" data-prime="true">Upgrade<b class="prime-badge">Get Prime</b></p>
+								<span data-lang="account.upgrade.info">Unlock all fancy features</span>
+							</div>
+						</li>
+						<li class="separator"></li>
+						<li class="item ripple">
+							<i class="ico">card_giftcard</i>
+							<div class="info">
+								<p data-lang="account.support">Support</p>
+								<span data-lang="account.support.info">Donate a cup of coffee</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">question_answer</i>
+							<div class="info">
+								<p data-lang="account.feedback">Feedback</p>
+								<span data-lang="account.feedback.info">Improve our service</span>
+							</div>
+						</li>
+						<li class="separator"></li>
+						<li class="item ripple">
 							<i class="ico">account_circle</i>
 							<div class="info">
 								<p data-lang="account.profile">Profile</p>
 								<span data-lang="account.profile.info">View your profile</span>
-							</div>
-						</li>
-						<li class="item ripple">
-							<i class="ico">card_giftcard</i>
-							<div class="info">
-								<p data-lang="account.support" data-beta="true">Support<b class="beta-badge">Beta</b></p>
-								<span data-lang="account.support.info">Donate a cup of coffee</span>
 							</div>
 						</li>
 						<li class="item ripple">
@@ -217,10 +264,17 @@
 			<div class="modal settings-modal hidden">
 				<div class="main">
 					<ul class="item-list">
+						<li class="item ripple" data-tab="help" onclick="open_tab(this)">
+							<i class="ico">help</i>
+							<div class="info">
+								<p data-lang="setting.help">Help</p>
+								<span data-lang="setting.help.info">Learn more about the features</span>
+							</div>
+						</li>
 						<li class="item ripple" data-tab="language" onclick="open_tab(this)">
 							<i class="ico">language</i>
 							<div class="info">
-								<p data-lang="setting.language">Language</p>
+								<p data-lang="setting.language" data-beta="true">Language<b class="beta-badge">Beta</b></p>
 								<span data-lang="setting.language.info">Choose preferred language</span>
 							</div>
 						</li>
@@ -234,20 +288,47 @@
 						<li class="item ripple" data-tab="appearance" onclick="open_tab(this)">
 							<i class="ico">brush</i>
 							<div class="info">
-								<p data-lang="setting.appearance" data-prime="true">Appearance<b class="prime-badge">Prime</b></p>
+								<p data-lang="setting.appearance">Appearance</p>
 								<span data-lang="setting.appearance.info">Customize how you want</span>
 							</div>
 						</li>
 					</ul>
 				</div>
 				<ul class="tab-list">
+					<li class="tab help-tab hidden">
+						<div class="header">
+							<div class="back ripple" onclick="close_tab(this)">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="setting.help">Help</p>
+								<span data-lang="setting.help.info">Learn more about the features</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="item ripple">
+								<i class="ico">bookmark_border</i>
+								<div class="info">
+									<p>Controls</p>
+									<span>Keyboard, Touch, Controller</span>
+								</div>
+							</li>
+							<li class="item ripple">
+								<i class="ico">bookmark_border</i>
+								<div class="info">
+									<p>Multiplayer</p>
+									<span>Channel, Roles</span>
+								</div>
+							</li>
+						</ul>
+					</li>
 					<li class="tab language-tab hidden">
 						<div class="header">
 							<div class="back ripple" onclick="close_tab(this)">
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="setting.language">Language</p>
+								<p data-lang="setting.language" data-beta="true">Language<b class="beta-badge">Beta</b></p>
 								<span data-lang="setting.language.info">Choose preferred language</span>
 							</div>
 						</div>
@@ -281,28 +362,28 @@
 							<li class="item empty inactive">
 								<p data-lang="setting.input-device.empty">No devices detected</p>
 							</li>
-							<li class="item ripple hidden" data-device="mouse" onclick="change_device(this)">
+							<li class="item ripple inactive" data-device="mouse" onclick="change_device(this)">
 								<i class="ico">mouse</i>
 								<div class="info">
 									<p data-lang="setting.input-device.mouse">Mouse</p>
 									<span data-lang="setting.input-device.default">Default input device</span>
 								</div>
 							</li>
-							<li class="item ripple hidden" data-device="touch" onclick="change_device(this)">
+							<li class="item ripple inactive" data-device="touch" onclick="change_device(this)">
 								<i class="ico">gesture</i>
 								<div class="info">
 									<p data-lang="setting.input-device.touch">Touch</p>
 									<span data-lang="setting.input-device.touch.info">Finger interaction</span>
 								</div>
 							</li>
-							<li class="item hidden" data-device="pen" onclick="change_device(this)">
+							<li class="item ripple inactive" data-device="pen" onclick="change_device(this)">
 								<i class="ico">edit</i>
 								<div class="info">
 									<p data-lang="setting.input-device.pencil" data-prime="true">Pencil<b class="prime-badge">Prime</b></p>
 									<span data-lang="setting.input-device.pencil.info">Stylus pen, touch disabled</span>
 								</div>
 							</li>
-							<li class="item hidden" data-device="gamepad" onclick="change_device(this)">
+							<li class="item ripple inactive" data-device="gamepad" onclick="change_device(this)">
 								<i class="ico">sports_esports</i>
 								<div class="info">
 									<p data-lang="setting.input-device.gamepad" data-prime="true">Gamepad<b class="prime-badge">Prime</b></p>
@@ -317,7 +398,7 @@
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="setting.appearance" data-prime="true">Appearance<b class="prime-badge">Prime</b></p>
+								<p data-lang="setting.appearance">Appearance</p>
 								<span data-lang="setting.appearance.info">Customize how you want</span>
 							</div>
 						</div>
@@ -325,14 +406,14 @@
 							<li class="item ripple inactive">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p>Dark Mode</p>
+									<p data-prime="true">Dark Mode<b class="prime-badge">Prime</b></p>
 									<span data-lang="">More pleasant for your eyes</span>
 								</div>
 							</li>
 							<li class="item ripple inactive">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p>Fading UI</p>
+									<p data-prime="true">Fading UI<b class="prime-badge">Prime</b></p>
 									<span data-lang="">UI fades out while drawing</span>
 								</div>
 							</li>
