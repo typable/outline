@@ -115,6 +115,7 @@
 			</div>
 			<div class="modal scale-modal hidden">
 				<input type="range" min="2" max="50" value="14" step="1">
+				<div class="modal window"></div>
 			</div>
 			<div class="modal clear-modal hidden">
 				<p class="text-clear">Do you want to clear the screen?</p>
@@ -124,6 +125,13 @@
 				</div>
 			</div>
 			<div class="modal capture-modal hidden">
+				<p class="text-save">Do you want to save this screen?</p>
+				<div class="preview"></div>
+					<input type="text" class="action-file" maxlength="40" spellcheck="false" autocomplete="off" placeholder="Choose a name">
+				<div class="align">
+					<button class="btn btn-cancel" data-modal="capture" onclick="toggle_modal(this)">No</button>
+					<button class="btn btn-apply" onclick="">Yes</button>
+				</div>
 			</div>
 			<div class="modal multiplayer-modal hidden">
 				<div class="main">
@@ -145,7 +153,7 @@
 						<li class="item ripple inactive">
 							<i class="ico">device_hub</i>
 							<div class="info">
-								<p data-lang="multiplayer.host" data-prime="true">Host<b class="prime-badge">Prime</b></p>
+								<p data-lang="multiplayer.host" data-badge="true">Host<b class="badge prime">Prime</b></p>
 								<span data-lang="multiplayer.host.info">Host current state as channel</span>
 							</div>
 						</li>
@@ -202,14 +210,14 @@
 							<li class="item ripple inactive">
 								<i class="ico">watch_later</i>
 								<div class="info">
-									<p data-lang="channel.permanent" data-prime="true">Permanent<b class="prime-badge">Prime</b></p>
+									<p data-lang="channel.permanent" data-badge="true">Permanent<b class="badge prime">Prime</b></p>
 									<span data-lang="channel.permanent.info">Keep channel permanent online</span>
 								</div>
 							</li>
 							<li class="item ripple inactive">
 								<i class="ico">verified_user</i>
 								<div class="info">
-									<p data-lang="channel.roles" data-prime="true">Roles<b class="prime-badge">Prime</b></p>
+									<p data-lang="channel.roles" data-badge="true">Roles<b class="badge prime">Prime</b></p>
 									<span data-lang="channel.roles.info">Manage user permissions</span>
 								</div>
 							</li>
@@ -223,7 +231,7 @@
 						<li class="item ripple">
 							<i class="ico">publish</i>
 							<div class="info">
-								<p data-lang="account.upgrade" data-prime="true">Upgrade<b class="prime-badge">Get Prime</b></p>
+								<p data-lang="account.upgrade" data-badge="true">Upgrade<b class="badge prime">Get Prime</b></p>
 								<span data-lang="account.upgrade.info">Unlock all fancy features</span>
 							</div>
 						</li>
@@ -274,7 +282,7 @@
 						<li class="item ripple" data-tab="language" onclick="open_tab(this)">
 							<i class="ico">language</i>
 							<div class="info">
-								<p data-lang="setting.language" data-beta="true">Language<b class="beta-badge">Beta</b></p>
+								<p data-lang="setting.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
 								<span data-lang="setting.language.info">Choose preferred language</span>
 							</div>
 						</li>
@@ -328,19 +336,19 @@
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="setting.language" data-beta="true">Language<b class="beta-badge">Beta</b></p>
+								<p data-lang="setting.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
 								<span data-lang="setting.language.info">Choose preferred language</span>
 							</div>
 						</div>
 						<ul class="item-list">
-							<li class="item ripple active" data-code="en" onclick="change_language(this)">
+							<li class="item ripple active" data-event="change.language" data-code="en">
 								<i class="lang">EN</i>
 								<div class="info">
 									<p>English</p>
 									<span data-lang="setting.language.default">Default language</span>
 								</div>
 							</li>
-							<li class="item ripple" data-code="de" onclick="change_language(this)">
+							<li class="item ripple" data-event="change.language" data-code="de">
 								<i class="lang">DE</i>
 								<div class="info">
 									<p>Deutsch</p>
@@ -359,34 +367,31 @@
 							</div>
 						</div>
 						<ul class="item-list">
-							<li class="item empty inactive">
-								<p data-lang="setting.input-device.empty">No devices detected</p>
-							</li>
-							<li class="item ripple inactive" data-device="mouse" onclick="change_device(this)">
+							<li class="item ripple inactive" data-event="change.device" data-code="mouse">
 								<i class="ico">mouse</i>
 								<div class="info">
 									<p data-lang="setting.input-device.mouse">Mouse</p>
 									<span data-lang="setting.input-device.default">Default input device</span>
 								</div>
 							</li>
-							<li class="item ripple inactive" data-device="touch" onclick="change_device(this)">
+							<li class="item ripple inactive" data-event="change.device" data-code="touch">
 								<i class="ico">gesture</i>
 								<div class="info">
 									<p data-lang="setting.input-device.touch">Touch</p>
 									<span data-lang="setting.input-device.touch.info">Finger interaction</span>
 								</div>
 							</li>
-							<li class="item ripple inactive" data-device="pen" onclick="change_device(this)">
+							<li class="item ripple inactive" data-event="change.device" data-code="pen">
 								<i class="ico">edit</i>
 								<div class="info">
-									<p data-lang="setting.input-device.pencil" data-prime="true">Pencil<b class="prime-badge">Prime</b></p>
+									<p data-lang="setting.input-device.pencil" data-badge="true">Pencil<b class="badge prime">Prime</b></p>
 									<span data-lang="setting.input-device.pencil.info">Stylus pen, touch disabled</span>
 								</div>
 							</li>
-							<li class="item ripple inactive" data-device="gamepad" onclick="change_device(this)">
+							<li class="item ripple inactive" data-event="change.device" data-code="gamepad">
 								<i class="ico">sports_esports</i>
 								<div class="info">
-									<p data-lang="setting.input-device.gamepad" data-prime="true">Gamepad<b class="prime-badge">Prime</b></p>
+									<p data-lang="setting.input-device.gamepad" data-badge="true">Gamepad<b class="badge prime">Prime</b></p>
 									<span data-lang="setting.input-device.gamepad.info">Stadia Controller supported</span>
 								</div>
 							</li>
@@ -406,14 +411,14 @@
 							<li class="item ripple inactive">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-prime="true">Dark Mode<b class="prime-badge">Prime</b></p>
+									<p data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
 									<span data-lang="">More pleasant for your eyes</span>
 								</div>
 							</li>
 							<li class="item ripple inactive">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-prime="true">Fading UI<b class="prime-badge">Prime</b></p>
+									<p data-badge="true">Fading UI<b class="badge prime">Prime</b></p>
 									<span data-lang="">UI fades out while drawing</span>
 								</div>
 							</li>

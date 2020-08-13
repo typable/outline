@@ -62,4 +62,14 @@ function query(args) {
 	}
 }
 
-export { uuid, html, query };
+/**
+	Prevents an event.
+
+	@function prevent
+	@param {Event} event - The event to prevent.
+*/
+function prevent(event) {
+	event.preventDefault();
+}
+
+export { uuid, html, query, prevent };
