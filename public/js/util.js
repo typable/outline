@@ -72,4 +72,9 @@ function prevent(event) {
 	event.preventDefault();
 }
 
-export { uuid, html, query, prevent };
+export {
+	uuid,
+	html,
+	query,
+	prevent
+};

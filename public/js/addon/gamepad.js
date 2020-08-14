@@ -111,7 +111,44 @@ function on_pressed(key, callback) {
 	*/
 }
 
-export default { init, get, on_connect, on_disconnect, on_pressed };
+export default {
+	init,
+	get,
+	on_connect,
+	on_disconnect,
+	on_pressed
+};
+
+// !!! TODO !!!
+/*
+gamepad.init();
+// detect gamepad
+gamepad.on_connect(function(gamepad) {
+	state.device_list.gamepad = true;
+	show_notification('notification.input-device.gamepad.add');
+	if(!state.device) {
+		state.device = 'gamepad';
+		state.device_fallback = 'gamepad';
+	}
+	update_device_list();
+});
+// gamepad removed
+gamepad.on_disconnect(function(gamepad) {
+	state.device_list.gamepad = false;
+	show_notification('notification.input-device.gamepad.remove');
+	if(state.device === 'gamepad') {
+		if(state.device !== state.device_fallback) {
+			state.device = state.device_fallback;
+		}
+		else {
+			state.device = null;
+		}
+		// point = { x: null, y: null };
+		// last = { x: null, y: null };
+	}
+	update_device_list();
+});
+*/
 
 // !!! TODO !!!
 /*

@@ -22,29 +22,28 @@
 			<div class="notification">
 				<p class="content"></p>
 			</div>
-			<div class="ad hidden"></div>
 			<div class="toolbar">
-				<div class="tool ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-modal="colors" onclick="toggle_modal(this)">
+				<div class="tool ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-event="toggle.modal" data-code="colors">
 					<i class="ico">palette</i>
 				</div>
-				<div class="tool ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-modal="scale" onclick="toggle_modal(this)">
+				<div class="tool ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-event="toggle.modal" data-code="scale">
 					<i class="ico">bubble_chart</i>
 				</div>
-				<div class="tool ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-modal="clear" onclick="toggle_modal(this)">
+				<div class="tool ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
 					<i class="ico">delete</i>
 				</div>
-				<div class="tool ripple tooltip" data-lang="tool.capture" data-type="tooltip" data-title="Capture" data-modal="capture" onclick="toggle_modal(this)">
+				<div class="tool ripple tooltip" data-lang="tool.capture" data-type="tooltip" data-title="Capture" data-event="toggle.modal" data-code="capture">
 					<i class="ico">crop_free</i>
 				</div>
 			</div>
 			<div class="actionbar">
-				<div class="action ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Multiplayer" data-modal="multiplayer" onclick="toggle_modal(this)">
+				<div class="action ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
 					<i class="ico">dns</i>
 				</div>
-				<div class="action ripple tooltip" data-lang="action.account" data-type="tooltip" data-title="Account" data-modal="account" onclick="toggle_modal(this)">
+				<div class="action ripple tooltip" data-lang="action.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
 					<i class="ico">person</i>
 				</div>
-				<div class="action ripple tooltip" data-lang="action.settings" data-type="tooltip" data-title="Settings" data-modal="settings" onclick="toggle_modal(this)">
+				<div class="action ripple tooltip" data-lang="action.settings" data-type="tooltip" data-title="Settings" data-event="toggle.modal" data-code="settings">
 					<i class="ico">settings</i>
 				</div>
 			</div>
@@ -114,23 +113,22 @@
 				<div class="color"></div>
 			</div>
 			<div class="modal scale-modal hidden">
-				<input type="range" min="2" max="50" value="14" step="1">
-				<div class="modal window"></div>
+				<input class="scale" type="range" min="2" max="50" value="14" step="1">
 			</div>
 			<div class="modal clear-modal hidden">
 				<p class="text-clear">Do you want to clear the screen?</p>
 				<div class="align">
-					<button class="btn btn-cancel" data-modal="clear" onclick="toggle_modal(this)">No</button>
-					<button class="btn btn-apply" onclick="clear_screen()">Yes</button>
+					<button class="btn btn-cancel" data-event="close.modal">No</button>
+					<button class="btn btn-apply" data-event="clear">Yes</button>
 				</div>
 			</div>
 			<div class="modal capture-modal hidden">
 				<p class="text-save">Do you want to save this screen?</p>
 				<div class="preview"></div>
-					<input type="text" class="action-file" maxlength="40" spellcheck="false" autocomplete="off" placeholder="Choose a name">
+				<input type="text" class="action-file" maxlength="40" spellcheck="false" autocomplete="off" placeholder="Choose a name">
 				<div class="align">
-					<button class="btn btn-cancel" data-modal="capture" onclick="toggle_modal(this)">No</button>
-					<button class="btn btn-apply" onclick="">Yes</button>
+					<button class="btn btn-cancel" data-event="close.modal">No</button>
+					<button class="btn btn-apply">Yes</button>
 				</div>
 			</div>
 			<div class="modal multiplayer-modal hidden">
@@ -158,7 +156,7 @@
 							</div>
 						</li>
 						<li class="separator"></li>
-						<li class="item ripple" data-tab="customize" onclick="open_tab(this)">
+						<li class="item ripple" data-event="open.tab" data-code="customize">
 							<i class="ico">build</i>
 							<div class="info">
 								<p data-lang="multiplayer.customize">Customize</p>
@@ -184,7 +182,7 @@
 				<ul class="tab-list">
 					<li class="tab customize-tab">
 						<div class="header">
-							<div class="back ripple" onclick="close_tab(this)">
+							<div class="back ripple" data-event="close.tab">
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
@@ -272,28 +270,28 @@
 			<div class="modal settings-modal hidden">
 				<div class="main">
 					<ul class="item-list">
-						<li class="item ripple" data-tab="help" onclick="open_tab(this)">
+						<li class="item ripple" data-event="open.tab" data-code="help">
 							<i class="ico">help</i>
 							<div class="info">
 								<p data-lang="setting.help">Help</p>
 								<span data-lang="setting.help.info">Learn more about the features</span>
 							</div>
 						</li>
-						<li class="item ripple" data-tab="language" onclick="open_tab(this)">
+						<li class="item ripple" data-event="open.tab" data-code="language">
 							<i class="ico">language</i>
 							<div class="info">
 								<p data-lang="setting.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
 								<span data-lang="setting.language.info">Choose preferred language</span>
 							</div>
 						</li>
-						<li class="item ripple" data-tab="device" onclick="open_tab(this)">
+						<li class="item ripple" data-event="open.tab" data-code="device">
 							<i class="ico">power</i>
 							<div class="info">
 								<p data-lang="setting.input-device">Input Device</p>
 								<span data-lang="setting.input-device.info">Choose preferred input device</span>
 							</div>
 						</li>
-						<li class="item ripple" data-tab="appearance" onclick="open_tab(this)">
+						<li class="item ripple" data-event="open.tab" data-code="appearance">
 							<i class="ico">brush</i>
 							<div class="info">
 								<p data-lang="setting.appearance">Appearance</p>
@@ -305,7 +303,7 @@
 				<ul class="tab-list">
 					<li class="tab help-tab hidden">
 						<div class="header">
-							<div class="back ripple" onclick="close_tab(this)">
+							<div class="back ripple" data-event="close.tab">
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
@@ -332,7 +330,7 @@
 					</li>
 					<li class="tab language-tab hidden">
 						<div class="header">
-							<div class="back ripple" onclick="close_tab(this)">
+							<div class="back ripple" data-event="close.tab">
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
@@ -358,7 +356,7 @@
 					</li>
 					<li class="tab device-tab hidden">
 						<div class="header">
-							<div class="back ripple" onclick="close_tab(this)">
+							<div class="back ripple" data-event="close.tab">
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
@@ -399,7 +397,7 @@
 					</li>
 					<li class="tab appearance-tab hidden">
 						<div class="header">
-							<div class="back ripple" onclick="close_tab(this)">
+							<div class="back ripple" data-event="close.tab">
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">

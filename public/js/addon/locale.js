@@ -63,6 +63,16 @@ function parse(text) {
 }
 
 /**
+	Returns the current locale.
+
+	@function get_current
+	@return {string} The current locale.
+*/
+function get_current() {
+	return current_lang;
+}
+
+/**
 	Returns the locale object by the given locale code.
 
 	@function change
@@ -108,4 +118,11 @@ function change(code) {
 	}
 }
 
-export default { init, load, parse, get, change };
+export default {
+	init,
+	load,
+	parse,
+	get_current,
+	get,
+	change
+};
