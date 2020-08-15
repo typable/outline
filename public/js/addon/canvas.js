@@ -62,7 +62,6 @@ function resize() {
 	scale_canvas(memory, m);
 	m.putImageData(image_data, 0, 0);
 	m.imageSmoothingEnabled = false;
-	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
 }
 
 function scale_canvas(canvas, g) {
@@ -143,7 +142,7 @@ function draw_curve(state) {
 }
 
 function draw_cursor(state) {
-	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
+	o.clearRect(0, 0, size, size);
 	if(state.point) {
 		if(!active) {
 			o.fillStyle = COLORS[state.color] + '';
