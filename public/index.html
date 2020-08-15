@@ -4,18 +4,19 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 		<meta name="author" content="typable">
-		<meta name="keywords" content="">
-		<meta name="description" content="">
-		<meta name="robots" content="noindex,nofollow">
+		<meta name="keywords" content="outline, typable, drawing, multiplayer">
+		<meta name="description" content="Draw with your friends together.">
+		<meta name="robots" content="noindex, nofollow">
 		<meta name="google" content="notranslate">
 		<title>Outline</title>
-		<link href="asset/img/favicon.png" rel="shortcut icon" type="image/png">
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
-		<script src="js/index.js" type="module"></script>
+		<link href="./asset/img/favicon.png" rel="shortcut icon" type="image/png">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" type="text/css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css" rel="stylesheet">
+		<link href="./css/style.css" rel="stylesheet">
+		<script src="./js/index.js" type="module"></script>
 	</head>
 	<body>
+		<div class="wrapper"></div>
 		<canvas id="canvas"></canvas>
 		<canvas id="overlay"></canvas>
 		<div class="controls">
@@ -415,14 +416,21 @@
 									<span data-lang="setting.appearance.fullscreen.info">Toggle Fullscreen</span>
 								</div>
 							</li>
-							<li class="item ripple inactive">
+							<li class="item ripple" data-event="toggle.view-mode">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p data-lang="setting.appearance.view-mode">View Mode</p>
+									<span data-lang="setting.appearance.view-mode.info">Tools and drawing disabled</span>
+								</div>
+							</li>
+							<li class="item ripple inactive" data-event="toggle.dark-mode">
 								<i class="ico">toggle_off</i>
 								<div class="info">
 									<p data-lang="setting.appearance.dark-mode" data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
 									<span data-lang="setting.appearance.dark-mode.info">More pleasant for your eyes</span>
 								</div>
 							</li>
-							<li class="item ripple inactive">
+							<li class="item ripple inactive" data-event="toggle.fading-ui">
 								<i class="ico">toggle_off</i>
 								<div class="info">
 									<p data-badge="true" data-lang="setting.appearance.fading-ui">Fading UI<b class="badge prime">Prime</b></p>

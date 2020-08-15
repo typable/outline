@@ -23,7 +23,10 @@ let state = {
 	},
 	timestamp: null,
 	modal: null,
-	tab: null
+	tab: null,
+	option: {
+		view_mode: false
+	}
 };
 
 window.addEventListener('load', init);
@@ -32,12 +35,16 @@ function init() {
 
 	canvas.init();
 	locale.init('en');
-	locale.load('../asset/lang', ['en', 'de']);
+	locale.load('./asset/lang', ['en', 'de']);
 	ripple.init();
 
 	node = query({
+		wrapper: '.wrapper',
+		controls: '.controls',
 		modal_list: { query: '.modal', all: true },
 		tab_list: { query: '.tab', all: true },
+		hotbar: '.hotbar',
+		toolbar: '.toolbar',
 		hotbar_list: { query: '.hotbar .color', all: true },
 		modal_color_list: { query: '.colors-modal .color', all: true },
 		language_list: { query: '.settings-modal .language-tab .item[data-event="change.language"]', all: true },
@@ -49,13 +56,32 @@ function init() {
 		notification: '.notification',
 		scale_input: 'input.scale[type="range"]',
 		clear: 'button.btn-apply[data-event="clear"]',
-		option_event_fullscreen: '[data-event="toggle.fullscreen"]'
+		option_event_fullscreen: '[data-event="toggle.fullscreen"]',
+		option_event_view_mode: '[data-event="toggle.view-mode"]'
 	});
 
 	fill_hotbar_list();
 	fill_modal_color_list();
 
 	bind_events();
+
+	node.wrapper.animate([
+		{ opacity: 1 },
+		{ opacity: 0, pointerEvents: 'none' }
+	], {
+		delay: 100,
+		duration: 500,
+		fill: 'both'
+	});
+	node.hotbar.animate([
+		{ opacity: 0, bottom: '-10px' },
+		{ opacity: 1 }
+	], {
+		delay: 600,
+		easing: 'ease-out',
+		duration: 250,
+		fill: 'both'
+	});
 }
 
 function bind_events() {
@@ -171,6 +197,10 @@ function bind_events() {
 		}
 	});
 	document.addEventListener('fullscreenchange', on_fullscreenchange);
+	node.option_event_view_mode.addEventListener('click', function(event) {
+		state.option.view_mode = !state.option.view_mode;
+		update_view_mode_option();
+	});
 }
 
 function update_language_list() {
@@ -269,6 +299,55 @@ function update_fullscreen_option() {
 	node.option_event_fullscreen.querySelector('.ico').textContent = fullscreen ? 'toggle_on' : 'toggle_off';
 }
 
+function update_view_mode_option() {
+	let view_mode = state.option.view_mode;
+	node.option_event_view_mode.classList[view_mode ? 'add' : 'remove']('active');
+	node.option_event_view_mode.querySelector('.ico').textContent = view_mode ? 'toggle_on' : 'toggle_off';
+	if(view_mode) {
+		canvas.clear_cursor();
+		canvas.get_canvas().style.cursor = 'default';
+		node.hotbar.classList.add('inactive');
+		node.toolbar.classList.add('inactive');
+		node.hotbar.animate([
+			{ opacity: 1 },
+			{ opacity: 0, bottom: '-10px', pointerEvents: 'none' }
+		], {
+			easing: 'ease-out',
+			duration: 250,
+			fill: 'both'
+		});
+		node.toolbar.animate([
+			{ opacity: 1 },
+			{ opacity: 0 }
+		], {
+			easing: 'ease-out',
+			duration: 250,
+			fill: 'both'
+		});
+	}
+	else {
+		canvas.get_canvas().style.cursor = 'none';
+		node.hotbar.classList.remove('inactive');
+		node.toolbar.classList.remove('inactive');
+		node.hotbar.animate([
+			{ opacity: 0, bottom: '-10px' },
+			{ opacity: 1, bottom: '30px' }
+		], {
+			easing: 'ease-out',
+			duration: 250,
+			fill: 'both'
+		});
+		node.toolbar.animate([
+			{ opacity: 0 },
+			{ opacity: 1 }
+		], {
+			easing: 'ease-out',
+			duration: 250,
+			fill: 'both'
+		});
+	}
+}
+
 function on_pointerdown(event) {
 	// detect touch
 	if(!state.device_list.touch && event.pointerType === 'touch') {
@@ -293,7 +372,7 @@ function on_pointerdown(event) {
 		update_device_list();
 	}
 	// drawing
-	if(state.device === event.pointerType) {
+	if(!state.option.view_mode && state.device === event.pointerType) {
 		if(event.target === canvas.get_canvas()) {
 			update_focus(false);
 			canvas.on_press(event, state);
@@ -320,7 +399,7 @@ function on_pointermove(event) {
 		update_device_list();
 	}
 	// drawing
-	if(state.device === event.pointerType) {
+	if(!state.option.view_mode && state.device === event.pointerType) {
 		if(event.target === canvas.get_canvas()) {
 			canvas.on_move(event, state);
 			state.point = {
@@ -333,7 +412,7 @@ function on_pointermove(event) {
 }
 
 function on_pointerup(event) {
-	if(state.device === event.pointerType) {
+	if(!state.option.view_mode && state.device === event.pointerType) {
 		canvas.on_release(event);
 		canvas.draw_cursor(state);
 		update_focus(true);
@@ -341,7 +420,7 @@ function on_pointerup(event) {
 }
 
 function on_pointerout(event) {
-	if(state.device === event.pointerType) {
+	if(!state.option.view_mode && state.device === event.pointerType) {
 		canvas.on_release(event);
 		state.point = null;
 		canvas.draw_cursor(state);
@@ -350,21 +429,6 @@ function on_pointerout(event) {
 
 function on_keydown(event) {
 	let lock = event.getModifierState("CapsLock");
-	if(!event.ctrlKey && !event.shiftKey && !event.altKey) {
-		if(!lock) {
-			if(event.code.startsWith('Digit')) {
-				let i = parseInt(event.code.substr(5)) - 1;
-				if(state.index !== i) {
-					if(i >= 0 && i < state.color_list.length) {
-						state.color = state.color_list[i];
-						state.index = i;
-						canvas.draw_cursor(state);
-						update_hotbar();
-					}
-				}
-			}
-		}
-	}
 	if(event.code === 'Escape') {
 		if(state.tab) {
 			state.tab = null;
@@ -377,12 +441,115 @@ function on_keydown(event) {
 			return;
 		}
 	}
+	if(!event.ctrlKey && !event.shiftKey && !event.altKey) {
+		if(!state.option.view_mode && !lock) {
+			if(event.code.startsWith('Digit')) {
+				let i = parseInt(event.code.substr(5)) - 1;
+				if(state.index !== i) {
+					if(i >= 0 && i < state.color_list.length) {
+						state.color = state.color_list[i];
+						state.index = i;
+						canvas.draw_cursor(state);
+						update_hotbar();
+					}
+				}
+			}
+		}
+		if(event.code === 'KeyC') {
+			if(state.modal !== 'colors') {
+				state.modal = 'colors';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyS') {
+			if(state.modal !== 'scale') {
+				state.modal = 'scale';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyE') {
+			if(state.modal !== 'pencil') {
+				state.modal = 'pencil';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyD') {
+			if(state.modal !== 'clear') {
+				state.modal = 'clear';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyQ') {
+			if(state.modal !== 'capture') {
+				state.modal = 'capture';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyV') {
+			state.option.view_mode = !state.option.view_mode;
+			update_view_mode_option();
+		}
+	}
+	// alt
+	if(event.altKey && !event.ctrlKey && !event.shiftKey) {
+		if(event.code === 'KeyM') {
+			if(state.modal !== 'multiplayer') {
+				state.modal = 'multiplayer';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyP') {
+			if(state.modal !== 'account') {
+				state.modal = 'account';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyS') {
+			if(state.modal !== 'settings') {
+				state.modal = 'settings';
+				update_modal_list();
+			}
+		}
+		if(event.code === 'KeyH') {
+			if(state.tab !== 'help') {
+				state.modal = 'settings';
+				update_modal_list();
+				state.tab = 'help';
+				update_tab_list();
+			}
+		}
+		if(event.code === 'KeyL') {
+			if(state.tab !== 'language') {
+				state.modal = 'settings';
+				update_modal_list();
+				state.tab = 'language';
+				update_tab_list();
+			}
+		}
+		if(event.code === 'KeyI') {
+			if(state.tab !== 'device') {
+				state.modal = 'settings';
+				update_modal_list();
+				state.tab = 'device';
+				update_tab_list();
+			}
+		}
+		if(event.code === 'KeyA') {
+			if(state.tab !== 'appearance') {
+				state.modal = 'settings';
+				update_modal_list();
+				state.tab = 'appearance';
+				update_tab_list();
+			}
+		}
+	}
 }
 
 function on_wheel(event) {
-	if(state.device === 'mouse') {
+	if(!state.option.view_mode && state.device === 'mouse') {
 		let y = event.deltaY < 0 ? 1 : -1;
 		if(state.radius + y > 2 - 1 && state.radius + y < 50 + 1) {
+			canvas.on_release(event);
 			state.radius += y;
 			node.scale_input.value = state.radius;
 			canvas.draw_cursor(state);
@@ -398,7 +565,7 @@ function fill_hotbar_list() {
 	for(let [ i, item ] of Object.entries(node.hotbar_list)) {
 		if(state.color_list.length > i) {
 			item.style.background = COLORS[state.color_list[i]];
-			item.addEventListener('pointerdown', function(event) {
+			item.addEventListener('click', function(event) {
 				state.color = state.color_list[i];
 				state.index = i;
 				canvas.draw_cursor(state);

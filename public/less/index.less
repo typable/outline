@@ -7,6 +7,16 @@ body {
 	overflow: hidden;
 }
 
+.wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: white;
+	z-index: 999;
+}
+
 #canvas,
 #overlay,
 .controls {
@@ -69,6 +79,13 @@ body {
 		left: calc(50% - 216px);
 		bottom: 30px;
 		z-index: -1;
+
+		&.inactive {
+
+			.color {
+				pointer-events: none !important;
+			}
+		}
 
 		.color {
 			margin: 6px;
@@ -255,6 +272,14 @@ body {
 	.toolbar {
 		display: flex;
 		position: fixed;
+
+		&.inactive {
+
+			.action,
+			.tool {
+				pointer-events: none !important;
+			}
+		}
 
 		.action,
 		.tool {

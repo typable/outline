@@ -159,6 +159,10 @@ function draw_cursor(state) {
 	}
 }
 
+function clear_cursor() {
+	o.clearRect(0, 0, size, size);
+}
+
 export default {
 	init,
 	get_canvas,
@@ -169,5 +173,6 @@ export default {
 	on_move,
 	on_release,
 	draw_curve,
-	draw_cursor
+	draw_cursor,
+	clear_cursor
 };
