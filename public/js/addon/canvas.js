@@ -6,6 +6,7 @@ let active;
 let point_list = [];
 let width;
 let height;
+let size;
 let ratio;
 let backing_store_ratio;
 
@@ -36,6 +37,10 @@ function get_canvas() {
 function resize() {
 	width = window.innerWidth;
 	height = window.innerHeight;
+	let max = width > height ? width : height;
+	if(!size || max > size) {
+		size = max;
+	}
 	backing_store_ratio = (
 		g.webkitBackingStorePixelRatio ||
 		g.mozBackingStorePixelRatio ||
@@ -45,30 +50,31 @@ function resize() {
 	)
 	ratio = DEVICE_PIXEL_RATIO / backing_store_ratio;
 	let image_data;
-	image_data = g.getImageData(0, 0, width * ratio, height * ratio);
+	image_data = g.getImageData(0, 0, size * ratio, size * ratio);
 	scale_canvas(canvas, g);
 	g.putImageData(image_data, 0, 0);
 	g.imageSmoothingEnabled = false;
-	image_data = o.getImageData(0, 0, width * ratio, height * ratio);
+	image_data = o.getImageData(0, 0, size * ratio, size * ratio);
 	scale_canvas(overlay, o);
 	o.putImageData(image_data, 0, 0);
 	o.imageSmoothingEnabled = false;
-	image_data = m.getImageData(0, 0, width * ratio, height * ratio);
+	image_data = m.getImageData(0, 0, size * ratio, size * ratio);
 	scale_canvas(memory, m);
 	m.putImageData(image_data, 0, 0);
 	m.imageSmoothingEnabled = false;
+	o.clearRect(0, 0, window.innerWidth, window.innerHeight);
 }
 
 function scale_canvas(canvas, g) {
 	if(DEVICE_PIXEL_RATIO !== backing_store_ratio) {
-		canvas.width = width * ratio;
-		canvas.height = height * ratio;
-		canvas.style.width = width + 'px';
-		canvas.style.height = height + 'px';
+		canvas.width = size * ratio;
+		canvas.height = size * ratio;
+		canvas.style.width = size + 'px';
+		canvas.style.height = size + 'px';
 	}
 	else {
-		canvas.width = width;
-		canvas.height = height;
+		canvas.width = size;
+		canvas.height = size;
 		canvas.style.width = '';
 		canvas.style.height = '';
 	}
@@ -76,8 +82,8 @@ function scale_canvas(canvas, g) {
 }
 
 function clear() {
-	g.clearRect(0, 0, width, height);
-	m.clearRect(0, 0, width, height);
+	g.clearRect(0, 0, size, size);
+	m.clearRect(0, 0, size, size);
 }
 
 function on_press(event, state) {
@@ -90,8 +96,8 @@ function on_press(event, state) {
 
 function on_move(event, state) {
 	if(active) {
-		g.clearRect(0, 0, width, height);
-		g.drawImage(memory, 0, 0, width, height);
+		g.clearRect(0, 0, size, size);
+		g.drawImage(memory, 0, 0, size, size);
 		point_list.push({
 			x: event.layerX,
 			y: event.layerY
@@ -105,8 +111,8 @@ function on_release(event) {
 		if(event && event.type === 'pointerup') {
 			active = false;
 		}
-		m.clearRect(0, 0, width, height);
-		m.drawImage(canvas, 0, 0, width, height);
+		m.clearRect(0, 0, size, size);
+		m.drawImage(canvas, 0, 0, size, size);
 		point_list = [];
 	}
 }

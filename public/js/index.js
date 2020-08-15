@@ -48,7 +48,8 @@ function init() {
 		action_list: { query: '.action', all: true },
 		notification: '.notification',
 		scale_input: 'input.scale[type="range"]',
-		clear: 'button.btn-apply[data-event="clear"]'
+		clear: 'button.btn-apply[data-event="clear"]',
+		option_event_fullscreen: '[data-event="toggle.fullscreen"]'
 	});
 
 	fill_hotbar_list();
@@ -161,6 +162,15 @@ function bind_events() {
 		state.modal = null;
 		update_modal_list();
 	});
+	node.option_event_fullscreen.addEventListener('click', function(event) {
+		if(!document.fullscreenElement) {
+			document.documentElement.requestFullscreen();
+		}
+		else if(document.exitFullscreen) {
+			document.exitFullscreen();
+		}
+	});
+	document.addEventListener('fullscreenchange', on_fullscreenchange);
 }
 
 function update_language_list() {
@@ -251,6 +261,12 @@ function update_tab_list() {
 			main.classList.add('hidden');
 		}
 	}
+}
+
+function update_fullscreen_option() {
+	let fullscreen = document.fullscreenElement;
+	node.option_event_fullscreen.classList[fullscreen ? 'add' : 'remove']('active');
+	node.option_event_fullscreen.querySelector('.ico').textContent = fullscreen ? 'toggle_on' : 'toggle_off';
 }
 
 function on_pointerdown(event) {
@@ -372,6 +388,10 @@ function on_wheel(event) {
 			canvas.draw_cursor(state);
 		}
 	}
+}
+
+function on_fullscreenchange(event) {
+	update_fullscreen_option();
 }
 
 function fill_hotbar_list() {

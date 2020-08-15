@@ -132,23 +132,25 @@ body {
 	}
 
 	.clear-modal {
-		top: calc(50% - 75px);
+		top: calc(50% - 75.5px);
 		left: calc(50% - 200px);
 		width: 400px;
-		height: 150px;
-		display: grid;
-		padding: 30px 10px 10px 10px;
+		padding: 25px;
+		display: flex;
+		flex-direction: column;
 
-		.text-clear {
+		.info {
+			width: 100%;
 			font-size: 20px;
-			width: 380px;
 			text-align: center;
-			align-items: center;
+			margin-bottom: 25px;
+			color: @brand-black;
+			user-select: none;
 		}
 
 		.align {
 			display: flex;
-			margin-top: auto;
+			gap: 25px;
 
 			.btn-cancel {
 				width: 185px;
@@ -157,9 +159,10 @@ body {
 				border-radius: 3px;
 				background-color: @brand-grey-6;
 				font-size: 17px;
+				color: @brand-black;
 
 				&:hover {
-						background-color: @brand-grey-4;
+					background-color: @brand-grey-4;
 				}
 			}
 
@@ -170,30 +173,31 @@ body {
 				border-radius: 3px;
 				border-color: grey;
 				background-color: @brand-grey-6;
-				margin-left: 10px;
 				font-size: 17px;
+				color: @brand-black;
 
 				&:hover {
-						background-color: @brand-grey-4;
+					background-color: @brand-grey-4;
 				}
 			}
 		}
 	}
 
 	.capture-modal {
-		top: calc(50% - 250px);
+		top: calc(50% - 213px);
 		left: calc(50% - 200px);
 		width: 400px;
-		height: 500px;
-		display: grid;
+		display: flex;
+		flex-direction: column;
+		padding: 25px;
 
-		.text-save {
+		.info {
 			font-size: 20px;
-			width: 380px;
-			height: px;
+			width: 100%;
 			text-align: center;
-			align-items: center;
-			margin-top: 20px;
+			margin-bottom: 25px;
+			color: @brand-black;
+			user-select: none;
 		}
 
 		.preview {
@@ -201,35 +205,20 @@ body {
  		 	background: @brand-grey-6;
 			border: 1px solid #f1f1f1;
 			border-radius: 3px;
-			margin-top: 20px;
-			margin-left: 20px;
-			margin-right: 20px;
-		}
-
-		.action-file {
-			border-radius: 3px;
-			border: 2px solid #f1f1f1;
-			height: 50px;
-			margin-top: 10px;
-			margin-left: 20px;
-			margin-right: 20px;
-			padding: 0px 0px 0px 10px;
-			font-size: 15px;
+			margin-bottom: 25px;
 		}
 
 		.align {
 			display: flex;
-			margin-top: auto;
-			margin-bottom: 20px;
+			gap: 25px;
 
 			.btn-cancel {
-				width: 170px;
+				width: 185px;
 				height: 50px;
 				border: none;
 				border-radius: 3px;
 				background-color: @brand-grey-6;
 				font-size: 17px;
-				margin-left: 20px;
 
 				&:hover {
 						background-color: @brand-grey-4;
@@ -237,13 +226,12 @@ body {
 			}
 
 			.btn-apply {
-				width: 170px;
+				width: 185px;
 				height: 50px;
 				border: none;
 				border-radius: 3px;
 				border-color: grey;
 				background-color: @brand-grey-6;
-				margin-left: 20px;
 				font-size: 17px;
 
 				&:hover {

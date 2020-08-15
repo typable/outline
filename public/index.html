@@ -29,6 +29,9 @@
 				<div class="tool ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-event="toggle.modal" data-code="scale">
 					<i class="ico">bubble_chart</i>
 				</div>
+				<div class="tool ripple tooltip" data-lang="tool.pencil" data-type="tooltip" data-title="Pencil" data-event="toggle.modal" data-code="pencil">
+					<i class="ico">brush</i>
+				</div>
 				<div class="tool ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
 					<i class="ico">delete</i>
 				</div>
@@ -116,19 +119,18 @@
 				<input class="scale" type="range" min="2" max="50" value="14" step="1">
 			</div>
 			<div class="modal clear-modal hidden">
-				<p class="text-clear">Do you want to clear the screen?</p>
+				<p class="info" data-lang="modal.clear.info">Do you want to clear the screen?</p>
 				<div class="align">
-					<button class="btn btn-cancel" data-event="close.modal">No</button>
-					<button class="btn btn-apply" data-event="clear">Yes</button>
+					<button class="btn btn-cancel" data-event="close.modal" data-lang="modal.clear.action.cancel">No</button>
+					<button class="btn btn-apply" data-event="clear" data-lang="modal.clear.action.apply">Yes</button>
 				</div>
 			</div>
 			<div class="modal capture-modal hidden">
-				<p class="text-save">Do you want to save this screen?</p>
+				<p class="info" data-lang="modal.capture.info">Do you want to save this screen?</p>
 				<div class="preview"></div>
-				<input type="text" class="action-file" maxlength="40" spellcheck="false" autocomplete="off" placeholder="Choose a name">
 				<div class="align">
-					<button class="btn btn-cancel" data-event="close.modal">No</button>
-					<button class="btn btn-apply">Yes</button>
+					<button class="btn btn-cancel" data-event="close.modal" data-lang="modal.capture.action.cancel">No</button>
+					<button class="btn btn-apply" data-lang="modal.capture.action.apply">Yes</button>
 				</div>
 			</div>
 			<div class="modal multiplayer-modal hidden">
@@ -315,15 +317,15 @@
 							<li class="item ripple">
 								<i class="ico">bookmark_border</i>
 								<div class="info">
-									<p>Controls</p>
-									<span>Keyboard, Touch, Controller</span>
+									<p data-lang="setting.help.controls">Controls</p>
+									<span data-lang="setting.help.controls.info">Keyboard, Touch, Controller</span>
 								</div>
 							</li>
 							<li class="item ripple">
 								<i class="ico">bookmark_border</i>
 								<div class="info">
-									<p>Multiplayer</p>
-									<span>Channel, Roles</span>
+									<p data-lang="setting.help.multiplayer">Multiplayer</p>
+									<span data-lang="setting.help.multiplayer.info">Channel, Roles</span>
 								</div>
 							</li>
 						</ul>
@@ -406,18 +408,25 @@
 							</div>
 						</div>
 						<ul class="item-list">
-							<li class="item ripple inactive">
+							<li class="item ripple" data-event="toggle.fullscreen">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
-									<span data-lang="">More pleasant for your eyes</span>
+									<p data-lang="setting.appearance.fullscreen">Fullscreen</p>
+									<span data-lang="setting.appearance.fullscreen.info">Toggle Fullscreen</span>
 								</div>
 							</li>
 							<li class="item ripple inactive">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-badge="true">Fading UI<b class="badge prime">Prime</b></p>
-									<span data-lang="">UI fades out while drawing</span>
+									<p data-lang="setting.appearance.dark-mode" data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
+									<span data-lang="setting.appearance.dark-mode.info">More pleasant for your eyes</span>
+								</div>
+							</li>
+							<li class="item ripple inactive">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p data-badge="true" data-lang="setting.appearance.fading-ui">Fading UI<b class="badge prime">Prime</b></p>
+									<span data-lang="setting.appearance.fading-ui.info">UI fades out while drawing</span>
 								</div>
 							</li>
 						</ul>
