@@ -39,6 +39,12 @@
 				<div class="tool ripple tooltip" data-lang="tool.capture" data-type="tooltip" data-title="Capture" data-event="toggle.modal" data-code="capture">
 					<i class="ico">crop_free</i>
 				</div>
+				<div class="tool ripple tooltip" data-lang="tool.undo" data-type="tooltip" data-title="Undo" data-event="undo">
+					<i class="ico">undo</i>
+				</div>
+				<div class="tool ripple tooltip" data-lang="tool.redo" data-type="tooltip" data-title="Redo" data-event="redo">
+					<i class="ico">redo</i>
+				</div>
 			</div>
 			<div class="actionbar">
 				<div class="action ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
@@ -122,16 +128,16 @@
 			<div class="modal clear-modal hidden">
 				<p class="info" data-lang="modal.clear.info">Do you want to clear the screen?</p>
 				<div class="align">
-					<button class="btn btn-cancel" data-event="close.modal" data-lang="modal.clear.action.cancel">No</button>
-					<button class="btn btn-apply" data-event="clear" data-lang="modal.clear.action.apply">Yes</button>
+					<button class="btn btn-cancel button ripple" data-event="close.modal" data-lang="modal.clear.action.cancel">No</button>
+					<button class="btn btn-apply button danger ripple" data-event="clear" data-lang="modal.clear.action.apply">Yes</button>
 				</div>
 			</div>
 			<div class="modal capture-modal hidden">
 				<p class="info" data-lang="modal.capture.info">Do you want to save this screen?</p>
 				<div class="preview"></div>
 				<div class="align">
-					<button class="btn btn-cancel" data-event="close.modal" data-lang="modal.capture.action.cancel">No</button>
-					<button class="btn btn-apply" data-lang="modal.capture.action.apply">Yes</button>
+					<button class="btn btn-cancel button ripple " data-event="close.modal" data-lang="modal.capture.action.cancel">No</button>
+					<button class="btn btn-apply button prime ripple" data-lang="modal.capture.action.apply">Yes</button>
 				</div>
 			</div>
 			<div class="modal multiplayer-modal hidden">
@@ -233,7 +239,7 @@
 							<i class="ico">publish</i>
 							<div class="info">
 								<p data-lang="account.upgrade" data-badge="true">Upgrade<b class="badge prime">Get Prime</b></p>
-								<span data-lang="account.upgrade.info">Unlock all fancy features</span>
+								<span data-lang="account.upgrade.info">Unlock all features</span>
 							</div>
 						</li>
 						<li class="separator"></li>
@@ -244,7 +250,7 @@
 								<span data-lang="account.support.info">Donate a cup of coffee</span>
 							</div>
 						</li>
-						<li class="item ripple">
+						<li class="item ripple"  data-event="open.tab" data-code="feedback">
 							<i class="ico">question_answer</i>
 							<div class="info">
 								<p data-lang="account.feedback">Feedback</p>
@@ -268,7 +274,28 @@
 						</li>
 					</ul>
 				</div>
-				<ul class="tab-list"></ul>
+				<ul class="tab-list">
+					<li class="tab feedback-tab hidden">
+						<div class="header">
+							<div class="back ripple" data-event="close.tab">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="account.feedback">Feedback</p>
+								<span data-lang="account.feedback.info">Improve our service</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="item ripple" data-event="toggle.share-usage-data">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p data-lang="setting.feedback.share-usage-data">Share usage data</p>
+									<span data-lang="setting.feedback.share-usage-data.info">Sends crash reports</span>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
 			</div>
 			<div class="modal settings-modal hidden">
 				<div class="main">
@@ -428,13 +455,6 @@
 								<div class="info">
 									<p data-lang="setting.appearance.dark-mode" data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
 									<span data-lang="setting.appearance.dark-mode.info">More pleasant for your eyes</span>
-								</div>
-							</li>
-							<li class="item ripple inactive" data-event="toggle.fading-ui">
-								<i class="ico">toggle_off</i>
-								<div class="info">
-									<p data-badge="true" data-lang="setting.appearance.fading-ui">Fading UI<b class="badge prime">Prime</b></p>
-									<span data-lang="setting.appearance.fading-ui.info">UI fades out while drawing</span>
 								</div>
 							</li>
 						</ul>

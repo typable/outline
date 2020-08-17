@@ -301,9 +301,14 @@ function update_fullscreen_option() {
 
 function update_view_mode_option() {
 	let view_mode = state.option.view_mode;
+	show_notification(`notification.view-mode.${view_mode ? 'on' : 'off'}`);
 	node.option_event_view_mode.classList[view_mode ? 'add' : 'remove']('active');
 	node.option_event_view_mode.querySelector('.ico').textContent = view_mode ? 'toggle_on' : 'toggle_off';
 	if(view_mode) {
+		state.modal = null;
+		state.tab = null;
+		update_modal_list();
+		canvas.on_release();
 		canvas.clear_cursor();
 		canvas.get_canvas().style.cursor = 'default';
 		node.hotbar.classList.add('inactive');
@@ -456,34 +461,24 @@ function on_keydown(event) {
 			}
 		}
 		if(event.code === 'KeyC') {
-			if(state.modal !== 'colors') {
-				state.modal = 'colors';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'colors' ? 'colors' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyS') {
-			if(state.modal !== 'scale') {
-				state.modal = 'scale';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'scale' ? 'scale' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyE') {
-			if(state.modal !== 'pencil') {
-				state.modal = 'pencil';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'pencil' ? 'pencil' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyD') {
-			if(state.modal !== 'clear') {
-				state.modal = 'clear';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'clear' ? 'clear' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyQ') {
-			if(state.modal !== 'capture') {
-				state.modal = 'capture';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'capture' ? 'capture' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyV') {
 			state.option.view_mode = !state.option.view_mode;
@@ -493,22 +488,16 @@ function on_keydown(event) {
 	// alt
 	if(event.altKey && !event.ctrlKey && !event.shiftKey) {
 		if(event.code === 'KeyM') {
-			if(state.modal !== 'multiplayer') {
-				state.modal = 'multiplayer';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'multiplayer' ? 'multiplayer' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyP') {
-			if(state.modal !== 'account') {
-				state.modal = 'account';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'account' ? 'account' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyS') {
-			if(state.modal !== 'settings') {
-				state.modal = 'settings';
-				update_modal_list();
-			}
+			state.modal = state.modal !== 'settings' ? 'settings' : null;
+			update_modal_list();
 		}
 		if(event.code === 'KeyH') {
 			if(state.tab !== 'help') {
@@ -516,6 +505,10 @@ function on_keydown(event) {
 				update_modal_list();
 				state.tab = 'help';
 				update_tab_list();
+			}
+			else {
+				state.modal = null;
+				update_modal_list();
 			}
 		}
 		if(event.code === 'KeyL') {
@@ -525,6 +518,10 @@ function on_keydown(event) {
 				state.tab = 'language';
 				update_tab_list();
 			}
+			else {
+				state.modal = null;
+				update_modal_list();
+			}
 		}
 		if(event.code === 'KeyI') {
 			if(state.tab !== 'device') {
@@ -533,6 +530,10 @@ function on_keydown(event) {
 				state.tab = 'device';
 				update_tab_list();
 			}
+			else {
+				state.modal = null;
+				update_modal_list();
+			}
 		}
 		if(event.code === 'KeyA') {
 			if(state.tab !== 'appearance') {
@@ -540,6 +541,10 @@ function on_keydown(event) {
 				update_modal_list();
 				state.tab = 'appearance';
 				update_tab_list();
+			}
+			else {
+				state.modal = null;
+				update_modal_list();
 			}
 		}
 	}
@@ -587,6 +592,8 @@ function fill_modal_color_list() {
 				state.modal = null;
 				update_modal_list();
 				canvas.draw_cursor(state);
+				state.index = null;
+				update_hotbar();
 			});
 		}
 	}

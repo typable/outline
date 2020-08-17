@@ -50,6 +50,60 @@ body {
 	}
 }
 
+.button {
+	display: block;
+	height: 44px;
+	padding: 0 22px;
+	border: none;
+	border-radius: 4px;
+	background: @brand-grey-6;
+	color: @brand-black;
+	font-size: 16px;
+
+	&:hover {
+
+		&.ripple-active {
+			background: lighten(@brand-grey-6, -2%);
+		}
+	}
+
+	&.outline {
+		border: 1px solid @brand-grey-5;
+		background: transparent;
+
+		&:hover {
+
+			&.ripple-active {
+				background: lighten(white, -2%);
+			}
+		}
+	}
+
+	&.prime {
+		background: @brand-blue;
+		color: white;
+
+		&:hover {
+
+			&.ripple-active {
+				background: lighten(@brand-blue, -2%);
+			}
+		}
+	}
+
+	&.danger {
+		background: @brand-red;
+		color: white;
+
+		&:hover {
+
+			&.ripple-active {
+				background: lighten(@brand-red, -2%);
+			}
+		}
+	}
+}
+
 .controls {
 	pointer-events: none;
 
@@ -174,13 +228,7 @@ body {
 				height: 50px;
 				border: none;
 				border-radius: 3px;
-				background-color: @brand-grey-6;
 				font-size: 17px;
-				color: @brand-black;
-
-				&:hover {
-					background-color: @brand-grey-4;
-				}
 			}
 
 			.btn-apply {
@@ -189,13 +237,7 @@ body {
 				border: none;
 				border-radius: 3px;
 				border-color: grey;
-				background-color: @brand-grey-6;
 				font-size: 17px;
-				color: @brand-black;
-
-				&:hover {
-					background-color: @brand-grey-4;
-				}
 			}
 		}
 	}
@@ -234,12 +276,7 @@ body {
 				height: 50px;
 				border: none;
 				border-radius: 3px;
-				background-color: @brand-grey-6;
 				font-size: 17px;
-
-				&:hover {
-						background-color: @brand-grey-4;
-				}
 			}
 
 			.btn-apply {
@@ -248,12 +285,7 @@ body {
 				border: none;
 				border-radius: 3px;
 				border-color: grey;
-				background-color: @brand-grey-6;
 				font-size: 17px;
-
-				&:hover {
-						background-color: @brand-grey-4;
-				}
 			}
 		}
 	}
