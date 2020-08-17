@@ -45,6 +45,7 @@ function init() {
 		tab_list: { query: '.tab', all: true },
 		hotbar: '.hotbar',
 		toolbar: '.toolbar',
+		actionbar: '.actionbar',
 		hotbar_list: { query: '.hotbar .color', all: true },
 		modal_color_list: { query: '.colors-modal .color', all: true },
 		language_list: { query: '.settings-modal .language-tab .item[data-event="change.language"]', all: true },
@@ -313,6 +314,7 @@ function update_view_mode_option() {
 		canvas.get_canvas().style.cursor = 'default';
 		node.hotbar.classList.add('inactive');
 		node.toolbar.classList.add('inactive');
+		node.actionbar.classList.add('inactive');
 		node.hotbar.animate([
 			{ opacity: 1 },
 			{ opacity: 0, bottom: '-10px', pointerEvents: 'none' }
@@ -329,11 +331,20 @@ function update_view_mode_option() {
 			duration: 250,
 			fill: 'both'
 		});
+		node.actionbar.animate([
+			{ opacity: 1 },
+			{ opacity: 0 }
+		], {
+			easing: 'ease-out',
+			duration: 250,
+			fill: 'both'
+		});
 	}
 	else {
 		canvas.get_canvas().style.cursor = 'none';
 		node.hotbar.classList.remove('inactive');
 		node.toolbar.classList.remove('inactive');
+		node.actionbar.classList.remove('inactive');
 		node.hotbar.animate([
 			{ opacity: 0, bottom: '-10px' },
 			{ opacity: 1, bottom: '30px' }
@@ -343,6 +354,14 @@ function update_view_mode_option() {
 			fill: 'both'
 		});
 		node.toolbar.animate([
+			{ opacity: 0 },
+			{ opacity: 1 }
+		], {
+			easing: 'ease-out',
+			duration: 250,
+			fill: 'both'
+		});
+		node.actionbar.animate([
 			{ opacity: 0 },
 			{ opacity: 1 }
 		], {
