@@ -160,7 +160,7 @@ function draw_cursor(state) {
 			o.fillStyle = COLORS[state.color] + '88';
 		}
 		if(state.pencil === 'eraser') {
-			o.fillStyle = '#E28787';
+			o.fillStyle = COLORS[state.color] + '55';
 		}
 		o.beginPath();
 		o.arc(state.point.x, state.point.y, 2 * state.radius / 2, 0, Math.PI * 2, !0);

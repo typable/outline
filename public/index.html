@@ -48,58 +48,25 @@
 						<li class="tool-item ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
 							<i class="ico">clear</i>
 						</li>
+						<li class="tool-item ripple tooltip" data-lang="tool.capture" data-type="tooltip" data-title="Capture" data-event="toggle.modal" data-code="capture">
+							<i class="ico">crop_free</i>
+						</li>
 					<ul>
 				</div>
 				<div class="option">
 					<ul class="option-list">
-						<li class="option-item upgrade ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Upgrade">
-							<i class="ico">forward</i>
+						<li class="option-item ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
+							<i class="ico">dns</i>
 						</li>
 						<li class="tool-item ripple tooltip" data-lang="action.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
 							<i class="ico">person</i>
 						</li>
-						<li class="tool-item ripple tooltip" data-lang="action.settings" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="settings">
+						<li class="tool-item ripple tooltip" data-lang="action.more" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="more">
 							<i class="ico">more_vert</i>
 						</li>
 					<ul>
 				</div>
 			</div>
-			<!--
-			<div class="toolbar">
-				<div class="tool ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-event="toggle.modal" data-code="colors">
-					<i class="ico">palette</i>
-				</div>
-				<div class="tool ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-event="toggle.modal" data-code="scale">
-					<i class="ico">bubble_chart</i>
-				</div>
-				<div class="tool ripple tooltip" data-lang="tool.pencil" data-type="tooltip" data-title="Pencil" data-event="toggle.modal" data-code="pencil">
-					<i class="ico">edit</i>
-				</div>
-				<div class="tool ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
-					<i class="ico">clear</i>
-				</div>
-				<div class="tool ripple tooltip" data-lang="tool.capture" data-type="tooltip" data-title="Capture" data-event="toggle.modal" data-code="capture">
-					<i class="ico">crop_free</i>
-				</div>
-				<div class="tool ripple tooltip" data-lang="tool.undo" data-type="tooltip" data-title="Undo" data-event="undo">
-					<i class="ico">undo</i>
-				</div>
-				<div class="tool ripple tooltip" data-lang="tool.redo" data-type="tooltip" data-title="Redo" data-event="redo">
-					<i class="ico">redo</i>
-				</div>
-			</div>
-			<div class="actionbar">
-				<div class="action ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
-					<i class="ico">dns</i>
-				</div>
-				<div class="action ripple tooltip" data-lang="action.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
-					<i class="ico">person</i>
-				</div>
-				<div class="action ripple tooltip" data-lang="action.settings" data-type="tooltip" data-title="Settings" data-event="toggle.modal" data-code="settings">
-					<i class="ico">settings</i>
-				</div>
-			</div>
-			-->
 			<div class="hotbar">
 				<div class="color"></div>
 				<div class="color"></div>
@@ -240,6 +207,7 @@
 								<span data-lang="multiplayer.host.info">Host current state as channel</span>
 							</div>
 						</li>
+						<!--
 						<li class="separator"></li>
 						<li class="item ripple" data-event="open.tab" data-code="customize">
 							<i class="ico">build</i>
@@ -262,6 +230,7 @@
 								<span data-lang="multiplayer.leave.info">Leave current channel</span>
 							</div>
 						</li>
+						-->
 					</ul>
 				</div>
 				<ul class="tab-list">
@@ -333,6 +302,7 @@
 								<span data-lang="account.feedback.info">Improve our service</span>
 							</div>
 						</li>
+						<!--
 						<li class="separator"></li>
 						<li class="item ripple">
 							<i class="ico">account_circle</i>
@@ -348,6 +318,7 @@
 								<span data-lang="account.logout.info">Sign out from account</span>
 							</div>
 						</li>
+						-->
 					</ul>
 				</div>
 				<ul class="tab-list">
@@ -362,46 +333,47 @@
 							</div>
 						</div>
 						<ul class="item-list">
+							<li class="separator"></li>
 							<li class="item ripple" data-event="toggle.share-usage-data">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-lang="setting.feedback.share-usage-data">Share usage data</p>
-									<span data-lang="setting.feedback.share-usage-data.info">Sends crash reports</span>
+									<p data-lang="more.feedback.share-usage-data">Share usage data</p>
+									<span data-lang="more.feedback.share-usage-data.info">Sends crash reports</span>
 								</div>
 							</li>
 						</ul>
 					</li>
 				</ul>
 			</div>
-			<div class="modal settings-modal hidden">
+			<div class="modal more-modal hidden">
 				<div class="main">
 					<ul class="item-list">
 						<li class="item ripple" data-event="open.tab" data-code="help">
 							<i class="ico">help</i>
 							<div class="info">
-								<p data-lang="setting.help">Help</p>
-								<span data-lang="setting.help.info">Learn more about the features</span>
+								<p data-lang="more.help">Help</p>
+								<span data-lang="more.help.info">Learn more about the features</span>
 							</div>
 						</li>
 						<li class="item ripple" data-event="open.tab" data-code="language">
 							<i class="ico">language</i>
 							<div class="info">
-								<p data-lang="setting.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
-								<span data-lang="setting.language.info">Choose preferred language</span>
+								<p data-lang="more.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
+								<span data-lang="more.language.info">Choose preferred language</span>
 							</div>
 						</li>
 						<li class="item ripple" data-event="open.tab" data-code="device">
 							<i class="ico">power</i>
 							<div class="info">
-								<p data-lang="setting.input-device">Input Device</p>
-								<span data-lang="setting.input-device.info">Choose preferred input device</span>
+								<p data-lang="more.input-device">Input Device</p>
+								<span data-lang="more.input-device.info">Choose preferred input device</span>
 							</div>
 						</li>
 						<li class="item ripple" data-event="open.tab" data-code="appearance">
 							<i class="ico">brush</i>
 							<div class="info">
-								<p data-lang="setting.appearance">Appearance</p>
-								<span data-lang="setting.appearance.info">Customize how you want</span>
+								<p data-lang="more.appearance">Appearance</p>
+								<span data-lang="more.appearance.info">Customize how you want</span>
 							</div>
 						</li>
 					</ul>
@@ -413,23 +385,24 @@
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="setting.help">Help</p>
-								<span data-lang="setting.help.info">Learn more about the features</span>
+								<p data-lang="more.help">Help</p>
+								<span data-lang="more.help.info">Learn more about the features</span>
 							</div>
 						</div>
 						<ul class="item-list">
+							<li class="separator"></li>
 							<li class="item ripple">
 								<i class="ico">bookmark_border</i>
 								<div class="info">
-									<p data-lang="setting.help.controls">Controls</p>
-									<span data-lang="setting.help.controls.info">Keyboard, Touch, Controller</span>
+									<p data-lang="more.help.controls">Controls</p>
+									<span data-lang="semoretting.help.controls.info">Keyboard, Touch, Controller</span>
 								</div>
 							</li>
 							<li class="item ripple">
 								<i class="ico">bookmark_border</i>
 								<div class="info">
-									<p data-lang="setting.help.multiplayer">Multiplayer</p>
-									<span data-lang="setting.help.multiplayer.info">Channel, Roles</span>
+									<p data-lang="more.help.multiplayer">Multiplayer</p>
+									<span data-lang="more.help.multiplayer.info">Channel, Roles</span>
 								</div>
 							</li>
 						</ul>
@@ -440,16 +413,17 @@
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="setting.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
-								<span data-lang="setting.language.info">Choose preferred language</span>
+								<p data-lang="more.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
+								<span data-lang="more.language.info">Choose preferred language</span>
 							</div>
 						</div>
 						<ul class="item-list">
+							<li class="separator"></li>
 							<li class="item ripple active" data-event="change.language" data-code="en">
 								<i class="lang">EN</i>
 								<div class="info">
 									<p>English</p>
-									<span data-lang="setting.language.default">Default language</span>
+									<span data-lang="more.language.default">Default language</span>
 								</div>
 							</li>
 							<li class="item ripple" data-event="change.language" data-code="de">
@@ -466,37 +440,38 @@
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="setting.input-device">Input Device</p>
-								<span data-lang="setting.input-device.info">Choose preferred input device</span>
+								<p data-lang="more.input-device">Input Device</p>
+								<span data-lang="more.input-device.info">Choose preferred input device</span>
 							</div>
 						</div>
 						<ul class="item-list">
+							<li class="separator"></li>
 							<li class="item ripple inactive" data-event="change.device" data-code="mouse">
 								<i class="ico">mouse</i>
 								<div class="info">
-									<p data-lang="setting.input-device.mouse">Mouse</p>
-									<span data-lang="setting.input-device.default">Default input device</span>
+									<p data-lang="more.input-device.mouse">Mouse</p>
+									<span data-lang="more.input-device.default">Default input device</span>
 								</div>
 							</li>
 							<li class="item ripple inactive" data-event="change.device" data-code="touch">
 								<i class="ico">gesture</i>
 								<div class="info">
-									<p data-lang="setting.input-device.touch">Touch</p>
-									<span data-lang="setting.input-device.touch.info">Finger interaction</span>
+									<p data-lang="more.input-device.touch">Touch</p>
+									<span data-lang="more.input-device.touch.info">Finger interaction</span>
 								</div>
 							</li>
 							<li class="item ripple inactive" data-event="change.device" data-code="pen">
 								<i class="ico">edit</i>
 								<div class="info">
-									<p data-lang="setting.input-device.pencil" data-badge="true">Pencil<b class="badge prime">Prime</b></p>
-									<span data-lang="setting.input-device.pencil.info">Stylus pen, touch disabled</span>
+									<p data-lang="more.input-device.pencil" data-badge="true">Pencil<b class="badge prime">Prime</b></p>
+									<span data-lang="more.input-device.pencil.info">Stylus pen, touch disabled</span>
 								</div>
 							</li>
 							<li class="item ripple inactive" data-event="change.device" data-code="gamepad">
 								<i class="ico">sports_esports</i>
 								<div class="info">
-									<p data-lang="setting.input-device.gamepad" data-badge="true">Gamepad<b class="badge prime">Prime</b></p>
-									<span data-lang="setting.input-device.gamepad.info">Stadia Controller supported</span>
+									<p data-lang="more.input-device.gamepad" data-badge="true">Gamepad<b class="badge prime">Prime</b></p>
+									<span data-lang="more.input-device.gamepad.info">Stadia Controller supported</span>
 								</div>
 							</li>
 						</ul>
@@ -507,30 +482,31 @@
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="setting.appearance">Appearance</p>
-								<span data-lang="setting.appearance.info">Customize how you want</span>
+								<p data-lang="more.appearance">Appearance</p>
+								<span data-lang="more.appearance.info">Customize how you want</span>
 							</div>
 						</div>
 						<ul class="item-list">
+							<li class="separator"></li>
 							<li class="item ripple" data-event="toggle.fullscreen">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-lang="setting.appearance.fullscreen">Fullscreen</p>
-									<span data-lang="setting.appearance.fullscreen.info">Toggle Fullscreen</span>
+									<p data-lang="more.appearance.fullscreen">Fullscreen</p>
+									<span data-lang="more.appearance.fullscreen.info">Toggle Fullscreen</span>
 								</div>
 							</li>
 							<li class="item ripple" data-event="toggle.view-mode">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-lang="setting.appearance.view-mode">View Mode</p>
-									<span data-lang="setting.appearance.view-mode.info">Tools and drawing disabled</span>
+									<p data-lang="more.appearance.view-mode">View Mode</p>
+									<span data-lang="more.appearance.view-mode.info">Tools and drawing disabled</span>
 								</div>
 							</li>
 							<li class="item ripple inactive" data-event="toggle.dark-mode">
 								<i class="ico">toggle_off</i>
 								<div class="info">
-									<p data-lang="setting.appearance.dark-mode" data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
-									<span data-lang="setting.appearance.dark-mode.info">More pleasant for your eyes</span>
+									<p data-lang="more.appearance.dark-mode" data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
+									<span data-lang="more.appearance.dark-mode.info">More pleasant for your eyes</span>
 								</div>
 							</li>
 						</ul>

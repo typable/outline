@@ -49,13 +49,12 @@ function init() {
 		controls: '.controls',
 		modal_list: { query: '.modal', all: true },
 		tab_list: { query: '.tab', all: true },
+		header: '.header-list',
 		hotbar: '.hotbar',
-		toolbar: '.toolbar',
-		actionbar: '.actionbar',
 		hotbar_list: { query: '.hotbar .color', all: true },
 		modal_color_list: { query: '.colors-modal .color', all: true },
-		language_list: { query: '.settings-modal .language-tab .item[data-event="change.language"]', all: true },
-		device_list: { query: '.settings-modal .device-tab .item[data-event="change.device"]', all: true },
+		language_list: { query: '.more-modal .language-tab .item[data-event="change.language"]', all: true },
+		device_list: { query: '.more-modal .device-tab .item[data-event="change.device"]', all: true },
 		pencil_list: { query: '.pencil-modal .item[data-event="change.pencil"]', all: true },
 		modal_event_list: { query: '[data-event*=".modal"]', all: true },
 		tab_event_list: { query: '[data-event*=".tab"]', all: true },
@@ -133,6 +132,8 @@ function bind_events() {
 		item.addEventListener('click', function(event) {
 			state.pencil = item.dataset.code;
 			update_pencil_list();
+			state.modal = null;
+			update_modal_list();
 		});
 	}
 	for(let item of node.modal_event_list) {
@@ -334,8 +335,7 @@ function update_view_mode_option() {
 		canvas.clear_cursor();
 		canvas.get_canvas().style.cursor = 'default';
 		node.hotbar.classList.add('inactive');
-		node.toolbar.classList.add('inactive');
-		node.actionbar.classList.add('inactive');
+		node.header.classList.add('inactive');
 		node.hotbar.animate([
 			{ opacity: 1 },
 			{ opacity: 0, bottom: '-10px', pointerEvents: 'none' }
@@ -344,15 +344,7 @@ function update_view_mode_option() {
 			duration: 250,
 			fill: 'both'
 		});
-		node.toolbar.animate([
-			{ opacity: 1 },
-			{ opacity: 0 }
-		], {
-			easing: 'ease-out',
-			duration: 250,
-			fill: 'both'
-		});
-		node.actionbar.animate([
+		node.header.animate([
 			{ opacity: 1 },
 			{ opacity: 0 }
 		], {
@@ -364,8 +356,7 @@ function update_view_mode_option() {
 	else {
 		canvas.get_canvas().style.cursor = 'none';
 		node.hotbar.classList.remove('inactive');
-		node.toolbar.classList.remove('inactive');
-		node.actionbar.classList.remove('inactive');
+		node.header.classList.remove('inactive');
 		node.hotbar.animate([
 			{ opacity: 0, bottom: '-10px' },
 			{ opacity: 1, bottom: '30px' }
@@ -374,15 +365,7 @@ function update_view_mode_option() {
 			duration: 250,
 			fill: 'both'
 		});
-		node.toolbar.animate([
-			{ opacity: 0 },
-			{ opacity: 1 }
-		], {
-			easing: 'ease-out',
-			duration: 250,
-			fill: 'both'
-		});
-		node.actionbar.animate([
+		node.header.animate([
 			{ opacity: 0 },
 			{ opacity: 1 }
 		], {
@@ -550,12 +533,12 @@ function on_keydown(event) {
 				update_modal_list();
 			}
 			if(event.code === 'KeyS') {
-				state.modal = state.modal !== 'settings' ? 'settings' : null;
+				state.modal = state.modal !== 'more' ? 'more' : null;
 				update_modal_list();
 			}
 			if(event.code === 'KeyH') {
 				if(state.tab !== 'help') {
-					state.modal = 'settings';
+					state.modal = 'more';
 					update_modal_list();
 					state.tab = 'help';
 					update_tab_list();
@@ -567,7 +550,7 @@ function on_keydown(event) {
 			}
 			if(event.code === 'KeyL') {
 				if(state.tab !== 'language') {
-					state.modal = 'settings';
+					state.modal = 'more';
 					update_modal_list();
 					state.tab = 'language';
 					update_tab_list();
@@ -579,7 +562,7 @@ function on_keydown(event) {
 			}
 			if(event.code === 'KeyI') {
 				if(state.tab !== 'device') {
-					state.modal = 'settings';
+					state.modal = 'more';
 					update_modal_list();
 					state.tab = 'device';
 					update_tab_list();
@@ -591,7 +574,7 @@ function on_keydown(event) {
 			}
 			if(event.code === 'KeyA') {
 				if(state.tab !== 'appearance') {
-					state.modal = 'settings';
+					state.modal = 'more';
 					update_modal_list();
 					state.tab = 'appearance';
 					update_tab_list();
