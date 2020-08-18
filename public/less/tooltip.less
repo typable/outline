@@ -31,43 +31,9 @@
 		border-radius: 999px;
 		font-size: 12px;
 		top: auto;
-		bottom: -70%;
+		bottom: -64%;
 		white-space: nowrap;
 		z-index: 9999;
 		pointer-events: none;
-	}
-
-	&.up {
-
-		&::before {
-			top: ~'calc(-90% + 26px)';
-			bottom: auto;
-			border-left: 6px solid transparent;
-			border-right: 6px solid transparent;
-			border-top: 6px solid @brand-black;
-			border-bottom: none;
-		}
-
-		&::after {
-			top: -60%;
-			bottom: auto;
-		}
-	}
-
-	&.down {
-
-		&::before {
-			top: auto;
-			bottom: ~'calc(-90% + 26px)';
-			border-left: 6px solid transparent;
-			border-right: 6px solid transparent;
-			border-top: none;
-			border-bottom: 6px solid @brand-black;
-		}
-
-		&::after {
-			top: auto;
-			bottom: -60%;
-		}
 	}
 }

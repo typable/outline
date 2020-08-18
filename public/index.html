@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 		<meta name="author" content="typable">
 		<meta name="keywords" content="outline, typable, drawing, multiplayer">
-		<meta name="description" content="Draw with your friends together.">
+		<meta name="description" content="Draw with friends together.">
 		<meta name="robots" content="noindex, nofollow">
 		<meta name="google" content="notranslate">
 		<title>Outline</title>
@@ -23,6 +23,48 @@
 			<div class="notification">
 				<p class="content"></p>
 			</div>
+			<div class="header-list">
+				<div class="tool">
+					<ul class="tool-list">
+						<li class="tool-item ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-event="toggle.modal" data-code="colors">
+							<i class="ico">palette</i>
+						</li>
+						<li class="tool-item ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-event="toggle.modal" data-code="scale">
+							<i class="ico">bubble_chart</i>
+						</li>
+						<li class="tool-item ripple tooltip" data-lang="tool.pencil" data-type="tooltip" data-title="Pencil" data-event="toggle.modal" data-code="pencil">
+							<i class="ico">edit</i>
+						</li>
+					<ul>
+				</div>
+				<div class="action">
+					<ul class="action-list">
+						<li class="action-item ripple tooltip inactive" data-lang="tool.undo" data-type="tooltip" data-title="Undo">
+							<i class="ico">undo</i>
+						</li>
+						<li class="tool-item ripple tooltip inactive" data-lang="tool.redo" data-type="tooltip" data-title="Redo">
+							<i class="ico">redo</i>
+						</li>
+						<li class="tool-item ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
+							<i class="ico">clear</i>
+						</li>
+					<ul>
+				</div>
+				<div class="option">
+					<ul class="option-list">
+						<li class="option-item upgrade ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Upgrade">
+							<i class="ico">forward</i>
+						</li>
+						<li class="tool-item ripple tooltip" data-lang="action.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
+							<i class="ico">person</i>
+						</li>
+						<li class="tool-item ripple tooltip" data-lang="action.settings" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="settings">
+							<i class="ico">more_vert</i>
+						</li>
+					<ul>
+				</div>
+			</div>
+			<!--
 			<div class="toolbar">
 				<div class="tool ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-event="toggle.modal" data-code="colors">
 					<i class="ico">palette</i>
@@ -57,6 +99,7 @@
 					<i class="ico">settings</i>
 				</div>
 			</div>
+			-->
 			<div class="hotbar">
 				<div class="color"></div>
 				<div class="color"></div>
@@ -125,27 +168,27 @@
 			<div class="modal pencil-modal hidden">
 				<div class="main">
 					<ul class="item-list">
-						<li class="item ripple active" data-event="change.pencil" data-code="mouse">
+						<li class="item ripple active" data-event="change.pencil" data-code="pen">
 							<i class="ico">edit</i>
 							<div class="info">
 								<p data-lang="pencil.pen">Pen</p>
 								<span data-lang="pencil.pen.info">Default pen</span>
 							</div>
 						</li>
-						<li class="item ripple" data-event="change.pencil" data-code="touch">
+						<li class="item ripple" data-event="change.pencil" data-code="marker">
 							<i class="ico">
 								<svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
-    								<path fill="#424242" d="M18.62,1.5C18.11,1.5 17.6,1.69 17.21,2.09L10.75,8.55L14.95,12.74L21.41,6.29C22.2,5.5 22.2,4.24 21.41,3.46L20.04,2.09C19.65,1.69 19.14,1.5 18.62,1.5M9.8,9.5L3.23,16.07L3.93,16.77C3.4,17.24 2.89,17.78 2.38,18.29C1.6,19.08 1.6,20.34 2.38,21.12C3.16,21.9 4.42,21.9 5.21,21.12C5.72,20.63 6.25,20.08 6.73,19.58L7.43,20.27L14,13.7" />
+    								<path fill="#555555" d="M18.62,1.5C18.11,1.5 17.6,1.69 17.21,2.09L10.75,8.55L14.95,12.74L21.41,6.29C22.2,5.5 22.2,4.24 21.41,3.46L20.04,2.09C19.65,1.69 19.14,1.5 18.62,1.5M9.8,9.5L3.23,16.07L3.93,16.77C3.4,17.24 2.89,17.78 2.38,18.29C1.6,19.08 1.6,20.34 2.38,21.12C3.16,21.9 4.42,21.9 5.21,21.12C5.72,20.63 6.25,20.08 6.73,19.58L7.43,20.27L14,13.7" />
 								</svg>
 							</i>
 							<div class="info">
 								<p data-lang="pencil.marker">Marker</p>
 							</div>
 						</li>
-						<li class="item ripple" data-event="change.pencil" data-code="pen">
+						<li class="item ripple" data-event="change.pencil" data-code="eraser">
 							<i class="ico">
 								<svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
-    								<path fill="#424242" d="M15.14,3C14.63,3 14.12,3.2 13.73,3.59L2.59,14.73C1.81,15.5 1.81,16.77 2.59,17.56L5.03,20H12.69L21.41,11.27C22.2,10.5 22.2,9.23 21.41,8.44L16.56,3.59C16.17,3.2 15.65,3 15.14,3M17,18L15,20H22V18" />
+    								<path fill="#555555" d="M15.14,3C14.63,3 14.12,3.2 13.73,3.59L2.59,14.73C1.81,15.5 1.81,16.77 2.59,17.56L5.03,20H12.69L21.41,11.27C22.2,10.5 22.2,9.23 21.41,8.44L16.56,3.59C16.17,3.2 15.65,3 15.14,3M17,18L15,20H22V18" />
 								</svg>
 							</i>
 							<div class="info">

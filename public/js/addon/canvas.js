@@ -117,12 +117,20 @@ function on_release(event) {
 }
 
 function draw_curve(state) {
-	g.lineJoin = 'round';
+	if(state.pencil === 'pen') {
+		g.strokeStyle = COLORS[state.color];
+	}
+	if(state.pencil === 'marker') {
+		g.strokeStyle = COLORS[state.color] + '88';
+	}
+	if(state.pencil === 'eraser') {
+		g.strokeStyle = 'white';
+	}
 	g.lineCap = 'round';
+	g.lineJoin = 'round';
 	g.lineWidth = 2 * state.radius;
-	g.strokeStyle = COLORS[state.color] + '';
 	if(point_list.length < 3) {
-		g.fillStyle = COLORS[state.color] + '';
+		g.fillStyle = COLORS[state.color];
 		g.beginPath();
 		g.arc(point_list[0].x, point_list[0].y, g.lineWidth / 2, 0, Math.PI * 2, !0);
 		g.closePath();
@@ -143,19 +151,37 @@ function draw_curve(state) {
 
 function draw_cursor(state) {
 	o.clearRect(0, 0, size, size);
+	o.lineWidth = 2;
 	if(state.point) {
-		if(!active) {
-			o.fillStyle = COLORS[state.color] + '';
-			o.beginPath();
-			o.arc(state.point.x, state.point.y, 2 * state.radius / 2, 0, Math.PI * 2, !0);
-			o.closePath();
-			o.fill();
+		if(state.pencil === 'pen') {
+			o.fillStyle = COLORS[state.color];
 		}
+		if(state.pencil === 'marker') {
+			o.fillStyle = COLORS[state.color] + '88';
+		}
+		if(state.pencil === 'eraser') {
+			o.fillStyle = '#E28787';
+		}
+		o.beginPath();
+		o.arc(state.point.x, state.point.y, 2 * state.radius / 2, 0, Math.PI * 2, !0);
+		o.closePath();
+		o.fill();
 		o.strokeStyle = 'white';
 		o.beginPath();
 		o.arc(state.point.x, state.point.y, 2 * state.radius / 2, 0, Math.PI * 2, !0);
 		o.closePath();
 		o.stroke();
+		if(state.pencil === 'eraser') {
+			o.strokeStyle = 'white';
+			o.beginPath();
+			o.moveTo(state.point.x - state.radius * 0.5, state.point.y);
+			o.lineTo(state.point.x + state.radius * 0.5, state.point.y);
+			o.stroke();
+			o.beginPath();
+			o.moveTo(state.point.x, state.point.y - state.radius * 0.5);
+			o.lineTo(state.point.x, state.point.y + state.radius * 0.5);
+			o.stroke();
+		}
 	}
 }
 

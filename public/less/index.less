@@ -17,6 +17,77 @@ body {
 	z-index: 999;
 }
 
+.header-list {
+	width: 100%;
+	height: 60px;
+	background: white;
+	border-bottom: 1px solid @brand-grey-5;
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 14px;
+	pointer-events: all;
+
+	.tool,
+	.action,
+	.option {
+
+		ul {
+			list-style-type: none;
+			display: flex;
+			gap: 10px;
+
+			li {
+				width: 44px;
+				height: 44px;
+				padding: 10px;
+				border-radius: 22px;
+				cursor: pointer;
+				pointer-events: all;
+
+				&:not(.inactive):not(.active):hover {
+					background: rgba(@brand-grey-7, 0.95);
+
+					&.ripple {
+
+						&.ripple-active {
+							background: lighten(rgba(@brand-grey-7, 0.95), -2%);
+						}
+					}
+				}
+
+				&.active {
+					background: rgba(#EEEEEE, 0.95);
+
+					&.ripple {
+
+						&.ripple-active {
+							background: lighten(rgba(#EEEEEE, 0.95), -2%);
+						}
+					}
+				}
+
+				&.inactive {
+
+					i.ico {
+						color: @brand-grey-4;
+					}
+				}
+
+				i.ico {
+					color: @brand-grey-1;
+				}
+
+				&.upgrade {
+
+					i.ico {
+						transform: rotate(-90deg);
+					}
+				}
+			}
+		}
+	}
+}
+
 #canvas,
 #overlay,
 .controls {
@@ -168,7 +239,7 @@ body {
 
 	.pencil-modal {
 		top: 75px;
-		left: 130px;
+		left: 120px;
 	}
 
 	.scale-modal {

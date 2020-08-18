@@ -21,6 +21,12 @@ let state = {
 		pen: false,
 		gamepad: false
 	},
+	pencil_list: [
+		'pen',
+		'marker',
+		'eraser'
+	],
+	pencil: 'pen',
 	timestamp: null,
 	modal: null,
 	tab: null,
@@ -50,6 +56,7 @@ function init() {
 		modal_color_list: { query: '.colors-modal .color', all: true },
 		language_list: { query: '.settings-modal .language-tab .item[data-event="change.language"]', all: true },
 		device_list: { query: '.settings-modal .device-tab .item[data-event="change.device"]', all: true },
+		pencil_list: { query: '.pencil-modal .item[data-event="change.pencil"]', all: true },
 		modal_event_list: { query: '[data-event*=".modal"]', all: true },
 		tab_event_list: { query: '[data-event*=".tab"]', all: true },
 		tool_list: { query: '.tool', all: true },
@@ -57,6 +64,7 @@ function init() {
 		notification: '.notification',
 		scale_input: 'input.scale[type="range"]',
 		clear: 'button.btn-apply[data-event="clear"]',
+		pencil_tool: '.tool-item[data-code="pencil"]',
 		option_event_fullscreen: '[data-event="toggle.fullscreen"]',
 		option_event_view_mode: '[data-event="toggle.view-mode"]'
 	});
@@ -119,6 +127,12 @@ function bind_events() {
 				state.device = code;
 				update_device_list();
 			}
+		});
+	}
+	for(let item of node.pencil_list) {
+		item.addEventListener('click', function(event) {
+			state.pencil = item.dataset.code;
+			update_pencil_list();
 		});
 	}
 	for(let item of node.modal_event_list) {
@@ -221,6 +235,16 @@ function update_device_list() {
 	}
 }
 
+function update_pencil_list() {
+	for(let item of node.pencil_list) {
+		let code = item.dataset.code;
+		item.classList[code === state.pencil ? 'add' : 'remove']('active');
+		if(code === state.pencil) {
+			node.pencil_tool.querySelector('i.ico').innerHTML = item.querySelector('i.ico').innerHTML;
+		}
+	}
+}
+
 function update_hotbar() {
 	canvas.on_release(event);
 	for(let item of node.hotbar_list) {
@@ -244,10 +268,7 @@ function update_modal_list() {
 	for(let item of node.modal_list) {
 		item.classList.add('hidden');
 	}
-	for(let item of node.tool_list) {
-		item.classList.remove('active');
-	}
-	for(let item of node.action_list) {
+	for(let item of node.modal_event_list) {
 		item.classList.remove('active');
 	}
 	state.tab = null;
@@ -466,38 +487,40 @@ function on_keydown(event) {
 		}
 	}
 	if(!event.ctrlKey && !event.shiftKey && !event.altKey) {
-		if(!state.option.view_mode && !lock) {
-			if(event.code.startsWith('Digit')) {
-				let i = parseInt(event.code.substr(5)) - 1;
-				if(state.index !== i) {
-					if(i >= 0 && i < state.color_list.length) {
-						state.color = state.color_list[i];
-						state.index = i;
-						canvas.draw_cursor(state);
-						update_hotbar();
+		if(!state.option.view_mode) {
+			if(!lock) {
+				if(event.code.startsWith('Digit')) {
+					let i = parseInt(event.code.substr(5)) - 1;
+					if(state.index !== i) {
+						if(i >= 0 && i < state.color_list.length) {
+							state.color = state.color_list[i];
+							state.index = i;
+							canvas.draw_cursor(state);
+							update_hotbar();
+						}
 					}
 				}
 			}
-		}
-		if(event.code === 'KeyC') {
-			state.modal = state.modal !== 'colors' ? 'colors' : null;
-			update_modal_list();
-		}
-		if(event.code === 'KeyS') {
-			state.modal = state.modal !== 'scale' ? 'scale' : null;
-			update_modal_list();
-		}
-		if(event.code === 'KeyE') {
-			state.modal = state.modal !== 'pencil' ? 'pencil' : null;
-			update_modal_list();
-		}
-		if(event.code === 'KeyD') {
-			state.modal = state.modal !== 'clear' ? 'clear' : null;
-			update_modal_list();
-		}
-		if(event.code === 'KeyQ') {
-			state.modal = state.modal !== 'capture' ? 'capture' : null;
-			update_modal_list();
+			if(event.code === 'KeyC') {
+				state.modal = state.modal !== 'colors' ? 'colors' : null;
+				update_modal_list();
+			}
+			if(event.code === 'KeyS') {
+				state.modal = state.modal !== 'scale' ? 'scale' : null;
+				update_modal_list();
+			}
+			if(event.code === 'KeyE') {
+				state.modal = state.modal !== 'pencil' ? 'pencil' : null;
+				update_modal_list();
+			}
+			if(event.code === 'KeyD') {
+				state.modal = state.modal !== 'clear' ? 'clear' : null;
+				update_modal_list();
+			}
+			if(event.code === 'KeyQ') {
+				state.modal = state.modal !== 'capture' ? 'capture' : null;
+				update_modal_list();
+			}
 		}
 		if(event.code === 'KeyV') {
 			state.option.view_mode = !state.option.view_mode;
@@ -506,64 +529,77 @@ function on_keydown(event) {
 	}
 	// alt
 	if(event.altKey && !event.ctrlKey && !event.shiftKey) {
-		if(event.code === 'KeyM') {
-			state.modal = state.modal !== 'multiplayer' ? 'multiplayer' : null;
-			update_modal_list();
-		}
-		if(event.code === 'KeyP') {
-			state.modal = state.modal !== 'account' ? 'account' : null;
-			update_modal_list();
-		}
-		if(event.code === 'KeyS') {
-			state.modal = state.modal !== 'settings' ? 'settings' : null;
-			update_modal_list();
-		}
-		if(event.code === 'KeyH') {
-			if(state.tab !== 'help') {
-				state.modal = 'settings';
-				update_modal_list();
-				state.tab = 'help';
-				update_tab_list();
+		if(!state.option.view_mode) {
+			if(!lock) {
+				if(event.code.startsWith('Digit')) {
+					let i = parseInt(event.code.substr(5)) - 1;
+					if(i >= 0 && i < state.pencil_list.length) {
+						state.pencil = state.pencil_list[i];
+						canvas.on_release(event);
+						canvas.draw_cursor(state);
+						update_pencil_list();
+					}
+				}
 			}
-			else {
-				state.modal = null;
+			if(event.code === 'KeyM') {
+				state.modal = state.modal !== 'multiplayer' ? 'multiplayer' : null;
 				update_modal_list();
 			}
-		}
-		if(event.code === 'KeyL') {
-			if(state.tab !== 'language') {
-				state.modal = 'settings';
-				update_modal_list();
-				state.tab = 'language';
-				update_tab_list();
-			}
-			else {
-				state.modal = null;
+			if(event.code === 'KeyP') {
+				state.modal = state.modal !== 'account' ? 'account' : null;
 				update_modal_list();
 			}
-		}
-		if(event.code === 'KeyI') {
-			if(state.tab !== 'device') {
-				state.modal = 'settings';
-				update_modal_list();
-				state.tab = 'device';
-				update_tab_list();
-			}
-			else {
-				state.modal = null;
+			if(event.code === 'KeyS') {
+				state.modal = state.modal !== 'settings' ? 'settings' : null;
 				update_modal_list();
 			}
-		}
-		if(event.code === 'KeyA') {
-			if(state.tab !== 'appearance') {
-				state.modal = 'settings';
-				update_modal_list();
-				state.tab = 'appearance';
-				update_tab_list();
+			if(event.code === 'KeyH') {
+				if(state.tab !== 'help') {
+					state.modal = 'settings';
+					update_modal_list();
+					state.tab = 'help';
+					update_tab_list();
+				}
+				else {
+					state.modal = null;
+					update_modal_list();
+				}
 			}
-			else {
-				state.modal = null;
-				update_modal_list();
+			if(event.code === 'KeyL') {
+				if(state.tab !== 'language') {
+					state.modal = 'settings';
+					update_modal_list();
+					state.tab = 'language';
+					update_tab_list();
+				}
+				else {
+					state.modal = null;
+					update_modal_list();
+				}
+			}
+			if(event.code === 'KeyI') {
+				if(state.tab !== 'device') {
+					state.modal = 'settings';
+					update_modal_list();
+					state.tab = 'device';
+					update_tab_list();
+				}
+				else {
+					state.modal = null;
+					update_modal_list();
+				}
+			}
+			if(event.code === 'KeyA') {
+				if(state.tab !== 'appearance') {
+					state.modal = 'settings';
+					update_modal_list();
+					state.tab = 'appearance';
+					update_tab_list();
+				}
+				else {
+					state.modal = null;
+					update_modal_list();
+				}
 			}
 		}
 	}
