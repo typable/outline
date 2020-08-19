@@ -49,19 +49,19 @@ function resize() {
 		g.backingStorePixelRatio || 1
 	)
 	ratio = DEVICE_PIXEL_RATIO / backing_store_ratio;
-	let image_data;
-	image_data = g.getImageData(0, 0, size * ratio, size * ratio);
+	let buffer = document.createElement('canvas');
+	let b = buffer.getContext('2d');
+	scale_canvas(buffer, b);
+	b.imageSmoothingEnabled = false;
+	b.drawImage(canvas, 0, 0, size, size);
 	scale_canvas(canvas, g);
-	g.putImageData(image_data, 0, 0);
 	g.imageSmoothingEnabled = false;
-	image_data = o.getImageData(0, 0, size * ratio, size * ratio);
+	g.drawImage(buffer, 0, 0, size, size);
 	scale_canvas(overlay, o);
-	o.putImageData(image_data, 0, 0);
 	o.imageSmoothingEnabled = false;
-	image_data = m.getImageData(0, 0, size * ratio, size * ratio);
 	scale_canvas(memory, m);
-	m.putImageData(image_data, 0, 0);
 	m.imageSmoothingEnabled = false;
+	m.drawImage(canvas, 0, 0, size, size);
 }
 
 function scale_canvas(canvas, g) {

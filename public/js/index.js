@@ -141,27 +141,29 @@ function bind_events() {
 			let code = item.dataset.code;
 			let match = /^(toggle|open|close).modal$/.exec(item.dataset.event);
 			if(match) {
-				switch(match[1]) {
-					case 'toggle':
-						if(code) {
-							state.modal = state.modal !== code ? code : null;
-							update_modal_list();
-						}
-						break;
-					case 'open':
-						if(code && state.modal !== code) {
-							state.modal = code;
-							update_modal_list();
-						}
-						break;
-					case 'close':
-						if(state.modal !== null) {
-							state.modal = null;
-							update_modal_list();
-						}
-						break;
-					default:
-						break;
+				if(!item.classList.contains('inactive')) {
+					switch(match[1]) {
+						case 'toggle':
+							if(code) {
+								state.modal = state.modal !== code ? code : null;
+								update_modal_list();
+							}
+							break;
+						case 'open':
+							if(code && state.modal !== code) {
+								state.modal = code;
+								update_modal_list();
+							}
+							break;
+						case 'close':
+							if(state.modal !== null) {
+								state.modal = null;
+								update_modal_list();
+							}
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		});
