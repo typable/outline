@@ -1,0 +1,39 @@
+.tooltip {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&:hover {
+
+		&::before {
+			opacity: 0.95;
+			transition-delay: 0.6s;
+		}
+
+		&::after {
+			opacity: 0.95;
+			transition-delay: 0.6s;
+		}
+	}
+
+	&::after {
+		display: flex;
+		opacity: 0;
+		content: attr(data-title);
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		background: @brand-black;
+		color: white;
+		min-height: 24px;
+		padding: 0 12px;
+		border-radius: 999px;
+		font-size: 12px;
+		top: auto;
+		bottom: -64%;
+		white-space: nowrap;
+		z-index: 9999;
+		pointer-events: none;
+	}
+}

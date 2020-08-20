@@ -4,10 +4,6 @@
 @screen-md: 992px;
 @screen-lg: 1200px;
 
-@color-success: #28A745;
-@color-danger: #DC3545;
-@color-info: #007BFF;
-
 * {
 	margin: 0;
 	padding: 0;
@@ -22,7 +18,7 @@
 
 html {
 	position: relative;
-	overflow: hidden;
+	overflow-x: hidden;
 	min-height: 100vh;
 }
 
@@ -46,34 +42,26 @@ button {
 	cursor: pointer;
 }
 
-.gutter(@unit, @width) {
-
-	[class*="col"],
-	.col-auto,
-	.container,
-	.container-fluid {
-		padding-left: @unit;
-		padding-right: @unit;
-	}
-
-	.col-auto-out {
-		margin-left: @unit;
-		margin-right: @unit;
-	}
-
-	.row {
-		display: flex;
-		margin-left: -@unit;
-		margin-right: -@unit;
-	}
-
-	.container {
-		max-width: @width;
-		margin-left: auto;
-		margin-right: auto;
-	}
-}
-
 .hidden {
 	display: none !important;
+}
+
+.ico {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+  user-select: none;
+  pointer-events: none;
 }
