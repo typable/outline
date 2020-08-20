@@ -1,4 +1,5 @@
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio || 1;
+const MAX_HISTORY_STEP = 10;
 
 import { COLORS } from '../constant.js';
 
@@ -13,9 +14,11 @@ let backing_store_ratio;
 let canvas;
 let overlay;
 let memory;
+let temporary;
 let g;
 let o;
 let m;
+let t;
 
 function init() {
 	width = window.innerWidth;
@@ -23,9 +26,11 @@ function init() {
 	canvas = document.querySelector('#canvas');
 	overlay = document.querySelector('#overlay');
 	memory = document.createElement('canvas');
+	temporary = document.createElement('canvas');
 	g = canvas.getContext('2d');
 	o = overlay.getContext('2d');
 	m = memory.getContext('2d');
+	t = temporary.getContext('2d');
 	resize();
 	window.addEventListener('resize', resize);
 }
@@ -62,6 +67,8 @@ function resize() {
 	scale_canvas(memory, m);
 	m.imageSmoothingEnabled = false;
 	m.drawImage(canvas, 0, 0, size, size);
+	scale_canvas(temporary, t);
+	t.imageSmoothingEnabled = false;
 }
 
 function scale_canvas(canvas, g) {
@@ -80,9 +87,12 @@ function scale_canvas(canvas, g) {
 	g.scale(ratio, ratio);
 }
 
-function clear() {
+function clear(state) {
 	g.clearRect(0, 0, size, size);
 	m.clearRect(0, 0, size, size);
+	t.clearRect(0, 0, size, size);
+	state.history = [];
+	state.redo_history = [];
 }
 
 function on_press(event, state) {
@@ -91,6 +101,7 @@ function on_press(event, state) {
 		y: event.layerY
 	});
 	active = true;
+	state.redo_history = [];
 }
 
 function on_move(event, state) {
@@ -101,14 +112,24 @@ function on_move(event, state) {
 			x: event.layerX,
 			y: event.layerY
 		});
-		draw_curve(state);
+		draw_curve(g, state, point_list);
 	}
 }
 
-function on_release(event) {
+function on_release(event, state) {
 	if(active) {
 		if(event && event.type === 'pointerup') {
 			active = false;
+		}
+		if(point_list.length > 0) {
+			state.history.push({
+				list: point_list,
+				state: Object.assign({}, state)
+			});
+			if(state.history.length > MAX_HISTORY_STEP) {
+				let line = state.history.shift();
+				draw_curve(t, line.state, line.list);
+			}
 		}
 		m.clearRect(0, 0, size, size);
 		m.drawImage(canvas, 0, 0, size, size);
@@ -116,7 +137,30 @@ function on_release(event) {
 	}
 }
 
-function draw_curve(state) {
+function undo(state) {
+	if(state.history.length > 0) {
+		state.redo_history.push(state.history.pop());
+		g.clearRect(0, 0, size, size);
+		m.clearRect(0, 0, size, size);
+		g.drawImage(temporary, 0, 0, size, size);
+		m.drawImage(temporary, 0, 0, size, size);
+		for(let line of  state.history) {
+			draw_curve(g, line.state, line.list);
+			draw_curve(m, line.state, line.list);
+		}
+	}
+}
+
+function redo(state) {
+	if(state.redo_history.length > 0) {
+		let line = state.redo_history.pop();
+		state.history.push(line);
+		draw_curve(g, line.state, line.list);
+		draw_curve(m, line.state, line.list);
+	}
+}
+
+function draw_curve(g, state, point_list) {
 	if(state.pencil === 'pen') {
 		g.strokeStyle = COLORS[state.color];
 	}
@@ -198,6 +242,8 @@ export default {
 	on_press,
 	on_move,
 	on_release,
+	undo,
+	redo,
 	draw_curve,
 	draw_cursor,
 	clear_cursor

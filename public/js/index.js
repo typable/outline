@@ -32,7 +32,9 @@ let state = {
 	tab: null,
 	option: {
 		view_mode: false
-	}
+	},
+	history: [],
+	redo_history: []
 };
 
 window.addEventListener('load', init);
@@ -65,7 +67,9 @@ function init() {
 		clear: 'button.btn-apply[data-event="clear"]',
 		pencil_tool: '.tool-item[data-code="pencil"]',
 		option_event_fullscreen: '[data-event="toggle.fullscreen"]',
-		option_event_view_mode: '[data-event="toggle.view-mode"]'
+		option_event_view_mode: '[data-event="toggle.view-mode"]',
+		undo_tool: '[data-lang="tool.undo"]',
+		redo_tool: '[data-lang="tool.redo"]'
 	});
 
 	fill_hotbar_list();
@@ -201,7 +205,8 @@ function bind_events() {
 		canvas.draw_cursor(state);
 	});
 	node.clear.addEventListener('click', function(event) {
-		canvas.clear();
+		canvas.clear(state);
+		update_undo_and_redo();
 		show_notification('notification.clear');
 		state.modal = null;
 		update_modal_list();
@@ -218,6 +223,14 @@ function bind_events() {
 	node.option_event_view_mode.addEventListener('click', function(event) {
 		state.option.view_mode = !state.option.view_mode;
 		update_view_mode_option();
+	});
+	node.undo_tool.addEventListener('click', function(event) {
+		canvas.undo(state);
+		update_undo_and_redo();
+	});
+	node.redo_tool.addEventListener('click', function(event) {
+		canvas.redo(state);
+		update_undo_and_redo();
 	});
 }
 
@@ -249,7 +262,6 @@ function update_pencil_list() {
 }
 
 function update_hotbar() {
-	canvas.on_release(event);
 	for(let item of node.hotbar_list) {
 		item.classList[node.hotbar_list[state.index] === item ? 'add' : 'remove']('active');
 	}
@@ -333,7 +345,7 @@ function update_view_mode_option() {
 		state.modal = null;
 		state.tab = null;
 		update_modal_list();
-		canvas.on_release();
+		canvas.on_release(null, state);
 		canvas.clear_cursor();
 		canvas.get_canvas().style.cursor = 'default';
 		node.hotbar.classList.add('inactive');
@@ -378,6 +390,11 @@ function update_view_mode_option() {
 	}
 }
 
+function update_undo_and_redo() {
+	node.undo_tool.classList[state.history.length > 0 ? 'remove' : 'add']('inactive');
+	node.redo_tool.classList[state.redo_history.length > 0 ? 'remove' : 'add']('inactive');
+}
+
 function on_pointerdown(event) {
 	// detect touch
 	if(!state.device_list.touch && event.pointerType === 'touch') {
@@ -406,6 +423,7 @@ function on_pointerdown(event) {
 		if(event.target === canvas.get_canvas()) {
 			update_focus(false);
 			canvas.on_press(event, state);
+			update_undo_and_redo();
 			state.point = {
 				x: event.layerX,
 				y: event.layerY
@@ -443,7 +461,8 @@ function on_pointermove(event) {
 
 function on_pointerup(event) {
 	if(!state.option.view_mode && state.device === event.pointerType) {
-		canvas.on_release(event);
+		canvas.on_release(event, state);
+		update_undo_and_redo();
 		canvas.draw_cursor(state);
 		update_focus(true);
 	}
@@ -451,7 +470,8 @@ function on_pointerup(event) {
 
 function on_pointerout(event) {
 	if(!state.option.view_mode && state.device === event.pointerType) {
-		canvas.on_release(event);
+		canvas.on_release(event, state);
+		update_undo_and_redo();
 		state.point = null;
 		canvas.draw_cursor(state);
 	}
@@ -478,6 +498,7 @@ function on_keydown(event) {
 					let i = parseInt(event.code.substr(5)) - 1;
 					if(state.index !== i) {
 						if(i >= 0 && i < state.color_list.length) {
+							canvas.on_release(event, state);
 							state.color = state.color_list[i];
 							state.index = i;
 							canvas.draw_cursor(state);
@@ -511,6 +532,14 @@ function on_keydown(event) {
 			state.option.view_mode = !state.option.view_mode;
 			update_view_mode_option();
 		}
+		if(event.code === 'ArrowLeft') {
+			canvas.undo(state);
+			update_undo_and_redo();
+		}
+		if(event.code === 'ArrowRight') {
+			canvas.redo(state);
+			update_undo_and_redo();
+		}
 	}
 	// alt
 	if(event.altKey && !event.ctrlKey && !event.shiftKey) {
@@ -519,8 +548,8 @@ function on_keydown(event) {
 				if(event.code.startsWith('Digit')) {
 					let i = parseInt(event.code.substr(5)) - 1;
 					if(i >= 0 && i < state.pencil_list.length) {
+						canvas.on_release(event, state);
 						state.pencil = state.pencil_list[i];
-						canvas.on_release(event);
 						canvas.draw_cursor(state);
 						update_pencil_list();
 					}
@@ -594,7 +623,7 @@ function on_wheel(event) {
 	if(!state.option.view_mode && state.device === 'mouse') {
 		let y = event.deltaY < 0 ? 1 : -1;
 		if(state.radius + y > 2 - 1 && state.radius + y < 50 + 1) {
-			canvas.on_release(event);
+			canvas.on_release(event, state);
 			state.radius += y;
 			node.scale_input.value = state.radius;
 			canvas.draw_cursor(state);
@@ -611,6 +640,7 @@ function fill_hotbar_list() {
 		if(state.color_list.length > i) {
 			item.style.background = COLORS[state.color_list[i]];
 			item.addEventListener('click', function(event) {
+				canvas.on_release(event, state);
 				state.color = state.color_list[i];
 				state.index = i;
 				canvas.draw_cursor(state);
@@ -628,6 +658,7 @@ function fill_modal_color_list() {
 		if(COLORS.length > i) {
 			item.style.background = COLORS[i];
 			item.addEventListener('pointerdown', function(event) {
+				canvas.on_release(event, state);
 				state.color = i;
 				state.modal = null;
 				update_modal_list();
