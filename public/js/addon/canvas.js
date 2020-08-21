@@ -8,6 +8,7 @@ let point_list = [];
 let width;
 let height;
 let size;
+let last;
 let ratio;
 let backing_store_ratio;
 
@@ -44,7 +45,11 @@ function resize() {
 	height = window.innerHeight;
 	let max = width > height ? width : height;
 	if(!size || max > size) {
+		last = size;
 		size = max;
+	}
+	else {
+		last = null;
 	}
 	backing_store_ratio = (
 		g.webkitBackingStorePixelRatio ||
@@ -56,22 +61,26 @@ function resize() {
 	ratio = DEVICE_PIXEL_RATIO / backing_store_ratio;
 	let buffer = document.createElement('canvas');
 	let b = buffer.getContext('2d');
-	scale_canvas(buffer, b);
+	scale_canvas(buffer, b, last || size);
 	b.imageSmoothingEnabled = false;
-	b.drawImage(canvas, 0, 0, size, size);
-	scale_canvas(canvas, g);
+	b.clearRect(0, 0, size, size);
+	b.drawImage(canvas, 0, 0, last || size, last || size);
+	scale_canvas(canvas, g, size);
 	g.imageSmoothingEnabled = false;
-	g.drawImage(buffer, 0, 0, size, size);
-	scale_canvas(overlay, o);
+	g.drawImage(buffer, 0, 0, last || size, last || size);
+	scale_canvas(overlay, o, size);
 	o.imageSmoothingEnabled = false;
-	scale_canvas(memory, m);
+	scale_canvas(memory, m, size);
 	m.imageSmoothingEnabled = false;
-	m.drawImage(canvas, 0, 0, size, size);
-	scale_canvas(temporary, t);
+	m.drawImage(canvas, 0, 0, last || size, last || size);
+	b.clearRect(0, 0, size, size);
+	b.drawImage(temporary, 0, 0, last || size, last || size);
+	scale_canvas(temporary, t, size);
 	t.imageSmoothingEnabled = false;
+	t.drawImage(buffer, 0, 0, last || size, last || size);
 }
 
-function scale_canvas(canvas, g) {
+function scale_canvas(canvas, g, size) {
 	if(DEVICE_PIXEL_RATIO !== backing_store_ratio) {
 		canvas.width = size * ratio;
 		canvas.height = size * ratio;
