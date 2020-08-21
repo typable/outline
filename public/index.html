@@ -26,47 +26,55 @@
 				<p class="content"></p>
 			</div>
 			<div class="header-list">
-				<div class="tool">
-					<ul class="tool-list">
-						<li class="tool-item ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-event="toggle.modal" data-code="colors">
-							<i class="ico">palette</i>
-						</li>
-						<li class="tool-item ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-event="toggle.modal" data-code="scale">
-							<i class="ico">bubble_chart</i>
-						</li>
-						<li class="tool-item ripple tooltip" data-lang="tool.pencil" data-type="tooltip" data-title="Pencil" data-event="toggle.modal" data-code="pencil">
-							<i class="ico">edit</i>
-						</li>
-					<ul>
+				<div class="mainbar">
+					<div class="tool">
+						<ul class="tool-list">
+							<li class="tool-item ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-event="toggle.modal" data-code="colors">
+								<i class="ico">palette</i>
+							</li>
+							<li class="tool-item ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-event="toggle.modal" data-code="scale">
+								<i class="ico">bubble_chart</i>
+							</li>
+							<li class="tool-item ripple tooltip" data-lang="tool.pencil" data-type="tooltip" data-title="Pencil" data-event="toggle.modal" data-code="pencil">
+								<i class="ico">edit</i>
+							</li>
+						<ul>
+					</div>
+					<div class="action">
+						<ul class="action-list">
+							<li class="action-item ripple tooltip inactive" data-lang="action.undo" data-type="tooltip" data-title="Undo">
+								<i class="ico">undo</i>
+							</li>
+							<li class="action-item ripple tooltip inactive" data-lang="action.redo" data-type="tooltip" data-title="Redo">
+								<i class="ico">redo</i>
+							</li>
+							<li class="action-item ripple tooltip" data-lang="action.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
+								<i class="ico">clear</i>
+							</li>
+						<ul>
+					</div>
+					<div class="option">
+						<ul class="option-list">
+							<li class="option-item ripple tooltip" data-lang="option.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
+								<i class="ico">dns</i>
+							</li>
+							<li class="option-item ripple tooltip" data-lang="option.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
+								<i class="ico">person</i>
+							</li>
+							<li class="option-item ripple tooltip" data-lang="option.more" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="more">
+								<i class="ico">more_vert</i>
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="action">
-					<ul class="action-list">
-						<li class="action-item ripple tooltip inactive" data-lang="tool.undo" data-type="tooltip" data-title="Undo">
-							<i class="ico">undo</i>
-						</li>
-						<li class="tool-item ripple tooltip inactive" data-lang="tool.redo" data-type="tooltip" data-title="Redo">
-							<i class="ico">redo</i>
-						</li>
-						<li class="tool-item ripple tooltip" data-lang="tool.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
-							<i class="ico">clear</i>
-						</li>
-						<li class="tool-item ripple tooltip" data-lang="tool.capture" data-type="tooltip" data-title="Capture" data-event="toggle.modal" data-code="capture">
-							<i class="ico">crop_free</i>
-						</li>
-					<ul>
-				</div>
-				<div class="option">
-					<ul class="option-list">
-						<li class="option-item ripple tooltip" data-lang="action.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
-							<i class="ico">dns</i>
-						</li>
-						<li class="tool-item ripple tooltip" data-lang="action.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
-							<i class="ico">person</i>
-						</li>
-						<li class="tool-item ripple tooltip" data-lang="action.more" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="more">
-							<i class="ico">more_vert</i>
-						</li>
-					<ul>
+				<div class="sidebar hidden">
+					<div class="option">
+						<ul class="option-list">
+							<li class="option-item ripple tooltip" data-lang="option.edit-mode" data-type="tooltip" data-title="Edit Mode" data-event="close.view-mode">
+								<i class="ico">expand_more</i>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<div class="hotbar">
@@ -175,14 +183,6 @@
 				<div class="align">
 					<button class="btn btn-cancel button ripple" data-event="close.modal" data-lang="modal.clear.action.cancel">No</button>
 					<button class="btn btn-apply button danger ripple" data-event="clear" data-lang="modal.clear.action.apply">Yes</button>
-				</div>
-			</div>
-			<div class="modal capture-modal hidden">
-				<p class="info" data-lang="modal.capture.info">Do you want to save this screen?</p>
-				<div class="preview"></div>
-				<div class="align">
-					<button class="btn btn-cancel button ripple " data-event="close.modal" data-lang="modal.capture.action.cancel">No</button>
-					<button class="btn btn-apply button prime ripple" data-lang="modal.capture.action.apply">Yes</button>
 				</div>
 			</div>
 			<div class="modal multiplayer-modal hidden">

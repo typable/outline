@@ -56,4 +56,8 @@ const COLORS = [
 	'#141414'
 ];
 
-export { COLORS };
+const PRIORITY_MODAL = [
+	'clear'
+];
+
+export { COLORS, PRIORITY_MODAL };

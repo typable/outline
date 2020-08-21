@@ -1,4 +1,4 @@
-import { COLORS } from './constant.js';
+import { COLORS, PRIORITY_MODAL } from './constant.js';
 import { uuid, query, prevent } from './util.js';
 
 // addons
@@ -68,8 +68,12 @@ function init() {
 		pencil_tool: '.tool-item[data-code="pencil"]',
 		option_event_fullscreen: '[data-event="toggle.fullscreen"]',
 		option_event_view_mode: '[data-event="toggle.view-mode"]',
-		undo_tool: '[data-lang="tool.undo"]',
-		redo_tool: '[data-lang="tool.redo"]'
+		undo_tool: '[data-lang="action.undo"]',
+		redo_tool: '[data-lang="action.redo"]',
+		colors_modal: '.colors-modal',
+		mainbar: '.mainbar',
+		sidebar: '.sidebar',
+		edit_mode: '[data-event="close.view-mode"]'
 	});
 
 	fill_hotbar_list();
@@ -111,7 +115,7 @@ function bind_events() {
 		}
 	}, { passive: false });
 	document.addEventListener('touchmove', function(event) {
-		if(event.target !== node.scale_input) {
+		if(event.target !== node.scale_input && event.target !== node.colors_modal && !node.modal_color_list.includes(event.target)) {
 			event.preventDefault();
 		}
 	}, { passive: false });
@@ -232,6 +236,10 @@ function bind_events() {
 		canvas.redo(state);
 		update_undo_and_redo();
 	});
+	node.edit_mode.addEventListener('click', function(event) {
+		state.option.view_mode = false;
+		update_view_mode_option();
+	});
 }
 
 function update_language_list() {
@@ -289,6 +297,7 @@ function update_modal_list() {
 	state.tab = null;
 	update_tab_list();
 	if(state.modal) {
+		canvas.on_release(event, state, true);
 		let modal = document.querySelector(`.modal.${state.modal}-modal`);
 		let button = document.querySelector(`[data-event*=".modal"][data-code="${state.modal}"]`);
 		if(modal) {
@@ -358,10 +367,20 @@ function update_view_mode_option() {
 			duration: 250,
 			fill: 'both'
 		});
-		node.header.animate([
-			{ opacity: 1 },
-			{ opacity: 0 }
+		node.mainbar.animate([
+			{ opacity: 1, marginTop: 0 },
+			{ opacity: 0, marginTop: '-60px' }
 		], {
+			easing: 'ease-out',
+			duration: 250,
+			fill: 'both'
+		});
+		node.sidebar.classList.remove('hidden');
+		node.sidebar.animate([
+			{ opacity: 0 },
+			{ opacity: 1 }
+		], {
+			delay: 250,
 			easing: 'ease-out',
 			duration: 250,
 			fill: 'both'
@@ -379,14 +398,15 @@ function update_view_mode_option() {
 			duration: 250,
 			fill: 'both'
 		});
-		node.header.animate([
-			{ opacity: 0 },
-			{ opacity: 1 }
+		node.mainbar.animate([
+			{ opacity: 0, marginTop: '-60px' },
+			{ opacity: 1, marginTop: 0 }
 		], {
 			easing: 'ease-out',
 			duration: 250,
 			fill: 'both'
 		});
+		node.sidebar.classList.add('hidden');
 	}
 }
 
@@ -421,14 +441,16 @@ function on_pointerdown(event) {
 	// drawing
 	if(!state.option.view_mode && state.device === event.pointerType) {
 		if(event.target === canvas.get_canvas()) {
-			update_focus(false);
-			canvas.on_press(event, state);
-			update_undo_and_redo();
-			state.point = {
-				x: event.layerX,
-				y: event.layerY
-			};
-			canvas.draw_cursor(state);
+			if(!PRIORITY_MODAL.includes(state.modal)) {
+				update_focus(false);
+				canvas.on_press(event, state);
+				update_undo_and_redo();
+				state.point = {
+					x: event.layerX,
+					y: event.layerY
+				};
+				canvas.draw_cursor(state);
+			}
 		}
 	}
 }
@@ -449,31 +471,42 @@ function on_pointermove(event) {
 	// drawing
 	if(!state.option.view_mode && state.device === event.pointerType) {
 		if(event.target === canvas.get_canvas()) {
-			canvas.on_move(event, state);
+			if(!PRIORITY_MODAL.includes(state.modal)) {
+				canvas.on_move(event, state);
+			}
 			state.point = {
 				x: event.layerX,
 				y: event.layerY
 			};
-			canvas.draw_cursor(state);
 		}
+		else {
+			state.point = {
+				x: null,
+				y: null
+			};
+		}
+		canvas.draw_cursor(state);
 	}
 }
 
 function on_pointerup(event) {
 	if(!state.option.view_mode && state.device === event.pointerType) {
-		canvas.on_release(event, state);
-		update_undo_and_redo();
-		canvas.draw_cursor(state);
-		update_focus(true);
+		if(!PRIORITY_MODAL.includes(state.modal)) {
+			canvas.on_release(event, state);
+			update_undo_and_redo();
+			update_focus(true);
+		}
 	}
 }
 
 function on_pointerout(event) {
 	if(!state.option.view_mode && state.device === event.pointerType) {
-		canvas.on_release(event, state);
-		update_undo_and_redo();
-		state.point = null;
-		canvas.draw_cursor(state);
+		if(!PRIORITY_MODAL.includes(state.modal)) {
+			canvas.on_release(event, state);
+			update_undo_and_redo();
+			state.point = null;
+			canvas.draw_cursor(state);
+		}
 	}
 }
 
@@ -507,114 +540,64 @@ function on_keydown(event) {
 					}
 				}
 			}
-			if(event.code === 'KeyC') {
+			if(event.code === 'KeyZ') {
 				state.modal = state.modal !== 'colors' ? 'colors' : null;
 				update_modal_list();
 			}
-			if(event.code === 'KeyS') {
+			if(event.code === 'KeyX') {
 				state.modal = state.modal !== 'scale' ? 'scale' : null;
 				update_modal_list();
 			}
-			if(event.code === 'KeyE') {
+			if(event.code === 'KeyC') {
 				state.modal = state.modal !== 'pencil' ? 'pencil' : null;
 				update_modal_list();
 			}
-			if(event.code === 'KeyD') {
+			if(event.code === 'KeyV') {
 				state.modal = state.modal !== 'clear' ? 'clear' : null;
 				update_modal_list();
 			}
-			if(event.code === 'KeyQ') {
-				state.modal = state.modal !== 'capture' ? 'capture' : null;
-				update_modal_list();
-			}
-		}
-		if(event.code === 'KeyV') {
-			state.option.view_mode = !state.option.view_mode;
-			update_view_mode_option();
-		}
-		if(event.code === 'ArrowLeft') {
-			canvas.undo(state);
-			update_undo_and_redo();
-		}
-		if(event.code === 'ArrowRight') {
-			canvas.redo(state);
-			update_undo_and_redo();
-		}
-	}
-	// alt
-	if(event.altKey && !event.ctrlKey && !event.shiftKey) {
-		if(!state.option.view_mode) {
-			if(!lock) {
-				if(event.code.startsWith('Digit')) {
-					let i = parseInt(event.code.substr(5)) - 1;
-					if(i >= 0 && i < state.pencil_list.length) {
-						canvas.on_release(event, state);
-						state.pencil = state.pencil_list[i];
-						canvas.draw_cursor(state);
-						update_pencil_list();
-					}
-				}
-			}
-			if(event.code === 'KeyM') {
+			if(event.code === 'KeyB') {
 				state.modal = state.modal !== 'multiplayer' ? 'multiplayer' : null;
 				update_modal_list();
 			}
-			if(event.code === 'KeyP') {
+			if(event.code === 'KeyN') {
 				state.modal = state.modal !== 'account' ? 'account' : null;
 				update_modal_list();
 			}
-			if(event.code === 'KeyS') {
+			if(event.code === 'KeyM') {
 				state.modal = state.modal !== 'more' ? 'more' : null;
 				update_modal_list();
 			}
-			if(event.code === 'KeyH') {
-				if(state.tab !== 'help') {
-					state.modal = 'more';
-					update_modal_list();
-					state.tab = 'help';
-					update_tab_list();
-				}
-				else {
-					state.modal = null;
-					update_modal_list();
-				}
+			if(event.code === 'ArrowLeft') {
+				canvas.undo(state);
+				update_undo_and_redo();
 			}
-			if(event.code === 'KeyL') {
-				if(state.tab !== 'language') {
-					state.modal = 'more';
-					update_modal_list();
-					state.tab = 'language';
-					update_tab_list();
-				}
-				else {
-					state.modal = null;
-					update_modal_list();
-				}
+			if(event.code === 'ArrowRight') {
+				canvas.redo(state);
+				update_undo_and_redo();
 			}
-			if(event.code === 'KeyI') {
-				if(state.tab !== 'device') {
-					state.modal = 'more';
-					update_modal_list();
-					state.tab = 'device';
-					update_tab_list();
-				}
-				else {
-					state.modal = null;
-					update_modal_list();
-				}
+			if(event.code === 'KeyQ') {
+				canvas.on_release(event, state);
+				state.pencil = state.pencil_list[0];
+				canvas.draw_cursor(state);
+				update_pencil_list();
 			}
-			if(event.code === 'KeyA') {
-				if(state.tab !== 'appearance') {
-					state.modal = 'more';
-					update_modal_list();
-					state.tab = 'appearance';
-					update_tab_list();
-				}
-				else {
-					state.modal = null;
-					update_modal_list();
-				}
+			if(event.code === 'KeyW') {
+				canvas.on_release(event, state);
+				state.pencil = state.pencil_list[1];
+				canvas.draw_cursor(state);
+				update_pencil_list();
 			}
+			if(event.code === 'KeyE') {
+				canvas.on_release(event, state);
+				state.pencil = state.pencil_list[2];
+				canvas.draw_cursor(state);
+				update_pencil_list();
+			}
+		}
+		if(event.code === 'Space') {
+			state.option.view_mode = !state.option.view_mode;
+			update_view_mode_option();
 		}
 	}
 }
@@ -657,7 +640,7 @@ function fill_modal_color_list() {
 	for(let [ i, item ] of Object.entries(node.modal_color_list)) {
 		if(COLORS.length > i) {
 			item.style.background = COLORS[i];
-			item.addEventListener('pointerdown', function(event) {
+			item.addEventListener('click', function(event) {
 				canvas.on_release(event, state);
 				state.color = i;
 				state.modal = null;
@@ -692,5 +675,5 @@ function show_notification(message) {
 				fill: 'both'
 			});
 		}
-	}, 2000);
+	}, 1000);
 }

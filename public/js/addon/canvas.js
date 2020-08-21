@@ -102,6 +102,7 @@ function on_press(event, state) {
 	});
 	active = true;
 	state.redo_history = [];
+	draw_curve(g, state, point_list);
 }
 
 function on_move(event, state) {
@@ -116,9 +117,9 @@ function on_move(event, state) {
 	}
 }
 
-function on_release(event, state) {
+function on_release(event, state, undrag) {
 	if(active) {
-		if(event && event.type === 'pointerup') {
+		if((event && event.type === 'pointerup') || undrag) {
 			active = false;
 		}
 		if(point_list.length > 0) {
@@ -163,18 +164,20 @@ function redo(state) {
 function draw_curve(g, state, point_list) {
 	if(state.pencil === 'pen') {
 		g.strokeStyle = COLORS[state.color];
+		g.fillStyle = COLORS[state.color];
 	}
 	if(state.pencil === 'marker') {
 		g.strokeStyle = COLORS[state.color] + '88';
+		g.fillStyle = COLORS[state.color] + '88';
 	}
 	if(state.pencil === 'eraser') {
 		g.strokeStyle = 'white';
+		g.fillStyle = 'white';
 	}
 	g.lineCap = 'round';
 	g.lineJoin = 'round';
 	g.lineWidth = 2 * state.radius;
 	if(point_list.length < 3) {
-		g.fillStyle = COLORS[state.color];
 		g.beginPath();
 		g.arc(point_list[0].x, point_list[0].y, g.lineWidth / 2, 0, Math.PI * 2, !0);
 		g.closePath();

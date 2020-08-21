@@ -23,67 +23,80 @@ body {
 	background: white;
 	border-bottom: 1px solid @brand-grey-5;
 	display: flex;
-	justify-content: space-between;
-	padding: 8px 14px;
+	flex-direction: column;
 	pointer-events: all;
 
-	&.inactive {
-
-		.action-item,
-		.tool-item,
-		.option-item {
-			pointer-events: none !important;
-		}
+	.sidebar {
+		justify-content: flex-end !important;
 	}
 
-	.tool,
-	.action,
-	.option {
+	.mainbar,
+	.sidebar {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		padding: 8px 14px;
+		min-height: 60px;
+		height: 60px;
 
-		ul {
-			list-style-type: none;
-			display: flex;
-			gap: 10px;
+		&.inactive {
 
-			li {
-				width: 44px;
-				height: 44px;
-				padding: 10px;
-				border-radius: 22px;
-				cursor: pointer;
-				pointer-events: all;
+			.action-item,
+			.tool-item,
+			.option-item {
+				pointer-events: none !important;
+			}
+		}
 
-				&:not(.inactive):not(.active):hover {
-					background: rgba(@brand-grey-7, 0.95);
+		.tool,
+		.action,
+		.option {
 
-					&.ripple {
+			ul {
+				list-style-type: none;
+				display: flex;
+				gap: 10px;
 
-						&.ripple-active {
-							background: lighten(rgba(@brand-grey-7, 0.95), -2%);
+				li {
+					width: 44px;
+					height: 44px;
+					padding: 10px;
+					border-radius: 22px;
+					cursor: pointer;
+					pointer-events: all;
+
+					&:not(.inactive):not(.active):hover {
+						background: rgba(@brand-grey-7, 0.95);
+
+						&.ripple {
+
+							&.ripple-active {
+								background: lighten(rgba(@brand-grey-7, 0.95), -2%);
+							}
 						}
 					}
-				}
 
-				&.active {
-					background: rgba(#EEEEEE, 0.95);
+					&.active {
+						background: rgba(#EEEEEE, 0.95);
 
-					&.ripple {
+						&.ripple {
 
-						&.ripple-active {
-							background: lighten(rgba(#EEEEEE, 0.95), -2%);
+							&.ripple-active {
+								background: lighten(rgba(#EEEEEE, 0.95), -2%);
+							}
 						}
 					}
-				}
 
-				&.inactive {
+					&.inactive {
+
+						i.ico {
+							color: @brand-grey-4;
+						}
+					}
 
 					i.ico {
-						color: @brand-grey-4;
+						color: @brand-grey-1;
 					}
-				}
-
-				i.ico {
-					color: @brand-grey-1;
 				}
 			}
 		}
@@ -281,9 +294,9 @@ body {
 	}
 
 	.clear-modal {
-		top: calc(50% - 75.5px);
-		left: calc(50% - 200px);
-		width: 400px;
+		top: calc(50% - 75.5px - 30px);
+		left: calc(50% - 175px);
+		width: 350px;
 		padding: 25px;
 		display: flex;
 		flex-direction: column;
@@ -299,67 +312,19 @@ body {
 
 		.align {
 			display: flex;
-			gap: 25px;
+			gap: 15px;
 
 			.btn-cancel {
-				width: 185px;
-				height: 50px;
+				width: 50%;
+				height: 48px;
 				border: none;
 				border-radius: 3px;
 				font-size: 17px;
 			}
 
 			.btn-apply {
-				width: 185px;
-				height: 50px;
-				border: none;
-				border-radius: 3px;
-				border-color: grey;
-				font-size: 17px;
-			}
-		}
-	}
-
-	.capture-modal {
-		top: calc(50% - 213px);
-		left: calc(50% - 200px);
-		width: 400px;
-		display: flex;
-		flex-direction: column;
-		padding: 25px;
-
-		.info {
-			font-size: 20px;
-			width: 100%;
-			text-align: center;
-			margin-bottom: 25px;
-			color: @brand-black;
-			user-select: none;
-		}
-
-		.preview {
-			height: 250px;
- 		 	background: @brand-grey-6;
-			border: 1px solid #f1f1f1;
-			border-radius: 3px;
-			margin-bottom: 25px;
-		}
-
-		.align {
-			display: flex;
-			gap: 25px;
-
-			.btn-cancel {
-				width: 185px;
-				height: 50px;
-				border: none;
-				border-radius: 3px;
-				font-size: 17px;
-			}
-
-			.btn-apply {
-				width: 185px;
-				height: 50px;
+				width: 50%;
+				height: 48px;
 				border: none;
 				border-radius: 3px;
 				border-color: grey;
@@ -370,14 +335,29 @@ body {
 
 	.colors-modal {
 		flex-wrap: wrap;
-		min-width: 410px;
-		width: 410px;
-		max-width: 410px;
+		min-width: 418px;
+		width: 418px;
+		max-width: 418px;
 		padding: 30px !important;
 		top: 75px;
 		left: 15px;
 		display: flex;
 		gap: 12px;
+		max-height: calc(100vh - 90px);
+		overflow-y: auto;
+
+		&::-webkit-scrollbar {
+			width: 8px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			width: 8px;
+			background: @brand-grey-5;
+
+			&:hover {
+				background: @brand-grey-4;
+			}
+		}
 
 		.color {
 			width: 60px;
@@ -404,17 +384,17 @@ body {
 
 	.multiplayer-modal {
 		top: 75px;
-		right: 130px;
+		right: 120px;
 	}
 
 	.account-modal {
 		top: 75px;
-		right: 80px;
+		right: 70px;
 	}
 
 	.more-modal {
 		top: 75px;
-		right: 20px;
+		right: 15px;
 	}
 }
 
