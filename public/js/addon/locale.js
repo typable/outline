@@ -26,7 +26,7 @@ function init(code) {
 	@param {string[]} locales - The list containing all locales.
 	@return {Object} The locale object.
 */
-async function load(path, locales) {
+async function load(path, locales, callback) {
 	for(let code of locales) {
 		let text = await fetch(`${path}/${code}.properties`)
 			.then(function(response) {
@@ -41,6 +41,9 @@ async function load(path, locales) {
 		if(text) {
 			lang[code] = parse(text);
 		}
+	}
+	if(callback) {
+		callback();
 	}
 }
 
@@ -91,6 +94,9 @@ function get() {
 function change(code) {
 	if(lang[code]) {
 		current_lang = code;
+		if('localStorage' in window) {
+			localStorage.setItem('outline.user.lang', code);
+		}
 		let elements = document.querySelectorAll('[data-lang]');
 		for(let item of elements) {
 			let content = lang[code][item.dataset.lang];

@@ -41,9 +41,21 @@ window.addEventListener('load', init);
 
 function init() {
 
+	console.log('%cOutline', 'font-size: 24px; font-weight: 600;');
+	console.log('%cDraw with friends together.\n', 'font-size: 14px;');
+	console.log('Found a bug? Tell us:', 'https://github.com/typable/outline/issues/new/choose');
+
 	canvas.init();
 	locale.init('en');
-	locale.load('./asset/lang', ['en', 'de']);
+	locale.load('./asset/lang', ['en', 'de'], function() {
+		if('localStorage' in window) {
+			let user_lang = localStorage.getItem('outline.user.lang');
+			if(user_lang) {
+				locale.change(user_lang);
+				update_language_list();
+			}
+		}
+	});
 	ripple.init();
 
 	node = query({
@@ -101,6 +113,23 @@ function init() {
 }
 
 function bind_events() {
+	window.onerror = function(error, url, line) {
+		fetch('https://server.typable.dev/log', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				date: new Date(),
+				error: {
+					message: error,
+					file: url,
+					line: line
+				}
+			})
+		});
+	}
 	document.addEventListener('dragstart', prevent);
 	document.addEventListener('contextmenu', prevent);
 	document.addEventListener('pointerdown', on_pointerdown);
@@ -223,7 +252,7 @@ function bind_events() {
 			document.exitFullscreen();
 		}
 	});
-	document.addEventListener('fullscreenchange', on_fullscreenchange);
+	window.addEventListener('fullscreenchange', on_fullscreenchange);
 	node.option_event_view_mode.addEventListener('click', function(event) {
 		state.option.view_mode = !state.option.view_mode;
 		update_view_mode_option();
@@ -479,39 +508,28 @@ function on_pointermove(event) {
 				y: event.layerY
 			};
 		}
-		else {
-			state.point = {
-				x: null,
-				y: null
-			};
-		}
 		canvas.draw_cursor(state);
 	}
 }
 
 function on_pointerup(event) {
 	if(!state.option.view_mode && state.device === event.pointerType) {
-		if(!PRIORITY_MODAL.includes(state.modal)) {
-			canvas.on_release(event, state);
-			update_undo_and_redo();
-			update_focus(true);
-		}
+		canvas.on_release(event, state);
+		update_undo_and_redo();
+		update_focus(true);
 	}
 }
 
 function on_pointerout(event) {
 	if(!state.option.view_mode && state.device === event.pointerType) {
-		if(!PRIORITY_MODAL.includes(state.modal)) {
-			canvas.on_release(event, state);
-			update_undo_and_redo();
-			state.point = null;
-			canvas.draw_cursor(state);
-		}
+		canvas.on_release(event, state);
+		update_undo_and_redo();
+		state.point = null;
+		canvas.draw_cursor(state);
 	}
 }
 
 function on_keydown(event) {
-	let lock = event.getModifierState("CapsLock");
 	if(event.code === 'Escape') {
 		if(state.tab) {
 			state.tab = null;
@@ -526,17 +544,15 @@ function on_keydown(event) {
 	}
 	if(!event.ctrlKey && !event.shiftKey && !event.altKey) {
 		if(!state.option.view_mode) {
-			if(!lock) {
-				if(event.code.startsWith('Digit')) {
-					let i = parseInt(event.code.substr(5)) - 1;
-					if(state.index !== i) {
-						if(i >= 0 && i < state.color_list.length) {
-							canvas.on_release(event, state);
-							state.color = state.color_list[i];
-							state.index = i;
-							canvas.draw_cursor(state);
-							update_hotbar();
-						}
+			if(event.code.startsWith('Digit')) {
+				let i = parseInt(event.code.substr(5)) - 1;
+				if(state.index !== i) {
+					if(i >= 0 && i < state.color_list.length) {
+						canvas.on_release(event, state);
+						state.color = state.color_list[i];
+						state.index = i;
+						canvas.draw_cursor(state);
+						update_hotbar();
 					}
 				}
 			}
@@ -556,6 +572,7 @@ function on_keydown(event) {
 				state.modal = state.modal !== 'clear' ? 'clear' : null;
 				update_modal_list();
 			}
+			/*
 			if(event.code === 'KeyB') {
 				state.modal = state.modal !== 'multiplayer' ? 'multiplayer' : null;
 				update_modal_list();
@@ -564,6 +581,7 @@ function on_keydown(event) {
 				state.modal = state.modal !== 'account' ? 'account' : null;
 				update_modal_list();
 			}
+			*/
 			if(event.code === 'KeyM') {
 				state.modal = state.modal !== 'more' ? 'more' : null;
 				update_modal_list();
@@ -594,10 +612,28 @@ function on_keydown(event) {
 				canvas.draw_cursor(state);
 				update_pencil_list();
 			}
+			if(event.code === 'KeyF') {
+				if(!document.fullscreenElement) {
+					document.documentElement.requestFullscreen();
+				}
+				else if(document.exitFullscreen) {
+					document.exitFullscreen();
+				}
+			}
 		}
 		if(event.code === 'Space') {
 			state.option.view_mode = !state.option.view_mode;
 			update_view_mode_option();
+		}
+	}
+	if(event.ctrlKey && !event.shiftKey && !event.altKey) {
+		if(event.code === 'KeyY') {
+			canvas.undo(state);
+			update_undo_and_redo();
+		}
+		if(event.code === 'KeyZ') {
+			canvas.redo(state);
+			update_undo_and_redo();
 		}
 	}
 }

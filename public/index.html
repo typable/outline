@@ -9,6 +9,11 @@
 		<meta name="robots" content="noindex, nofollow">
 		<meta name="google" content="notranslate">
 		<meta name="theme-color" content="#FFFFFF" />
+		<meta property="og:title" content="Outline" />
+		<meta property="og:description" content="Draw with friends together." />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://server.typable.dev/outline" />
+		<meta property="og:image" content="https://server.typable.dev/outline/asset/img/app/icon-192x192.png" />
 		<title>Outline</title>
 		<link href="./manifest.json" rel="manifest">
 		<link href="./asset/img/favicon.png" rel="shortcut icon" type="image/png">
@@ -55,10 +60,10 @@
 					</div>
 					<div class="option">
 						<ul class="option-list">
-							<li class="option-item ripple tooltip" data-lang="option.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
+							<li class="option-item ripple tooltip inactive" data-lang="option.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
 								<i class="ico">dns</i>
 							</li>
-							<li class="option-item ripple tooltip" data-lang="option.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
+							<li class="option-item ripple tooltip inactive" data-lang="option.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
 								<i class="ico">person</i>
 							</li>
 							<li class="option-item ripple tooltip" data-lang="option.more" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="more">
@@ -360,7 +365,7 @@
 						<li class="item ripple" data-event="open.tab" data-code="language">
 							<i class="ico">language</i>
 							<div class="info">
-								<p data-lang="more.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
+								<p data-lang="more.language">Language</p>
 								<span data-lang="more.language.info">Choose preferred language</span>
 							</div>
 						</li>
@@ -415,7 +420,7 @@
 								<i class="ico">keyboard_arrow_left</i>
 							</div>
 							<div class="info">
-								<p data-lang="more.language" data-badge="true">Language<b class="badge beta">Beta</b></p>
+								<p data-lang="more.language">Language</p>
 								<span data-lang="more.language.info">Choose preferred language</span>
 							</div>
 						</div>
@@ -520,7 +525,7 @@
 
 			if('serviceWorker' in navigator) {
 				window.addEventListener('load', function(event) {
-					navigator.serviceWorker.register('https://server.typable.dev/outline/service-worker.js');
+					navigator.serviceWorker.register('./service-worker.js');
 				});
 			}
 
