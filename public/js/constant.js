@@ -57,7 +57,8 @@ const COLORS = [
 ];
 
 const PRIORITY_MODAL = [
-	'clear'
+	'clear',
+	'help'
 ];
 
 export { COLORS, PRIORITY_MODAL };

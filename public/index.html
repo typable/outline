@@ -355,7 +355,7 @@
 			<div class="modal more-modal hidden">
 				<div class="main">
 					<ul class="item-list">
-						<li class="item ripple" data-event="open.tab" data-code="help">
+						<li class="item ripple" data-event="open.modal" data-code="help">
 							<i class="ico">help</i>
 							<div class="info">
 								<p data-lang="more.help">Help</p>
@@ -386,6 +386,7 @@
 					</ul>
 				</div>
 				<ul class="tab-list">
+					<!--
 					<li class="tab help-tab hidden">
 						<div class="header">
 							<div class="back ripple" data-event="close.tab">
@@ -399,14 +400,14 @@
 						<ul class="item-list">
 							<li class="separator"></li>
 							<li class="item ripple">
-								<i class="ico">bookmark_border</i>
+								<i class="ico">subject</i>
 								<div class="info">
 									<p data-lang="more.help.controls">Controls</p>
-									<span data-lang="semoretting.help.controls.info">Keyboard, Touch, Controller</span>
+									<span data-lang="more.help.controls.info">Keyboard, Touch, Controller</span>
 								</div>
 							</li>
 							<li class="item ripple">
-								<i class="ico">bookmark_border</i>
+								<i class="ico">subject</i>
 								<div class="info">
 									<p data-lang="more.help.multiplayer">Multiplayer</p>
 									<span data-lang="more.help.multiplayer.info">Channel, Roles</span>
@@ -414,6 +415,7 @@
 							</li>
 						</ul>
 					</li>
+					-->
 					<li class="tab language-tab hidden">
 						<div class="header">
 							<div class="back ripple" data-event="close.tab">
@@ -519,6 +521,253 @@
 						</ul>
 					</li>
 				</ul>
+			</div>
+			<div class="modal help-modal hidden">
+				<div class="side">
+					<ul class="item-list">
+						<!--
+						<li class="item ripple active" data-event="open.content" data-code="welcome">
+							<div class="info">
+								<p data-lang="more.help.welcome">Welcome</p>
+							</div>
+						</li>
+						-->
+						<li class="item ripple active" data-event="open.content" data-code="controls">
+							<div class="info">
+								<p data-lang="more.help.controls">Controls</p>
+							</div>
+						</li>
+						<!--
+						<li class="item ripple" data-event="open.content" data-code="multiplayer">
+							<div class="info">
+								<p data-lang="more.help.multiplayer">Multiplayer</p>
+							</div>
+						</li>
+						-->
+					</ul>
+				</div>
+				<div class="content">
+					<ul class="content-list">
+						<li class="content-item" data-code="welcome">
+							<h2>Welcome</h2>
+							<p>Quisque viverra purus ut gravida lacinia.
+							Quisque ligula purus, semper eu libero sit amet,
+							bibendum dapibus massa. Sed ultrices lacinia diam,
+							eget placerat ligula hendrerit id. Vivamus facilisis,
+							risus at laoreet elementum, tortor libero bibendum
+							nisi, sit amet placerat tellus nibh sit amet erat.</p>
+						</li>
+						<li class="content-item hidden" data-code="controls">
+							<h2>Keyboard</h2>
+							<p>Quisque viverra purus ut gravida lacinia.
+							Quisque ligula purus, semper eu libero sit amet,
+							bibendum dapibus massa. Sed ultrices lacinia diam,
+							eget placerat ligula hendrerit id. Vivamus facilisis,
+							risus at laoreet elementum, tortor libero bibendum
+							nisi, sit amet placerat tellus nibh sit amet erat.</p>
+							<h3>Tools</h3>
+							<div class="table">
+								<ul class="table-head">
+									<li class="table-item">Shortcut</li>
+									<li class="table-item">Description</li>
+								</ul>
+								<div class="table-body">
+									<ul class="table-row">
+										<li class="table-item"><span class="key">1 - 6</span></li>
+										<li class="table-item">Switch colors</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">Q</span></li>
+										<li class="table-item">Select pen</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">W</span></li>
+										<li class="table-item">Select marker</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">E</span></li>
+										<li class="table-item">Select eraser</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key" data-lang="key.ctrl">Ctrl</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key">Z</span></li>
+										<li class="table-item">Undo step</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key" data-lang="key.ctrl">Ctrl</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key">Y</span></li>
+										<li class="table-item">Redo step</li>
+									</ul>
+								</div>
+							</div>
+							<h3>Views</h3>
+							<div class="table">
+								<ul class="table-head">
+									<li class="table-item">Shortcut</li>
+									<li class="table-item">Description</li>
+								</ul>
+								<div class="table-body">
+									<ul class="table-row">
+										<li class="table-item"><span class="key" data-lang="key.space">Space</span></li>
+										<li class="table-item">Toggle View Mode</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">F</span></li>
+										<li class="table-item">Toggle Fullscreen</li>
+									</ul>
+								</div>
+							</div>
+							<h3>Modals</h3>
+							<div class="table">
+								<ul class="table-head">
+									<li class="table-item">Shortcut</li>
+									<li class="table-item">Description</li>
+								</ul>
+								<div class="table-body">
+									<ul class="table-row">
+										<li class="table-item"><span class="key">Escape</span></li>
+										<li class="table-item">Close modal or tab</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">Y</span></li>
+										<li class="table-item">Toggle color modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">X</span></li>
+										<li class="table-item">Toggle scaling modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">C</span></li>
+										<li class="table-item">Toggle pencil modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">V</span></li>
+										<li class="table-item">Toggle clear modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">B</span></li>
+										<li class="table-item">Toggle multiplayer modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">N</span></li>
+										<li class="table-item">Toggle account modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key">M</span></li>
+										<li class="table-item">Toggle more modal</li>
+									</ul>
+								</div>
+							</div>
+							<h2>Touch</h2>
+							<p>Quisque viverra purus ut gravida lacinia.
+							Quisque ligula purus, semper eu libero sit amet,
+							bibendum dapibus massa. Sed ultrices lacinia diam,
+							eget placerat ligula hendrerit id. Vivamus facilisis,
+							risus at laoreet elementum, tortor libero bibendum
+							nisi, sit amet placerat tellus nibh sit amet erat.</p>
+							<h2>Pencil</h2>
+							<p>Quisque viverra purus ut gravida lacinia.
+							Quisque ligula purus, semper eu libero sit amet,
+							bibendum dapibus massa. Sed ultrices lacinia diam,
+							eget placerat ligula hendrerit id. Vivamus facilisis,
+							risus at laoreet elementum, tortor libero bibendum
+							nisi, sit amet placerat tellus nibh sit amet erat.</p>
+							<h2>Gamepad</h2>
+							<p>Quisque viverra purus ut gravida lacinia.
+							Quisque ligula purus, semper eu libero sit amet,
+							bibendum dapibus massa. Sed ultrices lacinia diam,
+							eget placerat ligula hendrerit id. Vivamus facilisis,
+							risus at laoreet elementum, tortor libero bibendum
+							nisi, sit amet placerat tellus nibh sit amet erat.</p>
+							<h3>Control</h3>
+							<div class="table">
+								<ul class="table-head">
+									<li class="table-item">Shortcut</li>
+									<li class="table-item">Description</li>
+								</ul>
+								<div class="table-body">
+									<ul class="table-row">
+										<li class="table-item"><span class="key round" data-lang="key.left-stick">Left Stick</span></li>
+										<li class="table-item">Move</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round" data-lang="key.right-stick">Right Stick</span></li>
+										<li class="table-item">Scale pencil radius</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round" data-lang="key.arrows">Arrows</span></li>
+										<li class="table-item">Navigate through menu</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round" data-lang="key.left-stick">Left Stick</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key round">L2</span></li>
+										<li class="table-item">Move fast</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round" data-lang="key.left-stick">Left Stick</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key round">R2</span></li>
+										<li class="table-item">Move slow</li>
+									</ul>
+								</div>
+							</div>
+							<h3>Tools</h3>
+							<div class="table">
+								<ul class="table-head">
+									<li class="table-item">Shortcut</li>
+									<li class="table-item">Description</li>
+								</ul>
+								<div class="table-body">
+									<ul class="table-row">
+										<li class="table-item"><span class="key round">L1 - R1</span></li>
+										<li class="table-item">Switch colors</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round">A</span></li>
+										<li class="table-item">Draw</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round">B</span></li>
+										<li class="table-item">Erase</li>
+									</ul>
+								</div>
+							</div>
+							<h3>Modals</h3>
+							<div class="table">
+								<ul class="table-head">
+									<li class="table-item">Shortcut</li>
+									<li class="table-item">Description</li>
+								</ul>
+								<div class="table-body">
+									<ul class="table-row">
+										<li class="table-item"><span class="key round">B</span></li>
+										<li class="table-item">Close modal or tab</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round">A</span></li>
+										<li class="table-item">Select option</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round ico"><i class="ico">more_horizontal</i></span></li>
+										<li class="table-item">Open colors modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round">Y</span></li>
+										<li class="table-item">Open clear modal</li>
+									</ul>
+									<ul class="table-row">
+										<li class="table-item"><span class="key round ico"><i class="ico">menu</i></span></li>
+										<li class="table-item">Open multiplayer, account, more modal</li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li class="content-item hidden" data-code="multiplayer">
+							<h2>Multiplayer</h2>
+							<p>Quisque viverra purus ut gravida lacinia.
+							Quisque ligula purus, semper eu libero sit amet,
+							bibendum dapibus massa. Sed ultrices lacinia diam,
+							eget placerat ligula hendrerit id. Vivamus facilisis,
+							risus at laoreet elementum, tortor libero bibendum
+							nisi, sit amet placerat tellus nibh sit amet erat.</p>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<script type="text/javascript">

@@ -136,6 +136,34 @@ body {
 	}
 }
 
+.key {
+	display: inline-block;
+	padding: 3px 8px;
+	border-radius: 3px;
+	color: @brand-grey-2;
+	font-weight: 500;
+	background: @brand-grey-7;
+	border: 1px solid @brand-grey-4;
+
+	&.round {
+		border-radius: 999px;
+	}
+
+	&.ico {
+		padding: 2px;
+		max-width: 28px;
+		max-height: 27px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		i.ico {
+			padding: 2px;
+			max-width: 28px;
+		}
+	}
+}
+
 .button {
 	display: block;
 	height: 44px;
@@ -294,7 +322,7 @@ body {
 	}
 
 	.clear-modal {
-		top: calc(50% - 75.5px - 30px);
+		top: calc(50% - 75.5px);
 		left: calc(50% - 175px);
 		width: 350px;
 		padding: 25px;
@@ -354,7 +382,8 @@ body {
 			width: 8px;
 			background: @brand-grey-5;
 
-			&:hover {
+			&:hover,
+			&:active {
 				background: @brand-grey-4;
 			}
 		}
@@ -395,6 +424,96 @@ body {
 	.more-modal {
 		top: 75px;
 		right: 15px;
+	}
+
+	.help-modal {
+		top: calc(50% - 250px);
+		left: calc(50% - 400px);
+		width: 800px;
+		height: 500px;
+		display: flex;
+		padding: 0;
+
+		.side {
+			border-right: 1px solid @brand-grey-5;
+			width: 230px;
+			min-width: 230px;
+			overflow: hidden;
+
+			ul.item-list {
+				width: 100%;
+				padding: 6px 0;
+
+				li.item {
+					display: flex;
+					flex-direction: column;
+
+					 .info {
+						 font-size: 16px;
+						 width: 100%;
+						 max-width: 100%;
+						 margin-left: 0;
+					 }
+				}
+			}
+		}
+
+		.content {
+			padding: 6px 0;
+			overflow-y: auto;
+
+			&::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				width: 8px;
+				background: @brand-grey-5;
+
+				&:hover,
+				&:active {
+					background: @brand-grey-4;
+				}
+			}
+
+			ul.content-list {
+				list-style-type: none;
+				pointer-events: none;
+
+				li.content-item {
+					pointer-events: none;
+					padding: 15px 20px;
+					padding-top: 25px;
+
+					p {
+						font-size: 16px;
+						color: @brand-grey-2;
+						line-height: 20px;
+						user-select: none;
+						pointer-events: none;
+						margin-bottom: 40px;
+					}
+
+					h2 {
+						font-size: 24px;
+						font-weight: 500;
+						margin-bottom: 20px;
+						user-select: none;
+						pointer-events: none;
+						color: @brand-grey-1;
+					}
+
+					h3 {
+						font-size: 22px;
+						font-weight: 500;
+						margin-bottom: 20px;
+						user-select: none;
+						pointer-events: none;
+						color: @brand-grey-1;
+					}
+				}
+			}
+		}
 	}
 }
 

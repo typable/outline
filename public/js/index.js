@@ -30,6 +30,7 @@ let state = {
 	timestamp: null,
 	modal: null,
 	tab: null,
+	caption: null,
 	option: {
 		view_mode: false
 	},
@@ -85,7 +86,10 @@ function init() {
 		colors_modal: '.colors-modal',
 		mainbar: '.mainbar',
 		sidebar: '.sidebar',
-		edit_mode: '[data-event="close.view-mode"]'
+		edit_mode: '[data-event="close.view-mode"]',
+		content: '.modal .content',
+		caption_list: { query: '[data-event="open.content"]' , all: true },
+		content_list: { query: '.content-item' , all: true }
 	});
 
 	fill_hotbar_list();
@@ -144,7 +148,7 @@ function bind_events() {
 		}
 	}, { passive: false });
 	document.addEventListener('touchmove', function(event) {
-		if(event.target !== node.scale_input && event.target !== node.colors_modal && !node.modal_color_list.includes(event.target)) {
+		if(event.target !== node.scale_input && event.target !== node.colors_modal && !node.modal_color_list.includes(event.target) && event.target !== node.content) {
 			event.preventDefault();
 		}
 	}, { passive: false });
@@ -269,6 +273,12 @@ function bind_events() {
 		state.option.view_mode = false;
 		update_view_mode_option();
 	});
+	for(let item of node.caption_list) {
+		item.addEventListener('click', function(event) {
+			state.caption = item.dataset.code;
+			update_caption_list();
+		});
+	}
 }
 
 function update_language_list() {
@@ -325,6 +335,8 @@ function update_modal_list() {
 	}
 	state.tab = null;
 	update_tab_list();
+	state.caption = 'controls';
+	update_caption_list();
 	if(state.modal) {
 		canvas.on_release(event, state, true);
 		let modal = document.querySelector(`.modal.${state.modal}-modal`);
@@ -442,6 +454,17 @@ function update_view_mode_option() {
 function update_undo_and_redo() {
 	node.undo_tool.classList[state.history.length > 0 ? 'remove' : 'add']('inactive');
 	node.redo_tool.classList[state.redo_history.length > 0 ? 'remove' : 'add']('inactive');
+}
+
+function update_caption_list() {
+	for(let item of node.caption_list) {
+		let code = item.dataset.code;
+		item.classList[code === state.caption ? 'add' : 'remove']('active');
+	}
+	for(let item of node.content_list) {
+		let code = item.dataset.code;
+		item.classList[code === state.caption ? 'remove' : 'add']('hidden');
+	}
 }
 
 function on_pointerdown(event) {
@@ -586,14 +609,6 @@ function on_keydown(event) {
 				state.modal = state.modal !== 'more' ? 'more' : null;
 				update_modal_list();
 			}
-			if(event.code === 'ArrowLeft') {
-				canvas.undo(state);
-				update_undo_and_redo();
-			}
-			if(event.code === 'ArrowRight') {
-				canvas.redo(state);
-				update_undo_and_redo();
-			}
 			if(event.code === 'KeyQ') {
 				canvas.on_release(event, state);
 				state.pencil = state.pencil_list[0];
@@ -640,12 +655,14 @@ function on_keydown(event) {
 
 function on_wheel(event) {
 	if(!state.option.view_mode && state.device === 'mouse') {
-		let y = event.deltaY < 0 ? 1 : -1;
-		if(state.radius + y > 2 - 1 && state.radius + y < 50 + 1) {
-			canvas.on_release(event, state);
-			state.radius += y;
-			node.scale_input.value = state.radius;
-			canvas.draw_cursor(state);
+		if(event.target === canvas.get_canvas()) {
+			let y = event.deltaY < 0 ? 1 : -1;
+			if(state.radius + y > 2 - 1 && state.radius + y < 50 + 1) {
+				canvas.on_release(event, state);
+				state.radius += y;
+				node.scale_input.value = state.radius;
+				canvas.draw_cursor(state);
+			}
 		}
 	}
 }
