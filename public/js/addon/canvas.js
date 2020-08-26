@@ -245,6 +245,20 @@ function clear_cursor() {
 	o.clearRect(0, 0, size, size);
 }
 
+function set_data(data) {
+	let image = new Image();
+	image.onload = function(event) {
+		g.drawImage(image, 0, 0);
+		m.drawImage(image, 0, 0);
+		t.drawImage(image, 0, 0);
+	}
+	image.src = data;
+}
+
+function get_data() {
+	return canvas.toDataURL();
+}
+
 export default {
 	init,
 	get_canvas,
@@ -258,5 +272,7 @@ export default {
 	redo,
 	draw_curve,
 	draw_cursor,
-	clear_cursor
+	clear_cursor,
+	set_data,
+	get_data
 };
