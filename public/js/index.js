@@ -432,6 +432,7 @@ function update_view_mode_option() {
 		});
 	}
 	else {
+		canvas.on_release(null, state, true);
 		canvas.get_canvas().style.cursor = 'none';
 		node.hotbar.classList.remove('inactive');
 		node.header.classList.remove('inactive');
