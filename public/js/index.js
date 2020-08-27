@@ -59,13 +59,6 @@ function init() {
 	});
 	ripple.init();
 
-	if('localStorage' in window) {
-		let user_cache = localStorage.getItem('outline.user.cache');
-		if(user_cache) {
-			canvas.set_data(user_cache);
-		}
-	}
-
 	node = query({
 		wrapper: '.wrapper',
 		controls: '.controls',
@@ -288,7 +281,7 @@ function bind_events() {
 	}
 
 	window.addEventListener('beforeunload', function(event) {
-		localStorage.setItem('outline.user.cache', canvas.get_data());
+		// ...
 	});
 }
 
