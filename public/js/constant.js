@@ -61,4 +61,15 @@ const PRIORITY_MODAL = [
 	'help'
 ];
 
-export { COLORS, PRIORITY_MODAL };
+const LOCALES = [
+	'en',
+	'de',
+	'fr',
+	'cn'
+];
+
+export {
+	COLORS,
+	PRIORITY_MODAL,
+	LOCALES
+};

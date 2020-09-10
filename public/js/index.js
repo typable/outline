@@ -1,4 +1,4 @@
-import { COLORS, PRIORITY_MODAL } from './constant.js';
+import { COLORS, PRIORITY_MODAL, LOCALES } from './constant.js';
 import { uuid, query, prevent } from './util.js';
 
 // addons
@@ -48,7 +48,7 @@ function init() {
 
 	canvas.init();
 	locale.init('en');
-	locale.load('./asset/lang', ['en', 'de'], function() {
+	locale.load('./asset/lang', LOCALES, function() {
 		if('localStorage' in window) {
 			let user_lang = localStorage.getItem('outline.user.lang');
 			if(user_lang) {

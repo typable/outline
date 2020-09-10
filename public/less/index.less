@@ -576,6 +576,7 @@ body {
 			display: flex;
 			flex-direction: column;
 			margin-top: 15px;
+			max-width: calc(100% - 24px - 10px - 35px);
 
 			p {
 				display: flex;
@@ -593,6 +594,9 @@ body {
 				color: @brand-grey-3;
 				user-select: none;
 				pointer-events: none;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
 		}
 	}
