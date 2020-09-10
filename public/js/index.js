@@ -5,7 +5,6 @@ import { uuid, query, prevent } from './util.js';
 import canvas from './addon/canvas.js';
 import locale from './addon/locale.js';
 import ripple from './addon/ripple.js';
-// import gamepad from './addon/gamepad.js';
 
 let node;
 let state = {

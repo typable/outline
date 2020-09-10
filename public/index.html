@@ -15,7 +15,6 @@
 		<meta property="og:url" content="https://server.typable.dev/outline" />
 		<meta property="og:image" content="https://server.typable.dev/outline/asset/img/app/icon-192x192.png" />
 		<title>Outline</title>
-		<link href="./manifest.json" rel="manifest">
 		<link href="./asset/img/favicon.png" rel="shortcut icon" type="image/png">
 		<link href="./css/style.css" rel="stylesheet">
 		<script src="./js/index.js" type="module"></script>
@@ -58,12 +57,16 @@
 					</div>
 					<div class="option">
 						<ul class="option-list">
+							<li class="option-item placeholder inactive"></li>
+							<li class="option-item placeholder inactive"></li>
+							<!--
 							<li class="option-item ripple tooltip inactive" data-lang="option.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
 								<i class="ico">dns</i>
 							</li>
 							<li class="option-item ripple tooltip inactive" data-lang="option.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
 								<i class="ico">person</i>
 							</li>
+							-->
 							<li class="option-item ripple tooltip" data-lang="option.more" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="more">
 								<i class="ico">more_vert</i>
 							</li>
@@ -353,6 +356,7 @@
 			<div class="modal more-modal hidden">
 				<div class="main">
 					<ul class="item-list">
+						<!--
 						<li class="item ripple" data-event="open.modal" data-code="help">
 							<i class="ico">help</i>
 							<div class="info">
@@ -360,6 +364,7 @@
 								<span data-lang="more.help.info">Learn more about the features</span>
 							</div>
 						</li>
+						-->
 						<li class="item ripple" data-event="open.tab" data-code="language">
 							<i class="ico">language</i>
 							<div class="info">
@@ -482,10 +487,12 @@
 							<li class="item ripple inactive" data-event="change.device" data-code="pen">
 								<i class="ico">edit</i>
 								<div class="info">
-									<p data-lang="more.input-device.pencil" data-badge="true">Pencil<b class="badge prime">Prime</b></p>
+									<!-- <p data-lang="more.input-device.pencil" data-badge="true">Pencil<b class="badge prime">Prime</b></p> -->
+									<p data-lang="more.input-device.pencil">Pencil</p>
 									<span data-lang="more.input-device.pencil.info">Stylus pen, touch disabled</span>
 								</div>
 							</li>
+							<!--
 							<li class="item ripple inactive" data-event="change.device" data-code="gamepad">
 								<i class="ico">sports_esports</i>
 								<div class="info">
@@ -493,6 +500,7 @@
 									<span data-lang="more.input-device.gamepad.info">Stadia Controller supported</span>
 								</div>
 							</li>
+							-->
 						</ul>
 					</li>
 					<li class="tab appearance-tab hidden">
@@ -521,6 +529,7 @@
 									<span data-lang="more.appearance.view-mode.info">Tools and drawing disabled</span>
 								</div>
 							</li>
+							<!--
 							<li class="item ripple inactive" data-event="toggle.dark-mode">
 								<i class="ico">toggle_off</i>
 								<div class="info">
@@ -528,32 +537,20 @@
 									<span data-lang="more.appearance.dark-mode.info">More pleasant for your eyes</span>
 								</div>
 							</li>
+							-->
 						</ul>
 					</li>
 				</ul>
 			</div>
+			<!--
 			<div class="modal help-modal hidden">
 				<div class="side">
 					<ul class="item-list">
-						<!--
-						<li class="item ripple active" data-event="open.content" data-code="welcome">
-							<div class="info">
-								<p data-lang="more.help.welcome">Welcome</p>
-							</div>
-						</li>
-						-->
 						<li class="item ripple active" data-event="open.content" data-code="controls">
 							<div class="info">
 								<p data-lang="more.help.controls">Controls</p>
 							</div>
 						</li>
-						<!--
-						<li class="item ripple" data-event="open.content" data-code="multiplayer">
-							<div class="info">
-								<p data-lang="more.help.multiplayer">Multiplayer</p>
-							</div>
-						</li>
-						-->
 					</ul>
 				</div>
 				<div class="content">
@@ -779,15 +776,7 @@
 					</ul>
 				</div>
 			</div>
+			-->
 		</div>
-		<script type="text/javascript">
-
-			if('serviceWorker' in navigator) {
-				window.addEventListener('load', function(event) {
-					navigator.serviceWorker.register('./service-worker.js');
-				});
-			}
-
-		</script>
 	</body>
 </html>

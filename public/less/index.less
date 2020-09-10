@@ -65,6 +65,10 @@ body {
 					cursor: pointer;
 					pointer-events: all;
 
+					&.placeholder {
+						pointer-events: none;
+					}
+
 					&:not(.inactive):not(.active):hover {
 						background: rgba(@brand-grey-7, 0.95);
 
