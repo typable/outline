@@ -47,15 +47,7 @@ function init() {
 
 	canvas.init();
 	locale.init('en');
-	locale.load('./asset/lang', LOCALES, function() {
-		if('localStorage' in window) {
-			let user_lang = localStorage.getItem('outline.user.lang');
-			if(user_lang) {
-				locale.change(user_lang);
-				update_language_list();
-			}
-		}
-	});
+	locale.load('./asset/lang', LOCALES);
 	ripple.init();
 
 	node = query({
@@ -116,23 +108,6 @@ function init() {
 }
 
 function bind_events() {
-	window.onerror = function(error, url, line) {
-		fetch('https://server.typable.dev/log', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				date: new Date(),
-				error: {
-					message: error,
-					file: url,
-					line: line
-				}
-			})
-		});
-	}
 	document.addEventListener('dragstart', prevent);
 	document.addEventListener('contextmenu', prevent);
 	document.addEventListener('pointerdown', on_pointerdown);

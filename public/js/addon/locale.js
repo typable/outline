@@ -94,9 +94,6 @@ function get() {
 function change(code) {
 	if(lang[code]) {
 		current_lang = code;
-		if('localStorage' in window) {
-			localStorage.setItem('outline.user.lang', code);
-		}
 		let elements = document.querySelectorAll('[data-lang]');
 		for(let item of elements) {
 			let content = lang[code][item.dataset.lang];
