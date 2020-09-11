@@ -6,7 +6,7 @@
 		<meta name="author" content="typable">
 		<meta name="keywords" content="outline, typable, drawing, multiplayer">
 		<meta name="description" content="Draw with friends together.">
-		<meta name="robots" content="noindex, nofollow">
+		<meta name="robots" content="index, follow">
 		<meta name="google" content="notranslate">
 		<meta name="theme-color" content="#FFFFFF" />
 		<meta property="og:title" content="Outline" />
@@ -14,6 +14,12 @@
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="https://server.typable.dev/outline" />
 		<meta property="og:image" content="https://server.typable.dev/outline/asset/img/app/icon-192x192.png" />
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:title" content="Outline" />
+		<meta property="twitter:description" content="Draw with friends together." />
+		<meta property="twitter:type" content="website" />
+		<meta property="twitter:url" content="https://server.typable.dev/outline" />
+		<meta property="twitter:image" content="https://server.typable.dev/outline/asset/img/app/icon-192x192.png" />
 		<title>Outline</title>
 		<link href="./asset/img/favicon.png" rel="shortcut icon" type="image/png">
 		<link href="./css/style.css" rel="stylesheet">
@@ -59,14 +65,6 @@
 						<ul class="option-list">
 							<li class="option-item placeholder inactive"></li>
 							<li class="option-item placeholder inactive"></li>
-							<!--
-							<li class="option-item ripple tooltip inactive" data-lang="option.multiplayer" data-type="tooltip" data-title="Multiplayer" data-event="toggle.modal" data-code="multiplayer">
-								<i class="ico">dns</i>
-							</li>
-							<li class="option-item ripple tooltip inactive" data-lang="option.account" data-type="tooltip" data-title="Account" data-event="toggle.modal" data-code="account">
-								<i class="ico">person</i>
-							</li>
-							-->
 							<li class="option-item ripple tooltip" data-lang="option.more" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="more">
 								<i class="ico">more_vert</i>
 							</li>
@@ -215,30 +213,6 @@
 								<span data-lang="multiplayer.host.info">Host current state as channel</span>
 							</div>
 						</li>
-						<!--
-						<li class="separator"></li>
-						<li class="item ripple" data-event="open.tab" data-code="customize">
-							<i class="ico">build</i>
-							<div class="info">
-								<p data-lang="multiplayer.customize">Customize</p>
-								<span data-lang="multiplayer.host.info">Manage own channel</span>
-							</div>
-						</li>
-						<li class="item ripple">
-							<i class="ico">person_add</i>
-							<div class="info">
-								<p data-lang="multiplayer.invite-friends">Invite friends</p>
-								<span data-lang="multiplayer.invite-friends.info">Share channel with others</span>
-							</div>
-						</li>
-						<li class="item ripple">
-							<i class="ico">close</i>
-							<div class="info">
-								<p data-lang="multiplayer.leave">Leave</p>
-								<span data-lang="multiplayer.leave.info">Leave current channel</span>
-							</div>
-						</li>
-						-->
 					</ul>
 				</div>
 				<ul class="tab-list">
@@ -310,23 +284,6 @@
 								<span data-lang="account.feedback.info">Improve our service</span>
 							</div>
 						</li>
-						<!--
-						<li class="separator"></li>
-						<li class="item ripple">
-							<i class="ico">account_circle</i>
-							<div class="info">
-								<p data-lang="account.profile">Profile</p>
-								<span data-lang="account.profile.info">View your profile</span>
-							</div>
-						</li>
-						<li class="item ripple">
-							<i class="ico">exit_to_app</i>
-							<div class="info">
-								<p data-lang="account.logout">Log out</p>
-								<span data-lang="account.logout.info">Sign out from account</span>
-							</div>
-						</li>
-						-->
 					</ul>
 				</div>
 				<ul class="tab-list">
@@ -356,15 +313,6 @@
 			<div class="modal more-modal hidden">
 				<div class="main">
 					<ul class="item-list">
-						<!--
-						<li class="item ripple" data-event="open.modal" data-code="help">
-							<i class="ico">help</i>
-							<div class="info">
-								<p data-lang="more.help">Help</p>
-								<span data-lang="more.help.info">Learn more about the features</span>
-							</div>
-						</li>
-						-->
 						<li class="item ripple" data-event="open.tab" data-code="language">
 							<i class="ico">language</i>
 							<div class="info">
@@ -389,36 +337,6 @@
 					</ul>
 				</div>
 				<ul class="tab-list">
-					<!--
-					<li class="tab help-tab hidden">
-						<div class="header">
-							<div class="back ripple" data-event="close.tab">
-								<i class="ico">keyboard_arrow_left</i>
-							</div>
-							<div class="info">
-								<p data-lang="more.help">Help</p>
-								<span data-lang="more.help.info">Learn more about the features</span>
-							</div>
-						</div>
-						<ul class="item-list">
-							<li class="separator"></li>
-							<li class="item ripple">
-								<i class="ico">subject</i>
-								<div class="info">
-									<p data-lang="more.help.controls">Controls</p>
-									<span data-lang="more.help.controls.info">Keyboard, Touch, Controller</span>
-								</div>
-							</li>
-							<li class="item ripple">
-								<i class="ico">subject</i>
-								<div class="info">
-									<p data-lang="more.help.multiplayer">Multiplayer</p>
-									<span data-lang="more.help.multiplayer.info">Channel, Roles</span>
-								</div>
-							</li>
-						</ul>
-					</li>
-					-->
 					<li class="tab language-tab hidden">
 						<div class="header">
 							<div class="back ripple" data-event="close.tab">
@@ -487,20 +405,10 @@
 							<li class="item ripple inactive" data-event="change.device" data-code="pen">
 								<i class="ico">edit</i>
 								<div class="info">
-									<!-- <p data-lang="more.input-device.pencil" data-badge="true">Pencil<b class="badge prime">Prime</b></p> -->
 									<p data-lang="more.input-device.pencil">Pencil</p>
 									<span data-lang="more.input-device.pencil.info">Stylus pen, touch disabled</span>
 								</div>
 							</li>
-							<!--
-							<li class="item ripple inactive" data-event="change.device" data-code="gamepad">
-								<i class="ico">sports_esports</i>
-								<div class="info">
-									<p data-lang="more.input-device.gamepad" data-badge="true">Gamepad<b class="badge prime">Prime</b></p>
-									<span data-lang="more.input-device.gamepad.info">Stadia Controller supported</span>
-								</div>
-							</li>
-							-->
 						</ul>
 					</li>
 					<li class="tab appearance-tab hidden">
@@ -529,254 +437,10 @@
 									<span data-lang="more.appearance.view-mode.info">Tools and drawing disabled</span>
 								</div>
 							</li>
-							<!--
-							<li class="item ripple inactive" data-event="toggle.dark-mode">
-								<i class="ico">toggle_off</i>
-								<div class="info">
-									<p data-lang="more.appearance.dark-mode" data-badge="true">Dark Mode<b class="badge prime">Prime</b></p>
-									<span data-lang="more.appearance.dark-mode.info">More pleasant for your eyes</span>
-								</div>
-							</li>
-							-->
 						</ul>
 					</li>
 				</ul>
 			</div>
-			<!--
-			<div class="modal help-modal hidden">
-				<div class="side">
-					<ul class="item-list">
-						<li class="item ripple active" data-event="open.content" data-code="controls">
-							<div class="info">
-								<p data-lang="more.help.controls">Controls</p>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="content">
-					<ul class="content-list">
-						<li class="content-item" data-code="welcome">
-							<h2>Welcome</h2>
-							<p>Quisque viverra purus ut gravida lacinia.
-							Quisque ligula purus, semper eu libero sit amet,
-							bibendum dapibus massa. Sed ultrices lacinia diam,
-							eget placerat ligula hendrerit id. Vivamus facilisis,
-							risus at laoreet elementum, tortor libero bibendum
-							nisi, sit amet placerat tellus nibh sit amet erat.</p>
-						</li>
-						<li class="content-item hidden" data-code="controls">
-							<h2>Keyboard</h2>
-							<p>Quisque viverra purus ut gravida lacinia.
-							Quisque ligula purus, semper eu libero sit amet,
-							bibendum dapibus massa. Sed ultrices lacinia diam,
-							eget placerat ligula hendrerit id. Vivamus facilisis,
-							risus at laoreet elementum, tortor libero bibendum
-							nisi, sit amet placerat tellus nibh sit amet erat.</p>
-							<h3>Tools</h3>
-							<div class="table">
-								<ul class="table-head">
-									<li class="table-item">Shortcut</li>
-									<li class="table-item">Description</li>
-								</ul>
-								<div class="table-body">
-									<ul class="table-row">
-										<li class="table-item"><span class="key">1 - 6</span></li>
-										<li class="table-item">Switch colors</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">Q</span></li>
-										<li class="table-item">Select pen</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">W</span></li>
-										<li class="table-item">Select marker</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">E</span></li>
-										<li class="table-item">Select eraser</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key" data-lang="key.ctrl">Ctrl</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key">Z</span></li>
-										<li class="table-item">Undo step</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key" data-lang="key.ctrl">Ctrl</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key">Y</span></li>
-										<li class="table-item">Redo step</li>
-									</ul>
-								</div>
-							</div>
-							<h3>Views</h3>
-							<div class="table">
-								<ul class="table-head">
-									<li class="table-item">Shortcut</li>
-									<li class="table-item">Description</li>
-								</ul>
-								<div class="table-body">
-									<ul class="table-row">
-										<li class="table-item"><span class="key" data-lang="key.space">Space</span></li>
-										<li class="table-item">Toggle View Mode</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">F</span></li>
-										<li class="table-item">Toggle Fullscreen</li>
-									</ul>
-								</div>
-							</div>
-							<h3>Modals</h3>
-							<div class="table">
-								<ul class="table-head">
-									<li class="table-item">Shortcut</li>
-									<li class="table-item">Description</li>
-								</ul>
-								<div class="table-body">
-									<ul class="table-row">
-										<li class="table-item"><span class="key">Escape</span></li>
-										<li class="table-item">Close modal or tab</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">Y</span></li>
-										<li class="table-item">Toggle color modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">X</span></li>
-										<li class="table-item">Toggle scaling modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">C</span></li>
-										<li class="table-item">Toggle pencil modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">V</span></li>
-										<li class="table-item">Toggle clear modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">B</span></li>
-										<li class="table-item">Toggle multiplayer modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">N</span></li>
-										<li class="table-item">Toggle account modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key">M</span></li>
-										<li class="table-item">Toggle more modal</li>
-									</ul>
-								</div>
-							</div>
-							<h2>Touch</h2>
-							<p>Quisque viverra purus ut gravida lacinia.
-							Quisque ligula purus, semper eu libero sit amet,
-							bibendum dapibus massa. Sed ultrices lacinia diam,
-							eget placerat ligula hendrerit id. Vivamus facilisis,
-							risus at laoreet elementum, tortor libero bibendum
-							nisi, sit amet placerat tellus nibh sit amet erat.</p>
-							<h2>Pencil</h2>
-							<p>Quisque viverra purus ut gravida lacinia.
-							Quisque ligula purus, semper eu libero sit amet,
-							bibendum dapibus massa. Sed ultrices lacinia diam,
-							eget placerat ligula hendrerit id. Vivamus facilisis,
-							risus at laoreet elementum, tortor libero bibendum
-							nisi, sit amet placerat tellus nibh sit amet erat.</p>
-							<h2>Gamepad</h2>
-							<p>Quisque viverra purus ut gravida lacinia.
-							Quisque ligula purus, semper eu libero sit amet,
-							bibendum dapibus massa. Sed ultrices lacinia diam,
-							eget placerat ligula hendrerit id. Vivamus facilisis,
-							risus at laoreet elementum, tortor libero bibendum
-							nisi, sit amet placerat tellus nibh sit amet erat.</p>
-							<h3>Control</h3>
-							<div class="table">
-								<ul class="table-head">
-									<li class="table-item">Shortcut</li>
-									<li class="table-item">Description</li>
-								</ul>
-								<div class="table-body">
-									<ul class="table-row">
-										<li class="table-item"><span class="key round" data-lang="key.left-stick">Left Stick</span></li>
-										<li class="table-item">Move</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round" data-lang="key.right-stick">Right Stick</span></li>
-										<li class="table-item">Scale pencil radius</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round" data-lang="key.arrows">Arrows</span></li>
-										<li class="table-item">Navigate through menu</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round" data-lang="key.left-stick">Left Stick</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key round">L2</span></li>
-										<li class="table-item">Move fast</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round" data-lang="key.left-stick">Left Stick</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span class="key round">R2</span></li>
-										<li class="table-item">Move slow</li>
-									</ul>
-								</div>
-							</div>
-							<h3>Tools</h3>
-							<div class="table">
-								<ul class="table-head">
-									<li class="table-item">Shortcut</li>
-									<li class="table-item">Description</li>
-								</ul>
-								<div class="table-body">
-									<ul class="table-row">
-										<li class="table-item"><span class="key round">L1 - R1</span></li>
-										<li class="table-item">Switch colors</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round">A</span></li>
-										<li class="table-item">Draw</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round">B</span></li>
-										<li class="table-item">Erase</li>
-									</ul>
-								</div>
-							</div>
-							<h3>Modals</h3>
-							<div class="table">
-								<ul class="table-head">
-									<li class="table-item">Shortcut</li>
-									<li class="table-item">Description</li>
-								</ul>
-								<div class="table-body">
-									<ul class="table-row">
-										<li class="table-item"><span class="key round">B</span></li>
-										<li class="table-item">Close modal or tab</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round">A</span></li>
-										<li class="table-item">Select option</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round ico"><i class="ico">more_horizontal</i></span></li>
-										<li class="table-item">Open colors modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round">Y</span></li>
-										<li class="table-item">Open clear modal</li>
-									</ul>
-									<ul class="table-row">
-										<li class="table-item"><span class="key round ico"><i class="ico">menu</i></span></li>
-										<li class="table-item">Open multiplayer, account, more modal</li>
-									</ul>
-								</div>
-							</div>
-						</li>
-						<li class="content-item hidden" data-code="multiplayer">
-							<h2>Multiplayer</h2>
-							<p>Quisque viverra purus ut gravida lacinia.
-							Quisque ligula purus, semper eu libero sit amet,
-							bibendum dapibus massa. Sed ultrices lacinia diam,
-							eget placerat ligula hendrerit id. Vivamus facilisis,
-							risus at laoreet elementum, tortor libero bibendum
-							nisi, sit amet placerat tellus nibh sit amet erat.</p>
-						</li>
-					</ul>
-				</div>
-			</div>
-			-->
 		</div>
 	</body>
 </html>

@@ -35,7 +35,7 @@ function html(callback) {
 	Creates an object which contains the queried HTMLElements.
 
 	@function query
-	@param args - The query object.
+	@param {Object} args - The query object.
 	@return {Object} The object containing node elements.
 */
 function query(args) {
@@ -72,9 +72,21 @@ function prevent(event) {
 	event.preventDefault();
 }
 
+/**
+	Check if object variable is defined.
+
+	@function support
+	@param {Object} object - The object to check for.
+	@return {boolean} The result of the validation.
+*/
+function support(object) {
+	return typeof object !== 'undefined';
+}
+
 export {
 	uuid,
 	html,
 	query,
-	prevent
+	prevent,
+	support
 };
