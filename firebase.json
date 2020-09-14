@@ -1,5 +1,6 @@
 {
   "hosting": {
+	 "target": "outline-website",
     "public": "public",
     "ignore": [
       "firebase.json",

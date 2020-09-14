@@ -10,7 +10,32 @@ Define the target hosting site for deployment.
 
 ```bash
 $ firebase target:apply hosting outline-website outline-website
-$ firebase deploy --only hosting
+$ firebase deploy --only hosting:outline-website
+```
+
+The *firebase.json* should look like this:
+
+```json
+{
+	"hosting": {
+		"target": "outline-website",
+		"public": "public",
+		"ignore": [
+			"firebase.json",
+			"**/.*",
+			"**/node_modules/**"
+		],
+		"rewrites": [{
+				"source": "/app",
+				"destination": "/app.html"
+			},
+			{
+				"source": "**",
+				"destination": "/index.html"
+			}
+		]
+	}
+}
 ```
 
 <!--
