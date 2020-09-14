@@ -65,7 +65,7 @@ const LOCALES = [
 	'en',
 	'de',
 	'fr',
-	'cn'
+	'zh'
 ];
 
 export {

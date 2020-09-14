@@ -1,7 +1,4 @@
-* {
-	-webkit-tap-highlight-color: transparent;
-}
-
+/* ### App ### */
 html,
 body {
 	overflow: hidden;
@@ -222,28 +219,29 @@ body {
 	}
 }
 
+.notification {
+	top: 90px;
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	opacity: 0;
+	text-align: center;
+
+	p {
+		display: inline-block;
+		padding: 10px 24px;
+		border-radius: 24px;
+		background: @brand-black;
+		color: white;
+		opacity: 0.95;
+		user-select: none;
+		pointer-events: none;
+	}
+}
+
 .controls {
 	pointer-events: none;
-
-	.notification {
-		top: 90px;
-		position: fixed;
-		display: flex;
-		justify-content: center;
-		width: 100%;
-		opacity: 0;
-
-		p {
-			display: inline-block;
-			padding: 10px 24px;
-			border-radius: 999px;
-			background: @brand-black;
-			color: white;
-			opacity: 0.95;
-			user-select: none;
-			pointer-events: none;
-		}
-	}
 
 	.hotbar {
 		display: flex;
@@ -736,5 +734,131 @@ body {
 				}
 			}
 		}
+	}
+}
+
+/* ### Home ### */
+body.home-body {
+
+	.notification {
+		top: 50px;
+		z-index: 2;
+	}
+
+	.row {
+		display: flex;
+		justify-content: center;
+		gap: 60px;
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	header {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-size: cover;
+		height: calc(100vh - 54px);
+		min-height: 750px;
+		padding: 0 50px;
+
+		.container {
+			// margin-top: -10vh;
+
+			.header-info {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+		}
+	}
+
+	main {
+		padding: 0 50px;
+
+		.container {
+			display: flex;
+			flex-direction: column;
+			gap: 100px;
+			padding: 200px 0;
+		}
+	}
+
+	footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 54px;
+		padding: 0 30px;
+
+		.footer-item {
+			font-size: 16px;
+		}
+
+		a.footer-item {
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		.footer-group {
+			display: flex;
+			gap: 25px;
+		}
+	}
+
+	.brand-logo {
+		display: none;
+		position: fixed;
+		top: 50px;
+		left: 50px;
+
+		a {
+			display: inline-block;
+			width: 44px;
+			height: 44px;
+		}
+	}
+
+	.logo {
+		width: 200px;
+		height: 200px;
+		min-width: 200px;
+		min-height: 200px;
+		max-width: 200px;
+		max-height: 200px;
+		border-radius: 100px;
+		box-shadow: 0 0 15px 0px rgba(#000000, 0.1);
+		margin: 0 auto;
+		margin-bottom: 35px;
+	}
+
+	h1.headline {
+		font-size: 70px;
+		font-weight: 600;
+		text-align: center;
+		margin-bottom: 15px;
+	}
+
+	p.description {
+		font-size: 20px;
+		font-weight: 400;
+		text-align: center;
+		max-width: 550px;
+		margin-bottom: 20px;
+		line-height: 28px;
+
+		b {
+			font-weight: inherit;
+		}
+	}
+
+	.badge-version {
+		margin-bottom: 60px;
 	}
 }

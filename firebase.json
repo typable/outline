@@ -1,6 +1,5 @@
 {
   "hosting": {
-	  "target": "outline-website",
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -8,10 +7,14 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+		{
+  		 "source": "/app",
+  		 "destination": "/app.html"
+	   },
       {
         "source": "**",
         "destination": "/index.html"
-      }
+	  }
     ]
   }
 }

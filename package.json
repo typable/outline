@@ -1,13 +1,10 @@
 {
 	"name": "Outline",
 	"version": "1.1.0",
-	"description": "Draw with friends together",
-	"main": "index.js",
+	"description": "Draw with friends together.",
 	"scripts": {
-		"build": "npm i --unsafe-perm --allow-root",
-		"serve": "firebase serve --only hosting --port 80",
-		"start": "node index",
-		"host": "http-server public --port 8080"
+		"live": "firebase serve --only hosting --port 80",
+		"test": "firebase serve --only hosting --port 8080"
 	},
 	"repository": {
 		"type": "git",
@@ -15,9 +12,5 @@
 	},
 	"author": "",
 	"license": "MIT",
-	"dependencies": {
-		"canvas": "^2.6.1",
-		"express": "^4.17.1",
-		"socket.io": "^2.3.0"
-	}
+	"dependencies": {}
 }

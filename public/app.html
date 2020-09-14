@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+		<meta name="author" content="typable">
+		<meta name="keywords" content="outline, typable, drawing, multiplayer">
+		<meta name="description" content="Draw with friends together.">
+		<meta name="robots" content="index, follow">
+		<meta name="google" content="notranslate">
+		<meta name="theme-color" content="#FFFFFF" />
+		<meta property="og:title" content="Outline" />
+		<meta property="og:description" content="Draw with friends together." />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://outline.typable.dev" />
+		<meta property="og:image" content="https://outline.typable.dev/asset/img/logo.png" />
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:title" content="Outline" />
+		<meta property="twitter:description" content="Draw with friends together." />
+		<meta property="twitter:type" content="website" />
+		<meta property="twitter:url" content="https://outline.typable.dev" />
+		<meta property="twitter:image" content="https://outline.typable.dev/asset/img/logo.png" />
+		<title>Outline - App</title>
+		<link href="./asset/img/favicon.png" rel="shortcut icon" type="image/png">
+		<link href="./css/style.css" rel="stylesheet">
+		<script src="./js/index.js" type="module"></script>
+	</head>
+	<body class="app-body">
+		<div class="wrapper"></div>
+		<canvas id="canvas"></canvas>
+		<canvas id="overlay"></canvas>
+		<div class="controls">
+			<div class="notification">
+				<p class="content"></p>
+			</div>
+			<div class="header-list">
+				<div class="mainbar">
+					<div class="tool">
+						<ul class="tool-list">
+							<li class="tool-item ripple tooltip" data-lang="tool.colors" data-type="tooltip" data-title="Colors" data-event="toggle.modal" data-code="colors">
+								<i class="ico">palette</i>
+							</li>
+							<li class="tool-item ripple tooltip" data-lang="tool.scale" data-type="tooltip" data-title="Scale" data-event="toggle.modal" data-code="scale">
+								<i class="ico">bubble_chart</i>
+							</li>
+							<li class="tool-item ripple tooltip" data-lang="tool.pencil" data-type="tooltip" data-title="Pencil" data-event="toggle.modal" data-code="pencil">
+								<i class="ico">edit</i>
+							</li>
+						<ul>
+					</div>
+					<div class="action">
+						<ul class="action-list">
+							<li class="action-item ripple tooltip inactive" data-lang="action.undo" data-type="tooltip" data-title="Undo">
+								<i class="ico">undo</i>
+							</li>
+							<li class="action-item ripple tooltip inactive" data-lang="action.redo" data-type="tooltip" data-title="Redo">
+								<i class="ico">redo</i>
+							</li>
+							<li class="action-item ripple tooltip" data-lang="action.clear" data-type="tooltip" data-title="Clear" data-event="toggle.modal" data-code="clear">
+								<i class="ico">clear</i>
+							</li>
+						<ul>
+					</div>
+					<div class="option">
+						<ul class="option-list">
+							<li class="option-item placeholder inactive"></li>
+							<li class="option-item placeholder inactive"></li>
+							<li class="option-item ripple tooltip" data-lang="option.more" data-type="tooltip" data-title="More" data-event="toggle.modal" data-code="more">
+								<i class="ico">more_vert</i>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="sidebar hidden">
+					<div class="option">
+						<ul class="option-list">
+							<li class="option-item ripple tooltip" data-lang="option.edit-mode" data-type="tooltip" data-title="Edit Mode" data-event="close.view-mode">
+								<i class="ico">expand_more</i>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="hotbar">
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+			</div>
+			<div class="modal colors-modal hidden">
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+				<div class="color"></div>
+			</div>
+			<div class="modal pencil-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple active" data-event="change.pencil" data-code="pen">
+							<i class="ico">edit</i>
+							<div class="info">
+								<p data-lang="pencil.pen">Pen</p>
+								<span data-lang="pencil.pen.info">Default pen</span>
+							</div>
+						</li>
+						<li class="item ripple" data-event="change.pencil" data-code="marker">
+							<i class="ico">
+								<svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+    								<path fill="#555555" d="M18.62,1.5C18.11,1.5 17.6,1.69 17.21,2.09L10.75,8.55L14.95,12.74L21.41,6.29C22.2,5.5 22.2,4.24 21.41,3.46L20.04,2.09C19.65,1.69 19.14,1.5 18.62,1.5M9.8,9.5L3.23,16.07L3.93,16.77C3.4,17.24 2.89,17.78 2.38,18.29C1.6,19.08 1.6,20.34 2.38,21.12C3.16,21.9 4.42,21.9 5.21,21.12C5.72,20.63 6.25,20.08 6.73,19.58L7.43,20.27L14,13.7" />
+								</svg>
+							</i>
+							<div class="info">
+								<p data-lang="pencil.marker">Marker</p>
+							</div>
+						</li>
+						<li class="item ripple" data-event="change.pencil" data-code="eraser">
+							<i class="ico">
+								<svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+    								<path fill="#555555" d="M15.14,3C14.63,3 14.12,3.2 13.73,3.59L2.59,14.73C1.81,15.5 1.81,16.77 2.59,17.56L5.03,20H12.69L21.41,11.27C22.2,10.5 22.2,9.23 21.41,8.44L16.56,3.59C16.17,3.2 15.65,3 15.14,3M17,18L15,20H22V18" />
+								</svg>
+							</i>
+							<div class="info">
+								<p data-lang="pencil.eraser">Eraser</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="modal scale-modal hidden">
+				<input class="scale" type="range" min="2" max="50" value="14" step="1">
+			</div>
+			<div class="modal clear-modal hidden">
+				<p class="info" data-lang="modal.clear.info">Do you want to clear the screen?</p>
+				<div class="align">
+					<button class="btn btn-cancel button ripple" data-event="close.modal" data-lang="modal.clear.action.cancel">No</button>
+					<button class="btn btn-apply button danger ripple" data-event="clear" data-lang="modal.clear.action.apply">Yes</button>
+				</div>
+			</div>
+			<div class="modal multiplayer-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple">
+							<i class="ico">login</i>
+							<div class="info">
+								<p data-lang="multiplayer.join">Join</p>
+								<span data-lang="multiplayer.join.info">Search for channel to join</span>
+							</div>
+						</li>
+						<li class="item ripple">
+							<i class="ico">add</i>
+							<div class="info">
+								<p data-lang="multiplayer.create">Create</p>
+								<span data-lang="multiplayer.create.info">Create a new channel</span>
+							</div>
+						</li>
+						<li class="item ripple inactive">
+							<i class="ico">device_hub</i>
+							<div class="info">
+								<p data-lang="multiplayer.host" data-badge="true">Host<b class="badge prime">Prime</b></p>
+								<span data-lang="multiplayer.host.info">Host current state as channel</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="tab-list">
+					<li class="tab customize-tab">
+						<div class="header">
+							<div class="back ripple" data-event="close.tab">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="multiplayer.customize">Customize</p>
+								<span data-lang="multiplayer.host.info">Manage own channel</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="item ripple">
+								<i class="ico">info</i>
+								<div class="info">
+									<p data-lang="channel.information">Info</p>
+									<span data-lang="channel.information.info">Customize channel info</span>
+								</div>
+							</li>
+							<li class="item ripple">
+								<i class="ico">lock</i>
+								<div class="info">
+									<p data-lang="channel.private">Private</p>
+									<span data-lang="channel.private.info">Prevent channel being listed</span>
+								</div>
+							</li>
+							<li class="item ripple inactive">
+								<i class="ico">watch_later</i>
+								<div class="info">
+									<p data-lang="channel.permanent" data-badge="true">Permanent<b class="badge prime">Prime</b></p>
+									<span data-lang="channel.permanent.info">Keep channel permanent online</span>
+								</div>
+							</li>
+							<li class="item ripple inactive">
+								<i class="ico">verified_user</i>
+								<div class="info">
+									<p data-lang="channel.roles" data-badge="true">Roles<b class="badge prime">Prime</b></p>
+									<span data-lang="channel.roles.info">Manage user permissions</span>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="modal account-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple">
+							<i class="ico">publish</i>
+							<div class="info">
+								<p data-lang="account.upgrade" data-badge="true">Upgrade<b class="badge prime">Get Prime</b></p>
+								<span data-lang="account.upgrade.info">Unlock all features</span>
+							</div>
+						</li>
+						<li class="separator"></li>
+						<li class="item ripple">
+							<i class="ico">card_giftcard</i>
+							<div class="info">
+								<p data-lang="account.support">Support</p>
+								<span data-lang="account.support.info">Donate a cup of coffee</span>
+							</div>
+						</li>
+						<li class="item ripple"  data-event="open.tab" data-code="feedback">
+							<i class="ico">question_answer</i>
+							<div class="info">
+								<p data-lang="account.feedback">Feedback</p>
+								<span data-lang="account.feedback.info">Improve our service</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="tab-list">
+					<li class="tab feedback-tab hidden">
+						<div class="header">
+							<div class="back ripple" data-event="close.tab">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="account.feedback">Feedback</p>
+								<span data-lang="account.feedback.info">Improve our service</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="separator"></li>
+							<li class="item ripple" data-event="toggle.share-usage-data">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p data-lang="more.feedback.share-usage-data">Share usage data</p>
+									<span data-lang="more.feedback.share-usage-data.info">Sends crash reports</span>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="modal more-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple" data-event="open.tab" data-code="language">
+							<i class="ico">language</i>
+							<div class="info">
+								<p data-lang="more.language">Language</p>
+								<span data-lang="more.language.info">Choose preferred language</span>
+							</div>
+						</li>
+						<li class="item ripple" data-event="open.tab" data-code="device">
+							<i class="ico">power</i>
+							<div class="info">
+								<p data-lang="more.input-device">Input Device</p>
+								<span data-lang="more.input-device.info">Choose preferred input device</span>
+							</div>
+						</li>
+						<li class="item ripple" data-event="open.tab" data-code="appearance">
+							<i class="ico">brush</i>
+							<div class="info">
+								<p data-lang="more.appearance">Appearance</p>
+								<span data-lang="more.appearance.info">Customize how you want</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="tab-list">
+					<li class="tab language-tab hidden">
+						<div class="header">
+							<div class="back ripple" data-event="close.tab">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="more.language">Language</p>
+								<span data-lang="more.language.info">Choose preferred language</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="separator"></li>
+							<li class="item ripple active" data-event="change.language" data-code="en">
+								<i class="lang">EN</i>
+								<div class="info">
+									<p>English</p>
+									<span data-lang="more.language.default">Default language</span>
+								</div>
+							</li>
+							<li class="item ripple" data-event="change.language" data-code="de">
+								<i class="lang">DE</i>
+								<div class="info">
+									<p>Deutsch</p>
+								</div>
+							</li>
+							<li class="item ripple" data-event="change.language" data-code="fr">
+								<i class="lang">FR</i>
+								<div class="info">
+									<p>Français</p>
+								</div>
+							</li>
+							<li class="item ripple" data-event="change.language" data-code="cn">
+								<i class="lang">CN</i>
+								<div class="info">
+									<p>中文</p>
+								</div>
+							</li>
+						</ul>
+					</li>
+					<li class="tab device-tab hidden">
+						<div class="header">
+							<div class="back ripple" data-event="close.tab">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="more.input-device">Input Device</p>
+								<span data-lang="more.input-device.info">Choose preferred input device</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="separator"></li>
+							<li class="item ripple inactive" data-event="change.device" data-code="mouse">
+								<i class="ico">mouse</i>
+								<div class="info">
+									<p data-lang="more.input-device.mouse">Mouse</p>
+									<span data-lang="more.input-device.default">Default input device</span>
+								</div>
+							</li>
+							<li class="item ripple inactive" data-event="change.device" data-code="touch">
+								<i class="ico">gesture</i>
+								<div class="info">
+									<p data-lang="more.input-device.touch">Touch</p>
+									<span data-lang="more.input-device.touch.info">Finger interaction</span>
+								</div>
+							</li>
+							<li class="item ripple inactive" data-event="change.device" data-code="pen">
+								<i class="ico">edit</i>
+								<div class="info">
+									<p data-lang="more.input-device.pencil">Pencil</p>
+									<span data-lang="more.input-device.pencil.info">Stylus pen, touch disabled</span>
+								</div>
+							</li>
+						</ul>
+					</li>
+					<li class="tab appearance-tab hidden">
+						<div class="header">
+							<div class="back ripple" data-event="close.tab">
+								<i class="ico">keyboard_arrow_left</i>
+							</div>
+							<div class="info">
+								<p data-lang="more.appearance">Appearance</p>
+								<span data-lang="more.appearance.info">Customize how you want</span>
+							</div>
+						</div>
+						<ul class="item-list">
+							<li class="separator"></li>
+							<li class="item ripple" data-event="toggle.fullscreen">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p data-lang="more.appearance.fullscreen">Fullscreen</p>
+									<span data-lang="more.appearance.fullscreen.info">Toggle Fullscreen</span>
+								</div>
+							</li>
+							<li class="item ripple" data-event="toggle.view-mode">
+								<i class="ico">toggle_off</i>
+								<div class="info">
+									<p data-lang="more.appearance.view-mode">View Mode</p>
+									<span data-lang="more.appearance.view-mode.info">Tools and drawing disabled</span>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

@@ -2,8 +2,18 @@
 
 ## Installation
 
-The following steps are only required for backend.
+The following steps are required in order to serve the website locally.
 
+### Deployment
+
+Define the target hosting site for deployment.
+
+```bash
+$ firebase target:apply hosting outline-website outline-website
+$ firebase deploy --only hosting
+```
+
+<!--
 ### Canvas Module Libraries
 
 The following libraries are required in order to build and execute the *canvas* module properly.
@@ -17,15 +27,6 @@ Now the node module can be installed.
 
 ```bash
 $ npm run build
-```
-
-### Deployment
-
-Define the target hosting site for deployment.
-
-```bash
-$ firebase target:apply outline-website outline-website
-$ firebase deploy --only hosting:outline-website
 ```
 
 ### Grant Port Binding
@@ -45,6 +46,7 @@ $ sudo chmod 0755 /etc/letsencrypt/{live,archive}
 $ sudo chmod 0640 /etc/letsencrypt/live/<domain>/privkey.pem
 $ sudo chown -R <user>:<user> /etc/letsencrypt/live/<domain>/privkey.pem
 ```
+-->
 
 ## Launch
 
@@ -53,13 +55,6 @@ $ sudo chown -R <user>:<user> /etc/letsencrypt/live/<domain>/privkey.pem
 The following command starts the *Firebase Hosting* service, which provides the frontend.
 
 ```bash
-$ npm run serve
-```
-
-### Backend
-
-The following command starts the backend server.
-
-```bash
-$ npm run start
+$ npm run live // Port 80
+$ npm run test // Port 8080
 ```

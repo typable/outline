@@ -1,0 +1,106 @@
+@media(prefers-color-scheme: dark) {
+
+	@brand-dark: #333C41;
+	@brand-grey: #E0E0E0;
+	@brand-night: #2D353A;
+
+	body.home-body {
+		background: @brand-dark;
+
+		header {
+			background-image: url('../asset/img/background-dark.png');
+
+			.brand-logo {
+
+				a {
+					background-image: url('../asset/img/brand-logo-dark.png');
+				}
+			}
+
+			.logo {
+				background-image: url('../asset/img/logo-dark.png');
+				background-position: center;
+			}
+
+			h1.headline {
+				color: white;
+			}
+
+			p.description {
+				color: @brand-grey;
+
+				b {
+					color: @brand-blue;
+				}
+			}
+		}
+
+		main {
+			background: @brand-dark;
+		}
+
+		footer {
+			background: @brand-night;
+
+			.footer-item {
+				color: darken(@brand-grey, 20%);
+			}
+		}
+
+		button.button {
+
+			&.button-prime {
+				background: @brand-blue;
+				color: darken(white, 2%);
+
+				&:hover {
+					background: darken(@brand-blue, 2%);
+					color: white;
+				}
+			}
+
+			&.button-default {
+				background: darken(@brand-night, 7%);
+				color: @brand-grey;
+
+				&:hover {
+					background: darken(@brand-night, 8%);
+					color: lighten(@brand-grey, 10%);
+				}
+			}
+
+			&.button-prime-light {
+				background: rgba(@brand-blue, 0.1);
+				color: lighten(@brand-blue, 8%);
+
+				&:hover {
+					background: rgba(@brand-blue, 0.13);
+					color: lighten(@brand-blue, 12%);
+				}
+			}
+		}
+
+		.badge-version {
+			background: @brand-night;
+			color: @brand-grey;
+		}
+
+		.caption {
+
+			h2.caption-headline {
+				color: white;
+
+				b {
+					color: @brand-blue;
+				}
+			}
+
+			.caption-info {
+
+				p {
+					color: @brand-grey;
+				}
+			}
+		}
+	}
+}

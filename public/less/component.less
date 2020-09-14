@@ -1,0 +1,170 @@
+body.home-body {
+
+	button.button {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		box-shadow: 0 0 20px 0 rgba(#000000, 0.05);
+		border: none;
+		border-radius: 5px;
+		height: 48px;
+		max-height: 48px;
+		min-width: 180px;
+		font-size: 16px;
+
+		&:hover {
+			box-shadow: 0 0 20px 0 rgba(#000000, 0.08);
+		}
+
+		&.button-prime-light {
+			height: 40px;
+			max-height: 40px;
+			min-width: 110px;
+		}
+	}
+
+	.caption {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: 40px;
+
+		h2.caption-headline {
+			flex: 35%;
+			font-weight: 500;
+			font-size: 30px;
+			white-space: nowrap;
+
+			b {
+				font-weight: inherit;
+			}
+		}
+
+		.caption-info {
+			flex: 65%;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 30px;
+
+			p {
+				font-size: 18px;
+				font-weight: 400;
+				line-height: 28px;
+			}
+		}
+	}
+
+	.badge-version {
+		padding: 3px 6px;
+		text-decoration: none;
+		border-radius: 3px;
+		font-weight: 500;
+		font-size: 16px;
+		user-select: none;
+	}
+
+	@media(max-width: @screen-lg) {
+
+		header {
+
+			.logo {
+				width: 140px;
+				height: 140px;
+				min-width: 140px;
+				min-height: 140px;
+				max-width: 140px;
+				max-height: 140px;
+				background-size: 160px 160px;
+				margin-bottom: 25px;
+			}
+
+			h1.headline {
+				font-size: 50px;
+			}
+
+			p.description {
+				font-size: 18px;
+				line-height: 26px;
+				margin-bottom: 20px;
+			}
+
+			.badge.badge-version {
+				margin-bottom: 40px;
+			}
+		}
+
+		.caption {
+			flex-wrap: wrap;
+		}
+	}
+
+	@media(max-width: @screen-sm) {
+
+		header {
+
+			p.description {
+				padding: 0 !important;
+			}
+		}
+	}
+
+	@media(max-width: @screen-xx) {
+
+		header {
+			padding: 0 30px !important;
+
+			h1.headline {
+				font-size: 40px;
+			}
+
+			.row {
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: center;
+				gap: 20px;
+
+				button {
+					min-width: 240px;
+				}
+			}
+		}
+
+		main {
+			padding: 0 30px !important;
+
+			.container {
+				padding: 100px 0 !important;
+				padding-top: 60px !important;
+				gap: 80px !important;
+			}
+
+			.caption {
+				gap: 30px;
+
+				h2.caption-headline {
+					font-size: 28px;
+				}
+
+				.caption-info {
+
+					p {
+						font-size: 16px;
+						line-height: 26px;
+					}
+				}
+			}
+		}
+
+		footer {
+			padding: 0 30px !important;
+
+			.footer-item {
+				font-size: 14px !important;
+			}
+
+			.footer-group {
+				gap: 15px !important;
+			}
+		}
+	}
+}

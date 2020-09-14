@@ -83,10 +83,21 @@ function support(object) {
 	return typeof object !== 'undefined';
 }
 
+/**
+	Check if current page is the App page.
+
+	@function isApp
+	@return {boolean} The result of the validation.
+*/
+function isApp() {
+	return window.location.pathname === '/app';
+}
+
 export {
 	uuid,
 	html,
 	query,
 	prevent,
-	support
+	support,
+	isApp
 };

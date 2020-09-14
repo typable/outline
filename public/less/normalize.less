@@ -2,13 +2,14 @@
 @screen-xs: 576px;
 @screen-sm: 768px;
 @screen-md: 992px;
-@screen-lg: 1200px;
+@screen-lg: 1024px;
 
 * {
 	margin: 0;
 	padding: 0;
 	font-family: 'Roboto', sans-serif;
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
 
 	&:hover,
 	&:focus {
@@ -44,6 +45,10 @@ button {
 
 .hidden {
 	display: none !important;
+}
+
+.transparent {
+	opacity: 0 !important;
 }
 
 .ico {
