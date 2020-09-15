@@ -82,4 +82,5 @@ The following command starts the *Firebase Hosting* service, which provides the 
 ```bash
 $ npm run live // Port 80
 $ npm run test // Port 8080
+$ firebase serve --only hosting -p 8080 -o 192.168.1.246 // Host 192.168.1.246:8080
 ```

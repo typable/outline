@@ -80,16 +80,16 @@ function resize() {
 	t.drawImage(buffer, 0, 0, last || size, last || size);
 }
 
-function scale_canvas(canvas, g, size) {
+function scale_canvas(canvas, g, size, height) {
 	if(DEVICE_PIXEL_RATIO !== backing_store_ratio) {
 		canvas.width = size * ratio;
-		canvas.height = size * ratio;
+		canvas.height = height || size * ratio;
 		canvas.style.width = size + 'px';
-		canvas.style.height = size + 'px';
+		canvas.style.height = height || size + 'px';
 	}
 	else {
 		canvas.width = size;
-		canvas.height = size;
+		canvas.height = height || size;
 		canvas.style.width = '';
 		canvas.style.height = '';
 	}
@@ -241,6 +241,32 @@ function draw_cursor(state) {
 	}
 }
 
+function draw_crop(state) {
+	o.clearRect(0, 0, size, size);
+	if(state.option.crop_mode) {
+		o.fillStyle = 'rgba(0, 0, 0, 0.3)';
+		o.beginPath();
+		o.rect(0, 0, size, size);
+		o.fill();
+		if(state.region && state.region.length == 2) {
+			let [ begin, end ] = state.region;
+			if(begin && end) {
+				let delta = {
+					x: end.x - begin.x,
+					y: end.y - begin.y
+				};
+				if(delta.x != 0 && delta.y != 0) {
+					o.clearRect(begin.x, begin.y, delta.x, delta.y);
+					o.strokeStyle = 'white';
+					o.beginPath();
+					o.rect(begin.x, begin.y, delta.x, delta.y);
+					o.stroke();
+				}
+			}
+		}
+	}
+}
+
 function clear_cursor() {
 	o.clearRect(0, 0, size, size);
 }
@@ -272,6 +298,7 @@ export default {
 	redo,
 	draw_curve,
 	draw_cursor,
+	draw_crop,
 	clear_cursor,
 	set_data,
 	get_data

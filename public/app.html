@@ -26,6 +26,7 @@
 		<script src="./js/index.js" type="module"></script>
 	</head>
 	<body class="app-body">
+		<a id="download" target="_blank" download=""></a>
 		<div class="wrapper"></div>
 		<canvas id="canvas"></canvas>
 		<canvas id="overlay"></canvas>
@@ -72,6 +73,16 @@
 					</div>
 				</div>
 				<div class="sidebar hidden">
+					<div class="tool">
+						<ul class="tool-list">
+							<li class="tool-item ripple tooltip" data-lang="option.capture" data-type="tooltip" data-title="Capture" data-event="toggle.modal" data-code="capture">
+								<i class="ico">crop_free</i>
+							</li>
+						</ul>
+					</div>
+					<div class="action">
+						<ul class="action-list"></ul>
+					</div>
 					<div class="option">
 						<ul class="option-list">
 							<li class="option-item ripple tooltip" data-lang="option.edit-mode" data-type="tooltip" data-title="Edit Mode" data-event="close.view-mode">
@@ -187,6 +198,26 @@
 				<div class="align">
 					<button class="btn btn-cancel button ripple" data-event="close.modal" data-lang="modal.clear.action.cancel">No</button>
 					<button class="btn btn-apply button danger ripple" data-event="clear" data-lang="modal.clear.action.apply">Yes</button>
+				</div>
+			</div>
+			<div class="modal capture-modal hidden">
+				<div class="main">
+					<ul class="item-list">
+						<li class="item ripple" data-event="download.capture" data-code="download">
+							<i class="ico">save_alt</i>
+							<div class="info">
+								<p data-lang="capture.download">Download</p>
+								<span data-lang="capture.download.info">Download full size image</span>
+							</div>
+						</li>
+						<li class="item ripple" data-event="crop.capture" data-code="crop">
+							<i class="ico">crop</i>
+							<div class="info">
+								<p data-lang="capture.select">Select</p>
+								<span data-lang="capture.select.info">Crop image for download</span>
+							</div>
+						</li>
+					</ul>
 				</div>
 			</div>
 			<div class="modal multiplayer-modal hidden">

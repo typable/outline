@@ -9,6 +9,8 @@ let state = {
 	color: 54,
 	color_list: [54, 2, 17, 27, 37, 12],
 	radius: 14,
+	region: [],
+	crop: false,
 	index: 0,
 	device: null,
 	device_fallback: null,
@@ -29,7 +31,8 @@ let state = {
 	tab: null,
 	caption: null,
 	option: {
-		view_mode: false
+		view_mode: false,
+		crop_mode: false
 	},
 	history: [],
 	redo_history: []
@@ -55,6 +58,7 @@ export function init() {
 		pencil_list: { query: '.pencil-modal .item[data-event="change.pencil"]', all: true },
 		modal_event_list: { query: '[data-event*=".modal"]', all: true },
 		tab_event_list: { query: '[data-event*=".tab"]', all: true },
+		capture_event_list: { query: '[data-event*=".capture"]', all: true },
 		tool_list: { query: '.tool', all: true },
 		action_list: { query: '.action', all: true },
 		notification: '.notification',
@@ -71,7 +75,8 @@ export function init() {
 		edit_mode: '[data-event="close.view-mode"]',
 		content: '.modal .content',
 		caption_list: { query: '[data-event="open.content"]' , all: true },
-		content_list: { query: '.content-item' , all: true }
+		content_list: { query: '.content-item' , all: true },
+		download: '#download'
 	});
 
 	fill_hotbar_list();
@@ -197,6 +202,36 @@ function bind_events(locale) {
 				}
 			}
 		});
+	}
+	for(let item of node.capture_event_list) {
+		item.addEventListener('click', function(event) {
+			let code = item.dataset.code;
+			if(code === 'download') {
+				if(state.option.crop_mode) {
+					state.option.crop_mode = false;
+					canvas.draw_crop(state);
+					canvas.get_canvas().style.cursor = 'default';
+				}
+				let data = create_capture(0, 0, window.innerWidth, window.innerHeight);
+				if(data) {
+					node.download.download = `outline-${uuid()}.png`;
+					node.download.href = data;
+					node.download.click();
+				}
+				else {
+					console.warn('Unable to create capture from current state!');
+				}
+			}
+			if(code === 'crop') {
+				state.option.crop_mode = true;
+				state.region = [];
+				canvas.draw_crop(state);
+				canvas.get_canvas().style.cursor = 'crosshair';
+			}
+			state.modal = null;
+			state.tab = null;
+			update_modal_list();
+		})
 	}
 	node.scale_input.addEventListener('input', function(event) {
 		state.radius = parseInt(node.scale_input.value);
@@ -360,10 +395,10 @@ function update_view_mode_option() {
 	show_notification(`notification.view-mode.${view_mode ? 'on' : 'off'}`);
 	node.option_event_view_mode.classList[view_mode ? 'add' : 'remove']('active');
 	node.option_event_view_mode.querySelector('.ico').textContent = view_mode ? 'toggle_on' : 'toggle_off';
+	state.modal = null;
+	state.tab = null;
+	update_modal_list();
 	if(view_mode) {
-		state.modal = null;
-		state.tab = null;
-		update_modal_list();
 		canvas.on_release(null, state);
 		canvas.clear_cursor();
 		canvas.get_canvas().style.cursor = 'default';
@@ -397,6 +432,8 @@ function update_view_mode_option() {
 		});
 	}
 	else {
+		state.option.crop_mode = false;
+		canvas.draw_crop(state);
 		canvas.on_release(null, state, true);
 		canvas.get_canvas().style.cursor = 'none';
 		node.hotbar.classList.remove('inactive');
@@ -475,6 +512,14 @@ function on_pointerdown(event) {
 			}
 		}
 	}
+	if(state.option.view_mode && state.option.crop_mode) {
+		if(event.target === canvas.get_canvas()) {
+			state.crop = true;
+			state.region = [];
+			state.region[0] = { x: event.layerX, y: event.layerY };
+			canvas.draw_crop(state);
+		}
+	}
 }
 
 function on_pointermove(event) {
@@ -503,6 +548,12 @@ function on_pointermove(event) {
 		}
 		canvas.draw_cursor(state);
 	}
+	if(state.option.view_mode && state.option.crop_mode) {
+		if(state.crop && event.target === canvas.get_canvas()) {
+			state.region[1] = { x: event.layerX, y: event.layerY };
+			canvas.draw_crop(state);
+		}
+	}
 }
 
 function on_pointerup(event) {
@@ -510,6 +561,40 @@ function on_pointerup(event) {
 		canvas.on_release(event, state);
 		update_undo_and_redo();
 		update_focus(true);
+	}
+	if(state.option.view_mode && state.option.crop_mode) {
+		if(state.crop && event.target === canvas.get_canvas()) {
+			state.crop = false;
+			state.region[1] = { x: event.layerX, y: event.layerY };
+			canvas.draw_crop(state);
+			let [ begin, end ] = state.region;
+			let delta = {
+				x: end.x - begin.x,
+				y: end.y - begin.y
+			};
+			let x = begin.x < end.x ? begin.x : end.x;
+			let y = begin.y < end.y ? begin.y : end.y;
+			if(delta.x < 0) {
+				delta.x *= -1;
+			}
+			if(delta.y < 0) {
+				delta.y *= -1;
+			}
+			if(delta.x != 0 && delta.y != 0) {
+				let data = create_capture(x, y, delta.x, delta.y);
+				if(data) {
+					node.download.download = `outline-${uuid()}.png`;
+					node.download.href = data;
+					node.download.click();
+					state.option.crop_mode = false;
+					canvas.draw_crop(state);
+					canvas.get_canvas().style.cursor = 'default';
+				}
+				else {
+					console.warn('Unable to create capture from current state!');
+				}
+			}
+		}
 	}
 }
 
@@ -519,6 +604,13 @@ function on_pointerout(event) {
 		update_undo_and_redo();
 		state.point = null;
 		canvas.draw_cursor(state);
+	}
+	if(state.option.view_mode && state.option.crop_mode) {
+		if(state.crop && event.target === canvas.get_canvas()) {
+			state.crop = false;
+			state.region = [];
+			canvas.draw_crop(state);
+		}
 	}
 }
 
@@ -533,6 +625,11 @@ function on_keydown(event) {
 			state.modal = null;
 			update_modal_list();
 			return;
+		}
+		if(state.option.view_mode && state.option.crop_mode) {
+			state.option.crop_mode = false;
+			canvas.draw_crop(state);
+			canvas.get_canvas().style.cursor = 'default';
 		}
 	}
 	if(!event.ctrlKey && !event.shiftKey && !event.altKey) {
@@ -699,4 +796,18 @@ function show_notification(message) {
 			});
 		}
 	}, 1000);
+}
+
+function create_capture(x, y, width, height) {
+	let cache = document.createElement('canvas');
+	let c = cache.getContext('2d');
+	canvas.scale_canvas(cache, c, width, height);
+	c.translate(-x, -y);
+	c.fillStyle = 'white';
+	c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+	c.drawImage(canvas.get_canvas(), 0, 0);
+	node.download.download = 'test.png';
+	let data = cache.toDataURL() || null;
+	cache.remove();
+	return data;
 }
