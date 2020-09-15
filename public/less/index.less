@@ -1,7 +1,10 @@
 /* ### App ### */
 html,
 body {
-	overflow: hidden;
+
+	&.body-app {
+		overflow: hidden;
+	}
 }
 
 .wrapper {
@@ -227,6 +230,7 @@ body {
 	width: 100%;
 	opacity: 0;
 	text-align: center;
+	padding: 0 30px;
 
 	p {
 		display: inline-block;
@@ -743,6 +747,11 @@ body.home-body {
 	.notification {
 		top: 50px;
 		z-index: 2;
+
+		p.content {
+			padding: 10px 16px;
+			border-radius: 10px;
+		}
 	}
 
 	.row {
