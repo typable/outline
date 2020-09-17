@@ -83,9 +83,9 @@ function resize() {
 function scale_canvas(canvas, g, size, height) {
 	if(DEVICE_PIXEL_RATIO !== backing_store_ratio) {
 		canvas.width = size * ratio;
-		canvas.height = height || size * ratio;
+		canvas.height = (height || size) * ratio;
 		canvas.style.width = size + 'px';
-		canvas.style.height = height || size + 'px';
+		canvas.style.height = (height || size) + 'px';
 	}
 	else {
 		canvas.width = size;
@@ -285,6 +285,22 @@ function get_data() {
 	return canvas.toDataURL();
 }
 
+function create_capture(x, y, width, height, offset) {
+	if(!offset) {
+		offset = 0;
+	}
+	let cache = document.createElement('canvas');
+	let c = cache.getContext('2d');
+	scale_canvas(cache, c, width * ratio, (height - offset) * ratio);
+	c.translate(-x * ratio, -(y * ratio + offset));
+	c.fillStyle = 'white';
+	c.fillRect(0, 0, window.innerWidth * ratio, window.innerHeight * ratio);
+	c.drawImage(canvas, 0, 0 - offset);
+	let data = cache.toDataURL() || null;
+	cache.remove();
+	return data;
+}
+
 export default {
 	init,
 	get_canvas,
@@ -301,5 +317,6 @@ export default {
 	draw_crop,
 	clear_cursor,
 	set_data,
-	get_data
+	get_data,
+	create_capture
 };

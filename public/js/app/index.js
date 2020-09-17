@@ -212,7 +212,7 @@ function bind_events(locale) {
 					canvas.draw_crop(state);
 					canvas.get_canvas().style.cursor = 'default';
 				}
-				let data = create_capture(0, 0, window.innerWidth, window.innerHeight);
+				let data = canvas.create_capture(0, 0, window.innerWidth, window.innerHeight, 60);
 				if(data) {
 					node.download.download = `outline-${uuid()}.png`;
 					node.download.href = data;
@@ -581,7 +581,7 @@ function on_pointerup(event) {
 				delta.y *= -1;
 			}
 			if(delta.x != 0 && delta.y != 0) {
-				let data = create_capture(x, y, delta.x, delta.y);
+				let data = canvas.create_capture(x, y, delta.x, delta.y);
 				if(data) {
 					node.download.download = `outline-${uuid()}.png`;
 					node.download.href = data;
@@ -796,18 +796,4 @@ function show_notification(message) {
 			});
 		}
 	}, 1000);
-}
-
-function create_capture(x, y, width, height) {
-	let cache = document.createElement('canvas');
-	let c = cache.getContext('2d');
-	canvas.scale_canvas(cache, c, width, height);
-	c.translate(-x, -y);
-	c.fillStyle = 'white';
-	c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-	c.drawImage(canvas.get_canvas(), 0, 0);
-	node.download.download = 'test.png';
-	let data = cache.toDataURL() || null;
-	cache.remove();
-	return data;
 }
