@@ -294,7 +294,9 @@ function update_language_list() {
 }
 
 function update_device_list() {
-	canvas.get_canvas().style.cursor = state.device === 'mouse' ? 'none' : '';
+	if(!state.option.view_mode && !state.option.crop_mode) {
+		canvas.get_canvas().style.cursor = state.device === 'mouse' ? 'none' : '';
+	}
 	for(let item of node.device_list) {
 		let code = item.dataset.code;
 		item.classList[code === state.device ? 'add' : 'remove']('active');
