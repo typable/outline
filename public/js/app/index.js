@@ -40,7 +40,7 @@ let state = {
 
 export function init() {
 
-	locale.init('en');
+	locale.init();
 	locale.load('./asset/lang', LOCALES);
 	canvas.init();
 
@@ -718,6 +718,11 @@ function on_keydown(event) {
 		if(event.code === 'KeyZ') {
 			canvas.redo(state);
 			update_undo_and_redo();
+		}
+	}
+	if(event.code === 'Enter') {
+		if(state.modal === 'clear') {
+			node.clear.click();
 		}
 	}
 }

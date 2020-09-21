@@ -10,7 +10,7 @@ let state = {
 
 export function init() {
 
-	locale.init('en');
+	locale.init();
 	locale.load('./asset/lang', LOCALES);
 
 	node = query({

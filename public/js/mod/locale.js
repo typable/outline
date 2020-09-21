@@ -1,3 +1,5 @@
+import { LOCALES } from '../constant.js';
+
 const LINE_BREAK_PATTERN = /\r\n|\r|\n/;
 const PROPERTY_PATTERN = /^([\w+.-]+)=([^=]*)$/;
 
@@ -10,9 +12,25 @@ let current_lang;
 
 	@function init
 	@constructor
-	@param {string} code - The locale code;
 */
-function init(code) {
+function init() {
+	let code = 'en';
+	if(typeof navigator !== 'undefined') {
+		if(LOCALES.includes(navigator.language)) {
+			code = navigator.language;
+		}
+		else {
+			for(let locale of navigator.languages) {
+				if(/^\w{2}-\w{2}$/.test(locale)) {
+					locale = locale.substr(0, 2);
+				}
+				if(LOCALES.includes(locale)) {
+					code = locale;
+					break;
+				}
+			}
+		}
+	}
 	default_lang = code;
 	current_lang = code;
 }
@@ -45,6 +63,7 @@ async function load(path, locales, callback) {
 	if(callback) {
 		callback();
 	}
+	change(current_lang);
 }
 
 /**
