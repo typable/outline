@@ -1,7 +1,7 @@
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio || 1;
 const MAX_HISTORY_STEP = 10;
 
-import { COLORS } from '../../constant.js';
+import { COLORS } from '../constant.js';
 
 let active;
 let point_list = [];

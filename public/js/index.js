@@ -2,7 +2,7 @@ import { isApp } from './util.js';
 
 import ripple from './mod/ripple.js';
 
-const path = isApp() ? './app/index.js' : './home/index.js';
+const path = isApp() ? './app.js' : './home.js';
 
 window.addEventListener('load', init);
 

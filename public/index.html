@@ -23,9 +23,18 @@
 		<title>Outline</title>
 		<link href="./asset/img/favicon.png" rel="shortcut icon" type="image/png">
 		<link href="./css/style.css" rel="stylesheet">
+		<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-analytics.js"></script>
 		<script src="./js/index.js" type="module"></script>
 	</head>
 	<body class="home">
+		<div class="cookie hidden">
+			<p data-lang="main.cookie.info">We use cookies to give you the best possible user experience.</p>
+			<div class="group">
+				<button class="button accept" data-lang="main.cookie.submit">Accept</button>
+				<a href="https://typable.dev/terms" data-lang="main.cookie.more">Learn more</a>
+			</div>
+		</div>
 		<div class="notification">
 			<p class="content"></p>
 		</div>

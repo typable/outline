@@ -880,3 +880,59 @@ body.home {
 		margin-bottom: 60px;
 	}
 }
+
+.cookie {
+	display: flex;
+	position: fixed;
+	bottom: 43px;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 24px;
+	background: @brand-blue;
+	border-radius: 4px;
+	width: 800px;
+	border: 1px solid @brand-blue;
+	z-index: 999;
+	left: calc(50vw - 400px);
+	gap: 20px;
+
+	p {
+		font-size: 16px;
+		color: white;
+		user-select: none;
+		pointer-events: none;
+		align-content: flex-start;
+		line-height: 24px;
+	}
+
+	button.button.accept {
+		font-size: 16px;
+		font-weight: 500;
+		color: white;
+		white-space: nowrap;
+		user-select: none;
+		background: inherit;
+
+		&:hover {
+			background: rgba(black, 0.05);
+		}
+	}
+
+	.group {
+		display: inline-flex;
+		align-items: center;
+		gap: 15px;
+	}
+
+	a {
+		font-size: 16px;
+		color: white;
+		white-space: nowrap;
+		user-select: none;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

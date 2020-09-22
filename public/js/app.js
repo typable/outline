@@ -1,8 +1,9 @@
-import { COLORS, PRIORITY_MODAL, LOCALES } from '../constant.js';
-import { uuid, query, prevent } from '../util.js';
+import { FIREBASE, COLORS, PRIORITY_MODAL, LOCALES } from './constant.js';
+import { uuid, query, prevent } from './util.js';
 
-import locale from '../mod/locale.js';
+import locale from './mod/locale.js';
 import canvas from './mod/canvas.js';
+import cookie from './mod/cookie.js';
 
 let node;
 let state = {
@@ -76,7 +77,9 @@ export function init() {
 		content: '.modal .content',
 		caption_list: { query: '[data-event="open.content"]' , all: true },
 		content_list: { query: '.content-item' , all: true },
-		download: '#download'
+		download: '#download',
+		cookie: '.cookie',
+		accept: '.button.accept'
 	});
 
 	fill_hotbar_list();
@@ -101,6 +104,21 @@ export function init() {
 		duration: 250,
 		fill: 'both'
 	});
+
+	if(!cookie.hasAccepted()) {
+		node.cookie.classList.remove('hidden');
+		cookie.requestPermission(node.accept)
+			.then(function() {
+				node.cookie.classList.add('hidden');
+				try {
+					firebase.initializeApp(FIREBASE);
+					firebase.analytics();
+				}
+				catch(error) {
+					console.warn('Unable to load Google Analytics!');
+				}
+			});
+	}
 }
 
 function bind_events(locale) {

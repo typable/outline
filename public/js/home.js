@@ -1,7 +1,8 @@
-import { LOCALES } from '../constant.js';
-import { uuid, query } from '../util.js';
+import { FIREBASE, LOCALES } from './constant.js';
+import { uuid, query } from './util.js';
 
-import locale from '../mod/locale.js';
+import locale from './mod/locale.js';
+import cookie from './mod/cookie.js';
 
 let node;
 let state = {
@@ -14,7 +15,9 @@ export function init() {
 	locale.load('./asset/lang', LOCALES);
 
 	node = query({
-		notification: '.notification'
+		notification: '.notification',
+		cookie: '.cookie',
+		accept: '.button.accept'
 	});
 
 	let elements = document.querySelectorAll('[data-event]');
@@ -93,6 +96,21 @@ export function init() {
 		event.preventDefault();
 		state.deferredPrompt = event;
 	});
+
+	if(!cookie.hasAccepted()) {
+		node.cookie.classList.remove('hidden');
+		cookie.requestPermission(node.accept)
+			.then(function() {
+				node.cookie.classList.add('hidden');
+				try {
+					firebase.initializeApp(FIREBASE);
+					firebase.analytics();
+				}
+				catch(error) {
+					console.warn('Unable to load Google Analytics!');
+				}
+			});
+	}
 }
 
 function show_notification(message) {
