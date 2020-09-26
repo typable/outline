@@ -82,6 +82,8 @@ export function init() {
 		accept: '.button.accept'
 	});
 
+	update_language_list();
+
 	fill_hotbar_list();
 	fill_modal_color_list();
 
