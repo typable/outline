@@ -1,0 +1,17 @@
+User-agent: Googlebot
+Disallow: /asset/
+Disallow: /css/
+Disallow: /js/
+Disallow: /less/
+
+User-Agent: Googlebot-Image
+Disallow: /asset/
+Disallow: /css/
+Disallow: /js/
+Disallow: /less/
+
+User-Agent: *
+Disallow: /asset/
+Disallow: /css/
+Disallow: /js/
+Disallow: /less/
