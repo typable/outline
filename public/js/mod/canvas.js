@@ -132,9 +132,14 @@ function on_release(event, state, undrag) {
 			active = false;
 		}
 		if(point_list.length > 0) {
+			let { color, radius, pencil } = state;
 			state.history.push({
 				list: point_list,
-				state: Object.assign({}, state)
+				state: {
+					color,
+					radius,
+					pencil
+				}
 			});
 			if(state.history.length > MAX_HISTORY_STEP) {
 				let line = state.history.shift();

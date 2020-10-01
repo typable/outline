@@ -45,7 +45,7 @@
 			background: @brand-light;
 
 			.footer-item {
-				color: @brand-grey;
+				color: darken(@brand-grey-2, 2%);
 			}
 		}
 
@@ -53,21 +53,16 @@
 
 			&.button-prime {
 				background: @brand-blue;
-				color: darken(white, 2%);
+				color: white;
 
 				&:hover {
 					background: darken(@brand-blue, 2%);
-					color: white;
 				}
 			}
 
 			&.button-default {
 				background: white;
-				color: darken(@brand-grey, 10%);
-
-				&:hover {
-					color: darken(@brand-grey, 15%);
-				}
+				color: darken(@brand-grey, 18%);
 			}
 
 			&.button-prime-light {
