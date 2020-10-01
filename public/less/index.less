@@ -21,15 +21,12 @@ a#download {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: white;
 	z-index: 999;
 }
 
 .header-list {
 	width: 100%;
 	height: 60px;
-	background: white;
-	border-bottom: 1px solid @brand-grey-5;
 	display: flex;
 	flex-direction: column;
 	pointer-events: all;
@@ -72,39 +69,6 @@ a#download {
 					&.placeholder {
 						pointer-events: none;
 					}
-
-					&:not(.inactive):not(.active):hover {
-						background: rgba(@brand-grey-7, 0.95);
-
-						&.ripple {
-
-							&.ripple-active {
-								background: lighten(rgba(@brand-grey-7, 0.95), -2%);
-							}
-						}
-					}
-
-					&.active {
-						background: rgba(#EEEEEE, 0.95);
-
-						&.ripple {
-
-							&.ripple-active {
-								background: lighten(rgba(#EEEEEE, 0.95), -2%);
-							}
-						}
-					}
-
-					&.inactive {
-
-						i.ico {
-							color: @brand-grey-4;
-						}
-					}
-
-					i.ico {
-						color: @brand-grey-1;
-					}
 				}
 			}
 		}
@@ -133,25 +97,13 @@ a#download {
 	border-radius: 2px;
 	font-weight: 500;
 	font-size: 12px;
-	color: white !important;
-
-	&.prime {
-		background: @brand-blue;
-	}
-
-	&.beta {
-		background: @brand-green;
-	}
 }
 
 .key {
 	display: inline-block;
 	padding: 3px 8px;
 	border-radius: 3px;
-	color: @brand-grey-2;
 	font-weight: 500;
-	background: @brand-grey-7;
-	border: 1px solid @brand-grey-4;
 
 	&.round {
 		border-radius: 999px;
@@ -178,52 +130,7 @@ a#download {
 	padding: 0 22px;
 	border: none;
 	border-radius: 4px;
-	background: @brand-grey-6;
-	color: @brand-black;
 	font-size: 16px;
-
-	&:hover {
-
-		&.ripple-active {
-			background: lighten(@brand-grey-6, -2%);
-		}
-	}
-
-	&.outline {
-		border: 1px solid @brand-grey-5;
-		background: transparent;
-
-		&:hover {
-
-			&.ripple-active {
-				background: lighten(white, -2%);
-			}
-		}
-	}
-
-	&.prime {
-		background: @brand-blue;
-		color: white;
-
-		&:hover {
-
-			&.ripple-active {
-				background: lighten(@brand-blue, -2%);
-			}
-		}
-	}
-
-	&.danger {
-		background: @brand-red;
-		color: white;
-
-		&:hover {
-
-			&.ripple-active {
-				background: lighten(@brand-red, -2%);
-			}
-		}
-	}
 }
 
 .notification {
@@ -270,7 +177,6 @@ a#download {
 			width: 60px;
 			height: 60px;
 			border-radius: 30px;
-			background: #EEE;
 			cursor: pointer;
 			transition: transform 0.2s;
 			transform: scale(0.9);
@@ -307,7 +213,6 @@ a#download {
 			margin-top: 21px;
 			margin-left: 27px;
 			height: 6px;
-    		background: #EEEEEE;
     		border: none;
     		border-radius: 4px;
 
@@ -320,13 +225,8 @@ a#download {
 				height: 20px;
 				width: 20px;
 				margin-top: -0px;
-				background: @brand-grey-3;
 				border-radius: 10px;
 				cursor: pointer;
-
-				&:hover {
-					background: @brand-grey-2;
-				}
 			}
 		}
 	}
@@ -344,7 +244,6 @@ a#download {
 			font-size: 20px;
 			text-align: center;
 			margin-bottom: 25px;
-			color: @brand-black;
 			user-select: none;
 		}
 
@@ -366,7 +265,6 @@ a#download {
 				height: 48px;
 				border: none;
 				border-radius: 3px;
-				border-color: grey;
 				font-size: 16px;
 				padding-top: 1px;
 			}
@@ -397,19 +295,12 @@ a#download {
 
 		&::-webkit-scrollbar-thumb {
 			width: 8px;
-			background: @brand-grey-5;
-
-			&:hover,
-			&:active {
-				background: @brand-grey-4;
-			}
 		}
 
 		.color {
 			width: 60px;
 			height: 60px;
 			border-radius: 30px;
-			background: #EEE;
 			cursor: pointer;
 			transition: transform 0.2s;
 			transform: scale(0.9);
@@ -442,103 +333,11 @@ a#download {
 		top: 75px;
 		right: 15px;
 	}
-
-	.help-modal {
-		top: calc(50% - 250px);
-		left: calc(50% - 400px);
-		width: 800px;
-		height: 500px;
-		display: flex;
-		padding: 0;
-
-		.side {
-			border-right: 1px solid @brand-grey-5;
-			width: 230px;
-			min-width: 230px;
-			overflow: hidden;
-
-			ul.item-list {
-				width: 100%;
-				padding: 6px 0;
-
-				li.item {
-					display: flex;
-					flex-direction: column;
-
-					 .info {
-						 font-size: 16px;
-						 width: 100%;
-						 max-width: 100%;
-						 margin-left: 0;
-					 }
-				}
-			}
-		}
-
-		.content {
-			padding: 6px 0;
-			overflow-y: auto;
-
-			&::-webkit-scrollbar {
-				width: 8px;
-			}
-
-			&::-webkit-scrollbar-thumb {
-				width: 8px;
-				background: @brand-grey-5;
-
-				&:hover,
-				&:active {
-					background: @brand-grey-4;
-				}
-			}
-
-			ul.content-list {
-				list-style-type: none;
-				pointer-events: none;
-
-				li.content-item {
-					pointer-events: none;
-					padding: 15px 20px;
-					padding-top: 25px;
-
-					p {
-						font-size: 16px;
-						color: @brand-grey-2;
-						line-height: 20px;
-						user-select: none;
-						pointer-events: none;
-						margin-bottom: 40px;
-					}
-
-					h2 {
-						font-size: 24px;
-						font-weight: 500;
-						margin-bottom: 20px;
-						user-select: none;
-						pointer-events: none;
-						color: @brand-grey-1;
-					}
-
-					h3 {
-						font-size: 22px;
-						font-weight: 500;
-						margin-bottom: 20px;
-						user-select: none;
-						pointer-events: none;
-						color: @brand-grey-1;
-					}
-				}
-			}
-		}
-	}
 }
 
 .modal {
 	width: 250px;
 	position: fixed;
-	background: white;
-	border: 1px solid @brand-grey-5;
 	border-radius: 4px;
 	padding: 6px 0;
 	pointer-events: all;
@@ -572,21 +371,6 @@ a#download {
 			padding: 6px;
 			padding-left: 5px;
 			cursor: pointer;
-
-			i.ico {
-				color: @brand-grey-0;
-			}
-
-			&:hover {
-				background: @brand-grey-7;
-			}
-
-			&.ripple {
-
-				&.ripple-active {
-					background: lighten(@brand-grey-7, -2%);
-				}
-			}
 		}
 
 		.info {
@@ -599,7 +383,6 @@ a#download {
 				display: flex;
 				align-items: center;
 				font-weight: 500;
-				color: @brand-grey-1;
 				user-select: none;
 				pointer-events: none;
 			}
@@ -608,7 +391,6 @@ a#download {
 				display: block;
 				margin-top: 3px;
 				font-size: 12px;
-				color: @brand-grey-3;
 				user-select: none;
 				pointer-events: none;
 				white-space: nowrap;
@@ -624,7 +406,6 @@ a#download {
 			margin: 6px 0;
 			width: 100%;
 			height: 1px;
-			background: @brand-grey-5;
 		}
 
 		li.caption {
@@ -633,7 +414,6 @@ a#download {
 			list-style: none;
 
 			p {
-				color: @brand-grey-3;
 				user-select: none;
 				pointer-events: none;
 			}
@@ -650,29 +430,13 @@ a#download {
 				p {
 					display: block;
 					width: 100%;
-					color: @brand-grey-3;
 					text-align: center;
 					user-select: none;
 					pointer-events: none;
 				}
 			}
 
-			&:not(.active):not(.inactive) {
-
-				&:hover {
-					background: @brand-grey-7;
-				}
-
-				&.ripple {
-
-					&.ripple-active {
-						background: lighten(@brand-grey-7, -2%);
-					}
-				}
-			}
-
 			i.ico {
-				color: @brand-grey-1;
 				user-select: none;
 				pointer-events: none;
 			}
@@ -685,7 +449,6 @@ a#download {
 				font-weight: 600;
 				width: 24px;
 				height: 24px;
-				color: @brand-grey-1;
 				user-select: none;
 				pointer-events: none;
 			}
@@ -700,7 +463,6 @@ a#download {
 					display: flex;
 					align-items: center;
 					font-weight: 500;
-					color: @brand-grey-1;
 					user-select: none;
 					pointer-events: none;
 				}
@@ -709,41 +471,11 @@ a#download {
 					display: block;
 					margin-top: 3px;
 					font-size: 12px;
-					color: @brand-grey-3;
 					user-select: none;
 					pointer-events: none;
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
-				}
-			}
-
-			&.active {
-				background: #EEEEEE;
-
-				&.ripple {
-
-					&.ripple-active {
-						background: lighten(#EEEEEE, -2%);
-					}
-				}
-			}
-
-			&.inactive {
-
-				i.ico {
-					color: @brand-grey-4;
-				}
-
-				.info {
-
-					p {
-						color: @brand-grey-3;
-					}
-
-					span {
-						color: @brand-grey-3;
-					}
 				}
 			}
 		}
@@ -752,6 +484,174 @@ a#download {
 
 /* ### Home ### */
 body.home {
+
+		button.button:not(.accept) {
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: 0 0 20px 0 rgba(black, 0.05);
+			border: none;
+			border-radius: 5px;
+			height: 48px;
+			max-height: 48px;
+			min-width: 180px;
+			font-size: 16px;
+
+			&:hover {
+				box-shadow: 0 0 20px 0 rgba(black, 0.08);
+			}
+
+			&.button-prime-light {
+				height: 40px;
+				max-height: 40px;
+				min-width: 110px;
+			}
+		}
+
+		.caption {
+			display: flex;
+			flex-wrap: nowrap;
+			gap: 40px;
+
+			h2.caption-headline {
+				flex: 35%;
+				font-weight: 500;
+				font-size: 30px;
+				white-space: nowrap;
+
+				b {
+					font-weight: inherit;
+				}
+			}
+
+			.caption-info {
+				flex: 65%;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 30px;
+
+				p {
+					font-size: 18px;
+					font-weight: 400;
+					line-height: 28px;
+				}
+			}
+		}
+
+		.badge-version {
+			padding: 3px 6px;
+			text-decoration: none;
+			border-radius: 3px;
+			font-weight: 500;
+			font-size: 16px;
+			user-select: none;
+		}
+
+		@media(max-width: @screen-lg) {
+
+			header {
+
+				.logo {
+					width: 140px;
+					height: 140px;
+					min-width: 140px;
+					min-height: 140px;
+					max-width: 140px;
+					max-height: 140px;
+					background-size: 160px 160px;
+					margin-bottom: 25px;
+				}
+
+				h1.headline {
+					font-size: 50px;
+				}
+
+				p.description {
+					font-size: 18px;
+					line-height: 26px;
+					margin-bottom: 20px;
+				}
+
+				.badge.badge-version {
+					margin-bottom: 40px;
+				}
+			}
+
+			.caption {
+				flex-wrap: wrap;
+			}
+		}
+
+		@media(max-width: @screen-sm) {
+
+			header {
+
+				p.description {
+					padding: 0 !important;
+				}
+			}
+		}
+
+		@media(max-width: @screen-xx) {
+
+			header {
+				padding: 0 30px !important;
+
+				h1.headline {
+					font-size: 40px;
+				}
+
+				.row {
+					flex-direction: column;
+					justify-content: flex-start;
+					align-items: center;
+					gap: 20px;
+
+					button {
+						min-width: 240px;
+					}
+				}
+			}
+
+			main {
+				padding: 0 30px !important;
+
+				.container {
+					padding: 100px 0 !important;
+					padding-top: 60px !important;
+					gap: 80px !important;
+				}
+
+				.caption {
+					gap: 30px;
+
+					h2.caption-headline {
+						font-size: 28px;
+					}
+
+					.caption-info {
+
+						p {
+							font-size: 16px;
+							line-height: 26px;
+						}
+					}
+				}
+			}
+
+			footer {
+				padding: 0 30px !important;
+
+				.footer-item {
+					font-size: 14px !important;
+				}
+
+				.footer-group {
+					gap: 15px !important;
+				}
+			}
+		}
 
 	.notification {
 		top: 50px;
@@ -784,7 +684,6 @@ body.home {
 		padding: 0 50px;
 
 		.container {
-			// margin-top: -10vh;
 
 			.header-info {
 				display: flex;

@@ -4,6 +4,8 @@
 	@brand-grey: #9FA2AD;
 	@brand-light: #F5F5F5;
 
+	/* ### Home ### */
+
 	body.home {
 		background: white;
 
@@ -98,6 +100,315 @@
 
 				p {
 					color: @brand-grey;
+				}
+			}
+		}
+	}
+
+	/* ### App ### */
+
+	.wrapper {
+		background: white;
+	}
+
+	.header-list {
+		background: white;
+		border-bottom: 1px solid @brand-grey-5;
+
+		.mainbar,
+		.sidebar {
+
+			.tool,
+			.action,
+			.option {
+
+				ul {
+
+					li {
+
+						&:not(.inactive):not(.active):hover {
+							background: rgba(@brand-grey-7, 0.95);
+
+							&.ripple {
+
+								&.ripple-active {
+									background: lighten(rgba(@brand-grey-7, 0.95), -2%);
+								}
+							}
+						}
+
+						&.active {
+							background: rgba(@brand-bright, 0.95);
+
+							&.ripple {
+
+								&.ripple-active {
+									background: lighten(rgba(@brand-bright, 0.95), -2%);
+								}
+							}
+						}
+
+						&.inactive {
+
+							i.ico {
+								color: @brand-grey-4;
+							}
+						}
+
+						i.ico {
+							color: @brand-grey-1;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.badge {
+
+		&.prime {
+			background: @brand-blue;
+		}
+
+		&.beta {
+			background: @brand-green;
+		}
+	}
+
+	.key {
+		color: @brand-grey-2;
+		background: @brand-grey-7;
+		border: 1px solid @brand-grey-4;
+	}
+
+	.button {
+		background: @brand-grey-6;
+		color: @brand-black;
+
+		&:hover {
+
+			&.ripple-active {
+				background: lighten(@brand-grey-6, -2%);
+			}
+		}
+
+		&.outline {
+			border: 1px solid @brand-grey-5;
+
+			&:hover {
+
+				&.ripple-active {
+					background: lighten(white, -2%);
+				}
+			}
+		}
+
+		&.prime {
+			background: @brand-blue;
+			color: white;
+
+			&:hover {
+
+				&.ripple-active {
+					background: lighten(@brand-blue, -2%);
+				}
+			}
+		}
+
+		&.danger {
+			background: @brand-red;
+			color: white;
+
+			&:hover {
+
+				&.ripple-active {
+					background: lighten(@brand-red, -2%);
+				}
+			}
+		}
+	}
+
+	.notification {
+
+		p {
+			background: @brand-black;
+			color: white;
+		}
+	}
+
+	.controls {
+
+		.hotbar {
+
+			.color {
+				background: @brand-bright;
+			}
+		}
+
+		.scale-modal {
+
+			input[type="range"] {
+	    		background: @brand-bright;
+
+				&::-webkit-slider-thumb {
+					background: @brand-grey-3;
+
+					&:hover {
+						background: @brand-grey-2;
+					}
+				}
+			}
+		}
+
+		.clear-modal {
+
+			.info {
+				color: @brand-black;
+			}
+
+			.align {
+
+				.btn-apply {
+					border-color: grey;
+				}
+			}
+		}
+
+		.colors-modal {
+
+			&::-webkit-scrollbar-thumb {
+				background: @brand-grey-5;
+
+				&:hover,
+				&:active {
+					background: @brand-grey-4;
+				}
+			}
+
+			.color {
+				background: @brand-bright;
+			}
+		}
+	}
+
+	.modal {
+		background: white;
+		border: 1px solid @brand-grey-5;
+
+		.header {
+
+			.back {
+
+				i.ico {
+					color: @brand-grey-0;
+				}
+
+				&:hover {
+					background: @brand-grey-7;
+				}
+
+				&.ripple {
+
+					&.ripple-active {
+						background: lighten(@brand-grey-7, -2%);
+					}
+				}
+			}
+
+			.info {
+
+				p {
+					color: @brand-grey-1;
+				}
+
+				span {
+					color: @brand-grey-3;
+				}
+			}
+		}
+
+		ul.item-list {
+
+			.separator {
+				background: @brand-grey-5;
+			}
+
+			li.caption {
+
+				p {
+					color: @brand-grey-3;
+				}
+			}
+
+			li.item {
+
+				&.empty {
+
+					p {
+						color: @brand-grey-3;
+					}
+				}
+
+				&:not(.active):not(.inactive) {
+
+					&:hover {
+						background: @brand-grey-7;
+					}
+
+					&.ripple {
+
+						&.ripple-active {
+							background: lighten(@brand-grey-7, -2%);
+						}
+					}
+				}
+
+				i.ico {
+					color: @brand-grey-1;
+				}
+
+				i.lang {
+					color: @brand-grey-1;
+				}
+
+				.info {
+
+					p {
+						color: @brand-grey-1;
+					}
+
+					span {
+						color: @brand-grey-3;
+					}
+				}
+
+				&.active {
+					background: @brand-bright;
+
+					&.ripple {
+
+						&.ripple-active {
+							background: lighten(@brand-bright, -2%);
+						}
+					}
+				}
+
+				&.inactive {
+
+					i.ico {
+						color: @brand-grey-4;
+					}
+
+					.info {
+
+						p {
+							color: @brand-grey-3;
+						}
+
+						span {
+							color: @brand-grey-3;
+						}
+					}
 				}
 			}
 		}

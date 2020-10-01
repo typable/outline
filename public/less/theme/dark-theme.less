@@ -1,8 +1,11 @@
 @media(prefers-color-scheme: dark) {
 
 	@brand-dark: #333C41;
-	@brand-grey: #E0E0E0;
+	@brand-light: #E0E0E0;
 	@brand-night: #2D353A;
+	@brand-grey: #828282;
+
+	/* ### Home ### */
 
 	body.home {
 		background: @brand-dark;
@@ -27,7 +30,7 @@
 			}
 
 			p.description {
-				color: @brand-grey;
+				color: @brand-light;
 
 				b {
 					color: @brand-blue;
@@ -43,7 +46,7 @@
 			background: @brand-night;
 
 			.footer-item {
-				color: darken(@brand-grey, 20%);
+				color: darken(@brand-light, 20%);
 			}
 		}
 
@@ -51,21 +54,20 @@
 
 			&.button-prime {
 				background: @brand-blue;
-				color: darken(white, 2%);
+				color: white;
 
 				&:hover {
 					background: darken(@brand-blue, 2%);
-					color: white;
 				}
 			}
 
 			&.button-default {
 				background: darken(@brand-night, 7%);
-				color: @brand-grey;
+				color: @brand-light;
 
 				&:hover {
 					background: darken(@brand-night, 8%);
-					color: lighten(@brand-grey, 10%);
+					color: lighten(@brand-light, 10%);
 				}
 			}
 
@@ -82,7 +84,7 @@
 
 		.badge-version {
 			background: @brand-night;
-			color: @brand-grey;
+			color: @brand-light;
 		}
 
 		.caption {
@@ -98,7 +100,337 @@
 			.caption-info {
 
 				p {
-					color: @brand-grey;
+					color: @brand-light;
+				}
+			}
+		}
+	}
+
+	/* ### App ### */
+
+	.wrapper {
+		background: white;
+	}
+
+	.header-list {
+		background: @brand-dark;
+		border-bottom: 1px solid @brand-dark;
+
+		.mainbar,
+		.sidebar {
+
+			.tool,
+			.action,
+			.option {
+
+				ul {
+
+					li {
+
+						&:not(.inactive):not(.active):hover {
+							background: rgba(@brand-night, 0.95);
+
+							&.ripple {
+
+								&.ripple-active {
+									background: lighten(rgba(@brand-night, 0.95), -2%);
+								}
+							}
+						}
+
+						&.active {
+							background: rgba(@brand-night, 0.95);
+
+							&.ripple {
+
+								&.ripple-active {
+									background: lighten(rgba(@brand-night, 0.95), -2%);
+								}
+							}
+						}
+
+						&.inactive {
+
+							i.ico {
+								color: @brand-grey;
+
+								svg {
+
+									path {
+										fill: @brand-grey;
+									}
+								}
+							}
+						}
+
+						i.ico {
+							color: @brand-light;
+
+							svg {
+
+								path {
+									fill: @brand-light;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.badge {
+
+		&.prime {
+			background: @brand-blue;
+		}
+
+		&.beta {
+			background: @brand-green;
+		}
+	}
+
+	.key {
+		color: @brand-grey-2;
+		background: @brand-grey-7;
+		border: 1px solid @brand-grey-4;
+	}
+
+	.button {
+		background: darken(@brand-night, 4%);
+		color: @brand-light;
+
+		&:hover {
+
+			&.ripple-active {
+				background: darken(@brand-night, 5%);
+			}
+		}
+
+		&.outline {
+			border: 1px solid @brand-grey-5;
+
+			&:hover {
+
+				&.ripple-active {
+					background: lighten(white, -2%);
+				}
+			}
+		}
+
+		&.prime {
+			background: @brand-blue;
+			color: white;
+
+			&:hover {
+
+				&.ripple-active {
+					background: lighten(@brand-blue, -2%);
+				}
+			}
+		}
+
+		&.danger {
+			background: @brand-red;
+			color: white;
+
+			&:hover {
+
+				&.ripple-active {
+					background: lighten(@brand-red, -2%);
+				}
+			}
+		}
+	}
+
+	.notification {
+
+		p {
+			background: @brand-black;
+			color: white;
+		}
+	}
+
+	.controls {
+
+		.hotbar {
+
+			.color {
+				background: @brand-bright;
+			}
+		}
+
+		.scale-modal {
+
+			input[type="range"] {
+	    		background: @brand-grey-1;
+
+				&::-webkit-slider-thumb {
+					background: @brand-grey-3;
+
+					&:hover {
+						background: darken(@brand-grey-3, 2%);
+					}
+				}
+			}
+		}
+
+		.clear-modal {
+
+			.info {
+				color: @brand-light;
+			}
+
+			.align {
+
+				.btn-apply {
+					border-color: grey;
+				}
+			}
+		}
+
+		.colors-modal {
+
+			&::-webkit-scrollbar-thumb {
+				background: @brand-night;
+
+				&:hover,
+				&:active {
+					background: darken(@brand-night, 2%);
+				}
+			}
+
+			.color {
+				background: @brand-bright;
+			}
+		}
+	}
+
+	.modal {
+		background: @brand-dark;
+		border: 1px solid @brand-dark;
+
+		.header {
+
+			.back {
+
+				i.ico {
+					color: @brand-light;
+				}
+
+				&:hover {
+					background: @brand-night;
+				}
+
+				&.ripple {
+
+					&.ripple-active {
+						background: lighten(@brand-night, -2%);
+					}
+				}
+			}
+
+			.info {
+
+				p {
+					color: @brand-light;
+				}
+
+				span {
+					color: @brand-grey-3;
+				}
+			}
+		}
+
+		ul.item-list {
+
+			.separator {
+				background: lighten(@brand-dark, 5%);
+			}
+
+			li.caption {
+
+				p {
+					color: @brand-grey-3;
+				}
+			}
+
+			li.item {
+
+				&.empty {
+
+					p {
+						color: @brand-light;
+					}
+				}
+
+				&:not(.active):not(.inactive) {
+
+					&:hover {
+						background: lighten(@brand-dark, -2%);
+					}
+
+					&.ripple {
+
+						&.ripple-active {
+							background: lighten(@brand-dark, -2%);
+						}
+					}
+				}
+
+				i.ico {
+					color: @brand-light;
+
+					svg {
+
+						path {
+							fill: @brand-light;
+						}
+					}
+				}
+
+				i.lang {
+					color: @brand-light;
+				}
+
+				.info {
+
+					p {
+						color: @brand-light;
+					}
+
+					span {
+						color: @brand-grey-3;
+					}
+				}
+
+				&.active {
+					background: @brand-night;
+
+					&.ripple {
+
+						&.ripple-active {
+							background: lighten(@brand-night, -2%);
+						}
+					}
+				}
+
+				&.inactive {
+
+					i.ico {
+						color: @brand-grey-3;
+					}
+
+					.info {
+
+						p {
+							color: @brand-grey-3;
+						}
+
+						span {
+							color: @brand-grey-3;
+						}
+					}
 				}
 			}
 		}
