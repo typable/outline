@@ -102,14 +102,25 @@ export function init() {
 		cookie.requestPermission(node.accept)
 			.then(function() {
 				node.cookie.classList.add('hidden');
-				try {
-					firebase.initializeApp(FIREBASE);
-					firebase.analytics();
-				}
-				catch(error) {
-					console.warn('Unable to load Google Analytics!');
-				}
+				load_resources();
 			});
+	}
+	else {
+		load_resources();
+	}
+}
+
+function load_resources() {
+	let dark_mode = localStorage.getItem('outline.custom.dark-mode');
+	if(dark_mode && dark_mode === 'true') {
+		document.body.classList.add('theme-dark');
+	}
+	try {
+		firebase.initializeApp(FIREBASE);
+		firebase.analytics();
+	}
+	catch(error) {
+		console.warn('Unable to load Google Analytics!');
 	}
 }
 

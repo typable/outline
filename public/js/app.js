@@ -33,16 +33,17 @@ let state = {
 	caption: null,
 	option: {
 		view_mode: false,
-		crop_mode: false
+		crop_mode: false,
+		dark_mode: false
 	},
 	history: [],
 	redo_history: []
 };
 
-export function init() {
+export async function init() {
 
 	locale.init();
-	locale.load('./asset/lang', LOCALES);
+	await locale.load('./asset/lang', LOCALES);
 	canvas.init();
 
 	node = query({
@@ -68,6 +69,7 @@ export function init() {
 		pencil_tool: '.tool-item[data-code="pencil"]',
 		option_event_fullscreen: '[data-event="toggle.fullscreen"]',
 		option_event_view_mode: '[data-event="toggle.view-mode"]',
+		option_event_dark_mode: '[data-event="toggle.dark-mode"]',
 		undo_tool: '[data-lang="action.undo"]',
 		redo_tool: '[data-lang="action.redo"]',
 		colors_modal: '.colors-modal',
@@ -112,14 +114,27 @@ export function init() {
 		cookie.requestPermission(node.accept)
 			.then(function() {
 				node.cookie.classList.add('hidden');
-				try {
-					firebase.initializeApp(FIREBASE);
-					firebase.analytics();
-				}
-				catch(error) {
-					console.warn('Unable to load Google Analytics!');
-				}
+				load_resources();
 			});
+	}
+	else {
+		load_resources();
+	}
+}
+
+function load_resources() {
+	let dark_mode = localStorage.getItem('outline.custom.dark-mode');
+	if(dark_mode && dark_mode === 'true') {
+		document.body.classList.add('theme-dark');
+		state.option.dark_mode = true;
+		update_dark_mode_option({ passive: true });
+	}
+	try {
+		firebase.initializeApp(FIREBASE);
+		firebase.analytics();
+	}
+	catch(error) {
+		console.warn('Unable to load Google Analytics!');
 	}
 }
 
@@ -280,6 +295,10 @@ function bind_events(locale) {
 	node.option_event_view_mode.addEventListener('click', function(event) {
 		state.option.view_mode = !state.option.view_mode;
 		update_view_mode_option();
+	});
+	node.option_event_dark_mode.addEventListener('click', function(event) {
+		state.option.dark_mode = !state.option.dark_mode;
+		update_dark_mode_option();
 	});
 	node.undo_tool.addEventListener('click', function(event) {
 		canvas.undo(state);
@@ -477,6 +496,22 @@ function update_view_mode_option() {
 			fill: 'both'
 		});
 		node.sidebar.classList.add('hidden');
+	}
+}
+
+const CONFIG_COOKIE_PROPERTY = 'outline.custom.accepted';
+
+function update_dark_mode_option(args) {
+	let { passive = false } = args || {};
+	let dark_mode = state.option.dark_mode;
+	if(!passive) {
+		show_notification(`notification.dark-mode.${dark_mode ? 'on' : 'off'}`);
+	}
+	node.option_event_dark_mode.classList[dark_mode ? 'add' : 'remove']('active');
+	node.option_event_dark_mode.querySelector('.ico').textContent = dark_mode ? 'toggle_on' : 'toggle_off';
+	document.body.classList[dark_mode ? 'add' : 'remove']('theme-dark');
+	if(cookie.hasAccepted()) {
+		localStorage.setItem('outline.custom.dark-mode', dark_mode);
 	}
 }
 
