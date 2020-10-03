@@ -37,7 +37,8 @@ let state = {
 		dark_mode: false
 	},
 	history: [],
-	redo_history: []
+	redo_history: [],
+	key: {}
 };
 
 export async function init() {
@@ -146,6 +147,7 @@ function bind_events(locale) {
 	document.addEventListener('pointerup', on_pointerup);
 	document.addEventListener('pointerout', on_pointerout);
 	document.addEventListener('keydown', on_keydown);
+	document.addEventListener('keyup', on_keyup);
 	document.addEventListener('wheel', on_wheel);
 	document.addEventListener('wheel', function(event) {
 		if(event.ctrlKey) {
@@ -555,26 +557,28 @@ function on_pointerdown(event) {
 		update_device_list();
 	}
 	// drawing
-	if(!state.option.view_mode && state.device === event.pointerType) {
-		if(event.target === canvas.get_canvas()) {
-			if(!PRIORITY_MODAL.includes(state.modal)) {
-				update_focus(false);
-				canvas.on_press(event, state);
-				update_undo_and_redo();
-				state.point = {
-					x: event.layerX,
-					y: event.layerY
-				};
-				canvas.draw_cursor(state);
+	if(event.button == 0) {
+		if(!state.option.view_mode && state.device === event.pointerType) {
+			if(event.target === canvas.get_canvas()) {
+				if(!PRIORITY_MODAL.includes(state.modal)) {
+					update_focus(false);
+					canvas.on_press(event, state);
+					update_undo_and_redo();
+					state.point = {
+						x: event.layerX,
+						y: event.layerY
+					};
+					canvas.draw_cursor(state);
+				}
 			}
 		}
-	}
-	if(state.option.view_mode && state.option.crop_mode) {
-		if(event.target === canvas.get_canvas()) {
-			state.crop = true;
-			state.region = [];
-			state.region[0] = { x: event.layerX, y: event.layerY };
-			canvas.draw_crop(state);
+		if(state.option.view_mode && state.option.crop_mode) {
+			if(event.target === canvas.get_canvas()) {
+				state.crop = true;
+				state.region = [];
+				state.region[0] = { x: event.layerX, y: event.layerY };
+				canvas.draw_crop(state);
+			}
 		}
 	}
 }
@@ -614,41 +618,43 @@ function on_pointermove(event) {
 }
 
 function on_pointerup(event) {
-	if(!state.option.view_mode && state.device === event.pointerType) {
-		canvas.on_release(event, state);
-		update_undo_and_redo();
-		update_focus(true);
-	}
-	if(state.option.view_mode && state.option.crop_mode) {
-		if(state.crop && event.target === canvas.get_canvas()) {
-			state.crop = false;
-			state.region[1] = { x: event.layerX, y: event.layerY };
-			canvas.draw_crop(state);
-			let [ begin, end ] = state.region;
-			let delta = {
-				x: end.x - begin.x,
-				y: end.y - begin.y
-			};
-			let x = begin.x < end.x ? begin.x : end.x;
-			let y = begin.y < end.y ? begin.y : end.y;
-			if(delta.x < 0) {
-				delta.x *= -1;
-			}
-			if(delta.y < 0) {
-				delta.y *= -1;
-			}
-			if(delta.x != 0 && delta.y != 0) {
-				let data = canvas.create_capture(x, y, delta.x, delta.y);
-				if(data) {
-					node.download.download = `outline-${uuid()}.png`;
-					node.download.href = data;
-					node.download.click();
-					state.option.crop_mode = false;
-					canvas.draw_crop(state);
-					canvas.get_canvas().style.cursor = 'default';
+	if(event.button == 0) {
+		if(!state.option.view_mode && state.device === event.pointerType) {
+			canvas.on_release(event, state);
+			update_undo_and_redo();
+			update_focus(true);
+		}
+		if(state.option.view_mode && state.option.crop_mode) {
+			if(state.crop && event.target === canvas.get_canvas()) {
+				state.crop = false;
+				state.region[1] = { x: event.layerX, y: event.layerY };
+				canvas.draw_crop(state);
+				let [ begin, end ] = state.region;
+				let delta = {
+					x: end.x - begin.x,
+					y: end.y - begin.y
+				};
+				let x = begin.x < end.x ? begin.x : end.x;
+				let y = begin.y < end.y ? begin.y : end.y;
+				if(delta.x < 0) {
+					delta.x *= -1;
 				}
-				else {
-					console.warn('Unable to create capture from current state!');
+				if(delta.y < 0) {
+					delta.y *= -1;
+				}
+				if(delta.x != 0 && delta.y != 0) {
+					let data = canvas.create_capture(x, y, delta.x, delta.y);
+					if(data) {
+						node.download.download = `outline-${uuid()}.png`;
+						node.download.href = data;
+						node.download.click();
+						state.option.crop_mode = false;
+						canvas.draw_crop(state);
+						canvas.get_canvas().style.cursor = 'default';
+					}
+					else {
+						console.warn('Unable to create capture from current state!');
+					}
 				}
 			}
 		}
@@ -672,114 +678,121 @@ function on_pointerout(event) {
 }
 
 function on_keydown(event) {
-	if(event.code === 'Escape') {
-		if(state.tab) {
-			state.tab = null;
-			update_tab_list();
-			return;
+	if(!state.key[event.code]) {
+		if(event.code === 'Escape') {
+			if(state.tab) {
+				state.tab = null;
+				update_tab_list();
+				return;
+			}
+			if(state.modal) {
+				state.modal = null;
+				update_modal_list();
+				return;
+			}
+			if(state.option.view_mode && state.option.crop_mode) {
+				state.option.crop_mode = false;
+				canvas.draw_crop(state);
+				canvas.get_canvas().style.cursor = 'default';
+			}
 		}
-		if(state.modal) {
-			state.modal = null;
-			update_modal_list();
-			return;
-		}
-		if(state.option.view_mode && state.option.crop_mode) {
-			state.option.crop_mode = false;
-			canvas.draw_crop(state);
-			canvas.get_canvas().style.cursor = 'default';
-		}
-	}
-	if(!event.ctrlKey && !event.shiftKey && !event.altKey) {
-		if(!state.option.view_mode) {
-			if(event.code.startsWith('Digit')) {
-				let i = parseInt(event.code.substr(5)) - 1;
-				if(state.index !== i) {
-					if(i >= 0 && i < state.color_list.length) {
-						canvas.on_release(event, state);
-						state.color = state.color_list[i];
-						state.index = i;
-						canvas.draw_cursor(state);
-						update_hotbar();
+		if(!event.ctrlKey && !event.shiftKey && !event.altKey) {
+			if(!state.option.view_mode) {
+				if(event.code.startsWith('Digit')) {
+					let i = parseInt(event.code.substr(5)) - 1;
+					if(state.index !== i) {
+						if(i >= 0 && i < state.color_list.length) {
+							canvas.on_release(event, state);
+							state.color = state.color_list[i];
+							state.index = i;
+							canvas.draw_cursor(state);
+							update_hotbar();
+						}
+					}
+				}
+				if(event.code === 'KeyZ') {
+					state.modal = state.modal !== 'colors' ? 'colors' : null;
+					update_modal_list();
+				}
+				if(event.code === 'KeyX') {
+					state.modal = state.modal !== 'scale' ? 'scale' : null;
+					update_modal_list();
+				}
+				if(event.code === 'KeyC') {
+					state.modal = state.modal !== 'pencil' ? 'pencil' : null;
+					update_modal_list();
+				}
+				if(event.code === 'KeyV') {
+					state.modal = state.modal !== 'clear' ? 'clear' : null;
+					update_modal_list();
+				}
+				/*
+				if(event.code === 'KeyB') {
+					state.modal = state.modal !== 'multiplayer' ? 'multiplayer' : null;
+					update_modal_list();
+				}
+				if(event.code === 'KeyN') {
+					state.modal = state.modal !== 'account' ? 'account' : null;
+					update_modal_list();
+				}
+				*/
+				if(event.code === 'KeyM') {
+					state.modal = state.modal !== 'more' ? 'more' : null;
+					update_modal_list();
+				}
+				if(event.code === 'KeyQ') {
+					canvas.on_release(event, state);
+					state.pencil = state.pencil_list[0];
+					canvas.draw_cursor(state);
+					update_pencil_list();
+				}
+				if(event.code === 'KeyW') {
+					canvas.on_release(event, state);
+					state.pencil = state.pencil_list[1];
+					canvas.draw_cursor(state);
+					update_pencil_list();
+				}
+				if(event.code === 'KeyE') {
+					canvas.on_release(event, state);
+					state.pencil = state.pencil_list[2];
+					canvas.draw_cursor(state);
+					update_pencil_list();
+				}
+				if(event.code === 'KeyF') {
+					if(!document.fullscreenElement) {
+						document.documentElement.requestFullscreen();
+					}
+					else if(document.exitFullscreen) {
+						document.exitFullscreen();
 					}
 				}
 			}
+			if(event.code === 'Space') {
+				state.option.view_mode = !state.option.view_mode;
+				update_view_mode_option();
+			}
+		}
+		if(event.ctrlKey && !event.shiftKey && !event.altKey) {
+			if(event.code === 'KeyY') {
+				canvas.undo(state);
+				update_undo_and_redo();
+			}
 			if(event.code === 'KeyZ') {
-				state.modal = state.modal !== 'colors' ? 'colors' : null;
-				update_modal_list();
-			}
-			if(event.code === 'KeyX') {
-				state.modal = state.modal !== 'scale' ? 'scale' : null;
-				update_modal_list();
-			}
-			if(event.code === 'KeyC') {
-				state.modal = state.modal !== 'pencil' ? 'pencil' : null;
-				update_modal_list();
-			}
-			if(event.code === 'KeyV') {
-				state.modal = state.modal !== 'clear' ? 'clear' : null;
-				update_modal_list();
-			}
-			/*
-			if(event.code === 'KeyB') {
-				state.modal = state.modal !== 'multiplayer' ? 'multiplayer' : null;
-				update_modal_list();
-			}
-			if(event.code === 'KeyN') {
-				state.modal = state.modal !== 'account' ? 'account' : null;
-				update_modal_list();
-			}
-			*/
-			if(event.code === 'KeyM') {
-				state.modal = state.modal !== 'more' ? 'more' : null;
-				update_modal_list();
-			}
-			if(event.code === 'KeyQ') {
-				canvas.on_release(event, state);
-				state.pencil = state.pencil_list[0];
-				canvas.draw_cursor(state);
-				update_pencil_list();
-			}
-			if(event.code === 'KeyW') {
-				canvas.on_release(event, state);
-				state.pencil = state.pencil_list[1];
-				canvas.draw_cursor(state);
-				update_pencil_list();
-			}
-			if(event.code === 'KeyE') {
-				canvas.on_release(event, state);
-				state.pencil = state.pencil_list[2];
-				canvas.draw_cursor(state);
-				update_pencil_list();
-			}
-			if(event.code === 'KeyF') {
-				if(!document.fullscreenElement) {
-					document.documentElement.requestFullscreen();
-				}
-				else if(document.exitFullscreen) {
-					document.exitFullscreen();
-				}
+				canvas.redo(state);
+				update_undo_and_redo();
 			}
 		}
-		if(event.code === 'Space') {
-			state.option.view_mode = !state.option.view_mode;
-			update_view_mode_option();
+		if(event.code === 'Enter') {
+			if(state.modal === 'clear') {
+				node.clear.click();
+			}
 		}
+		state.key[event.code] = true;
 	}
-	if(event.ctrlKey && !event.shiftKey && !event.altKey) {
-		if(event.code === 'KeyY') {
-			canvas.undo(state);
-			update_undo_and_redo();
-		}
-		if(event.code === 'KeyZ') {
-			canvas.redo(state);
-			update_undo_and_redo();
-		}
-	}
-	if(event.code === 'Enter') {
-		if(state.modal === 'clear') {
-			node.clear.click();
-		}
-	}
+}
+
+function on_keyup(event) {
+	state.key[event.code] = false;
 }
 
 function on_wheel(event) {
