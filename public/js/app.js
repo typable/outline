@@ -130,6 +130,11 @@ function load_resources() {
 		state.option.dark_mode = true;
 		update_dark_mode_option({ passive: true });
 	}
+	let lang = localStorage.getItem('outline.custom.lang');
+	if(lang && LOCALES.includes(lang)) {
+		locale.change(lang);
+		update_language_list();
+	}
 	try {
 		firebase.initializeApp(FIREBASE);
 		firebase.analytics();
@@ -161,14 +166,14 @@ function bind_events(locale) {
 	}, { passive: false });
 
 	for(let item of node.language_list) {
-		item.addEventListener('click', function(event) {
+		item.addEventListener('click', function() {
 			let code = item.dataset.code;
 			locale.change(code);
 			update_language_list();
 		});
 	}
 	for(let item of node.device_list) {
-		item.addEventListener('click', function(event) {
+		item.addEventListener('click', function() {
 			let code = item.dataset.code;
 			if(state.device_list[code]) {
 				state.device = code;
@@ -177,7 +182,7 @@ function bind_events(locale) {
 		});
 	}
 	for(let item of node.pencil_list) {
-		item.addEventListener('click', function(event) {
+		item.addEventListener('click', function() {
 			state.pencil = item.dataset.code;
 			update_pencil_list();
 			state.modal = null;
@@ -185,7 +190,7 @@ function bind_events(locale) {
 		});
 	}
 	for(let item of node.modal_event_list) {
-		item.addEventListener('click', function(event) {
+		item.addEventListener('click', function() {
 			let code = item.dataset.code;
 			let match = /^(toggle|open|close).modal$/.exec(item.dataset.event);
 			if(match) {
@@ -217,7 +222,7 @@ function bind_events(locale) {
 		});
 	}
 	for(let item of node.tab_event_list) {
-		item.addEventListener('click', function(event) {
+		item.addEventListener('click', function() {
 			let code = item.dataset.code;
 			let match = /^(open|close).tab/.exec(item.dataset.event);
 			if(match) {
@@ -241,7 +246,7 @@ function bind_events(locale) {
 		});
 	}
 	for(let item of node.capture_event_list) {
-		item.addEventListener('click', function(event) {
+		item.addEventListener('click', function() {
 			let code = item.dataset.code;
 			if(code === 'download') {
 				if(state.option.crop_mode) {
@@ -270,7 +275,7 @@ function bind_events(locale) {
 			update_modal_list();
 		})
 	}
-	node.scale_input.addEventListener('input', function(event) {
+	node.scale_input.addEventListener('input', function() {
 		state.radius = parseInt(node.scale_input.value);
 		state.point = {
 			x: parseInt(window.innerWidth / 2),
@@ -278,14 +283,14 @@ function bind_events(locale) {
 		};
 		canvas.draw_cursor(state);
 	});
-	node.clear.addEventListener('click', function(event) {
+	node.clear.addEventListener('click', function() {
 		canvas.clear(state);
 		update_undo_and_redo();
 		show_notification('notification.clear');
 		state.modal = null;
 		update_modal_list();
 	});
-	node.option_event_fullscreen.addEventListener('click', function(event) {
+	node.option_event_fullscreen.addEventListener('click', function() {
 		if(!document.fullscreenElement) {
 			document.documentElement.requestFullscreen();
 		}
@@ -294,34 +299,34 @@ function bind_events(locale) {
 		}
 	});
 	window.addEventListener('fullscreenchange', on_fullscreenchange);
-	node.option_event_view_mode.addEventListener('click', function(event) {
+	node.option_event_view_mode.addEventListener('click', function() {
 		state.option.view_mode = !state.option.view_mode;
 		update_view_mode_option();
 	});
-	node.option_event_dark_mode.addEventListener('click', function(event) {
+	node.option_event_dark_mode.addEventListener('click', function() {
 		state.option.dark_mode = !state.option.dark_mode;
 		update_dark_mode_option();
 	});
-	node.undo_tool.addEventListener('click', function(event) {
+	node.undo_tool.addEventListener('click', function() {
 		canvas.undo(state);
 		update_undo_and_redo();
 	});
-	node.redo_tool.addEventListener('click', function(event) {
+	node.redo_tool.addEventListener('click', function() {
 		canvas.redo(state);
 		update_undo_and_redo();
 	});
-	node.edit_mode.addEventListener('click', function(event) {
+	node.edit_mode.addEventListener('click', function() {
 		state.option.view_mode = false;
 		update_view_mode_option();
 	});
 	for(let item of node.caption_list) {
-		item.addEventListener('click', function(event) {
+		item.addEventListener('click', function() {
 			state.caption = item.dataset.code;
 			update_caption_list();
 		});
 	}
 
-	window.addEventListener('beforeunload', function(event) {
+	window.addEventListener('beforeunload', function() {
 		// ...
 	});
 }
@@ -331,6 +336,9 @@ function update_language_list() {
 	for(let item of node.language_list) {
 		let code = item.dataset.code;
 		item.classList[code === lang ? 'add' : 'remove']('active');
+	}
+	if(cookie.hasAccepted()) {
+		localStorage.setItem('outline.custom.lang', lang);
 	}
 }
 
@@ -500,8 +508,6 @@ function update_view_mode_option() {
 		node.sidebar.classList.add('hidden');
 	}
 }
-
-const CONFIG_COOKIE_PROPERTY = 'outline.custom.accepted';
 
 function update_dark_mode_option(args) {
 	let { passive = false } = args || {};
@@ -767,6 +773,12 @@ function on_keydown(event) {
 					}
 				}
 			}
+			if(state.option.view_mode && !state.option.crop_mode) {
+				if(event.code === 'KeyZ') {
+					state.modal = state.modal !== 'capture' ? 'capture' : null;
+					update_modal_list();
+				}
+			}
 			if(event.code === 'Space') {
 				state.option.view_mode = !state.option.view_mode;
 				update_view_mode_option();
@@ -809,7 +821,7 @@ function on_wheel(event) {
 	}
 }
 
-function on_fullscreenchange(event) {
+function on_fullscreenchange() {
 	update_fullscreen_option();
 }
 

@@ -33,10 +33,12 @@ export function init() {
 		if(value === 'install') {
 			element.addEventListener('click', function() {
 				if(state.deferredPrompt) {
+					/*
 					state.deferredPrompt.prompt();
 					state.deferredPrompt.userChoice.then(function(result) {
-						// let installed = result.outcome === 'accepted';
+						let installed = result.outcome === 'accepted';
 					});
+					*/
 				}
 				else {
 					show_notification('main.upcoming');
@@ -114,6 +116,10 @@ function load_resources() {
 	let dark_mode = localStorage.getItem('outline.custom.dark-mode');
 	if(dark_mode && dark_mode === 'true') {
 		document.body.classList.add('theme-dark');
+	}
+	let lang = localStorage.getItem('outline.custom.lang');
+	if(lang && LOCALES.includes(lang)) {
+		locale.change(lang);
 	}
 	try {
 		firebase.initializeApp(FIREBASE);

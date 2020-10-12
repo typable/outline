@@ -278,7 +278,7 @@ function clear_cursor() {
 
 function set_data(data) {
 	let image = new Image();
-	image.onload = function(event) {
+	image.onload = function() {
 		g.drawImage(image, 0, 0);
 		m.drawImage(image, 0, 0);
 		t.drawImage(image, 0, 0);

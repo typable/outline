@@ -1,7 +1,7 @@
 const CONFIG_COOKIE_PROPERTY = 'outline.custom.accepted';
 
 function requestPermission(element) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function(resolve) {
 		element.onclick = function() {
 			localStorage.setItem(CONFIG_COOKIE_PROPERTY, true);
 			resolve();

@@ -1,10 +1,11 @@
 import { LOCALES } from '../constant.js';
 
+import cookie from './cookie.js';
+
 const LINE_BREAK_PATTERN = /\r\n|\r|\n/;
 const PROPERTY_PATTERN = /^([\w+.-]+)=([^=]*)$/;
 
 let lang = {};
-let default_lang;
 let current_lang;
 
 /**
@@ -15,6 +16,13 @@ let current_lang;
 */
 function init() {
 	let code = 'en';
+	if(cookie.hasAccepted()) {
+		let lang = localStorage.getItem('outline.custom.lang');
+		if(lang && LOCALES.includes(lang)) {
+			current_lang = lang;
+			return;
+		}
+	}
 	if(typeof navigator !== 'undefined') {
 		if(LOCALES.includes(navigator.language)) {
 			code = navigator.language;
@@ -31,7 +39,6 @@ function init() {
 			}
 		}
 	}
-	default_lang = code;
 	current_lang = code;
 }
 
@@ -44,7 +51,7 @@ function init() {
 	@param {string[]} locales - The list containing all locales.
 	@return {Object} The locale object.
 */
-async function load(path, locales, callback) {
+async function load(path, locales) {
 	for(let code of locales) {
 		let text = await fetch(`${path}/${code}.properties`)
 			.then(function(response) {
@@ -59,9 +66,6 @@ async function load(path, locales, callback) {
 		if(text) {
 			lang[code] = parse(text);
 		}
-	}
-	if(callback) {
-		callback();
 	}
 	change(current_lang);
 }
