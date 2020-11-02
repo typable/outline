@@ -110,6 +110,10 @@ export async function init() {
 		fill: 'both'
 	});
 
+	setTimeout(function() {
+		node.wrapper.classList.add('hidden');
+	}.bind(this), 600);
+
 	if(!cookie.hasAccepted()) {
 		node.cookie.classList.remove('hidden');
 		cookie.requestPermission(node.accept)
