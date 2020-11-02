@@ -1,5 +1,5 @@
 @brand-dark: #333C41;
-@brand-light: #E0E0E0;
+@brand-light: #F5F5F5;
 @brand-night: #2D353A;
 @brand-grey: #828282;
 
@@ -86,30 +86,12 @@
 			background: @brand-night;
 			color: @brand-light;
 		}
-
-		.caption {
-
-			h2.caption-headline {
-				color: white;
-
-				b {
-					color: @brand-blue;
-				}
-			}
-
-			.caption-info {
-
-				p {
-					color: @brand-light;
-				}
-			}
-		}
 	}
 
 	/* ### App ### */
 
 	.wrapper {
-		background: white;
+		background: @brand-dark;
 	}
 
 	.header-list {
@@ -171,6 +153,13 @@
 								path {
 									fill: @brand-light;
 								}
+							}
+						}
+
+						&.caption {
+
+							label {
+								color: @brand-light;
 							}
 						}
 					}
@@ -520,30 +509,12 @@ body.theme-dark {
 			background: @brand-night;
 			color: @brand-light;
 		}
-
-		.caption {
-
-			h2.caption-headline {
-				color: white;
-
-				b {
-					color: @brand-blue;
-				}
-			}
-
-			.caption-info {
-
-				p {
-					color: @brand-light;
-				}
-			}
-		}
 	}
 
 	/* ### App ### */
 
 	.wrapper {
-		background: white;
+		background: @brand-dark;
 	}
 
 	.header-list {
@@ -605,6 +576,13 @@ body.theme-dark {
 								path {
 									fill: @brand-light;
 								}
+							}
+						}
+
+						&.caption {
+
+							label {
+								color: @brand-light;
 							}
 						}
 					}
