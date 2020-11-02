@@ -51,9 +51,6 @@ Draw with your PlayStation, Xbox, and Stadia Controller.
 
 - **No support for older Browsers**<br>
 Outline was intentionally developed for new browsers, so functionality for older browsers cannot be guaranteed.
-
-- **No support for iOS, macOS, and iPadOS**<br>
-Currently, Outline not works on iOS, macOS, and iPadOS. This will be fixed in the near future.
 <br>
 
 ### Support
