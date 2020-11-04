@@ -5,3 +5,4 @@ package-lock.json
 .firebaserc
 firebase-debug.log
 style.css
+public/js/firebase.js

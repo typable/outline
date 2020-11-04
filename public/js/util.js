@@ -1,21 +1,8 @@
-/**
-	Creates a unique identifier based on the current date.
-
-	@function uuid
-	@return {number} The unique identifier.
-*/
-function uuid() {
+export function uuid() {
 	return new Date().valueOf();
 }
 
-/**
-	Creates a template Object to create HTMLElements.
-
-	@function html
-	@callback callback
-	@return {Object} The template object.
-*/
-function html(callback) {
+export function html(callback) {
 	return {
 		build: function(args) {
 			let template = document.createElement('template');
@@ -31,14 +18,7 @@ function html(callback) {
 	};
 }
 
-/**
-	Creates an object which contains the queried HTMLElements.
-
-	@function query
-	@param {Object} args - The query object.
-	@return {Object} The object containing node elements.
-*/
-function query(args) {
+export function query(args) {
 	let result = {};
 	if(typeof args === 'object') {
 		for(let entry of Object.entries(args)) {
@@ -62,42 +42,20 @@ function query(args) {
 	}
 }
 
-/**
-	Prevents an event.
-
-	@function prevent
-	@param {Event} event - The event to prevent.
-*/
-function prevent(event) {
+export function prevent(event) {
 	event.preventDefault();
 }
 
-/**
-	Check if object variable is defined.
-
-	@function support
-	@param {Object} object - The object to check for.
-	@return {boolean} The result of the validation.
-*/
-function support(object) {
+export function support(object) {
 	return typeof object !== 'undefined';
 }
 
-/**
-	Check if current page is the App page.
-
-	@function isApp
-	@return {boolean} The result of the validation.
-*/
-function isApp() {
+export function isApp() {
 	return window.location.pathname === '/app';
 }
 
-export {
-	uuid,
-	html,
-	query,
-	prevent,
-	support,
-	isApp
-};
+export function isStandalone() {
+	return ['fullscreen', 'standalone', 'minimal-ui'].some(function(display) {
+		return window.matchMedia('(display-mode: ' + display + ')').matches;
+	});
+}
