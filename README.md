@@ -5,7 +5,7 @@
 Outline is a web-based drawing app that combines the latest features of the browsers of tomorrow.
 <br>
 
-### Visit [outline.typable.dev](https://outline.typable.dev) and start drawing now.
+### DISCONTINUED!
 <br>
 
 ### Features
@@ -32,21 +32,6 @@ Available languages are English, German, French, and Chinese.
 Download fullscreen and cropped drawings.
 <br>
 
-### Upcoming
-
-- **PWA Support** `v1.2.0`<br>
-Offline Support for Windows, Android and Chrome OS.
-
-- **Multiplayer**<br>
-Create, host, and join channels with others.
-
-- **Gallery**<br>
-Manage and navigate through your drawings.
-
-- **Gamepad Support**<br>
-Draw with your PlayStation, Xbox, and Stadia Controller.
-<br>
-
 ### Information
 
 - **No support for older Browsers**<br>
@@ -54,9 +39,6 @@ Outline was intentionally developed for new browsers, so functionality for older
 <br>
 
 ### Support
-
-- **Donation**<br>
-If you want to support this project with a small donation visit: [buymeacoffee.com/typable](https://www.buymeacoffee.com/typable)
 
 - **Contribution**<br>
 If you have an idea for a new feature or found a bug, get in touch with us: [outline/issues](https://github.com/typable/outline/issues/new/choose)
